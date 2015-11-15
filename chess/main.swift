@@ -10,10 +10,12 @@ import Foundation
 
 if let board = "rnbqkbnr/ppp2ppp/8/4r3/2p2q2/8/PPPPPPPP/RNBQKBNR b k f6 3 1".fenBoard {
     print("\(board)")
+    for (location,piece) in board.board {
+        print("\(piece) at \(location)")
+    }
 } else {
     print("Not a valid FEN line")
 }
-
 
 
 
