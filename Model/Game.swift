@@ -1,5 +1,5 @@
 //
-//  Board.swift
+//  Game.swift
 //  Chess
 //
 //  Created by Regan Sarwas on 11/1/15.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Board {
+struct Game {
     let board: [Location: Piece]
     let activeColor: Color
     let whiteHasKingSideCastleAvailable: Bool
@@ -19,7 +19,7 @@ struct Board {
     let halfMoveClock: Int
     let fullMoveNumber: Int
     
-    static func defaultBoard() -> Board {
+    static func defaultGame() -> Game {
         let defaultBoard = [
             Location(rank:1, file:.A): Piece(color:.White, kind:.Rook),
             Location(rank:1, file:.B): Piece(color:.White, kind:.Knight),
@@ -57,7 +57,7 @@ struct Board {
             Location(rank:8, file:.G): Piece(color:.Black, kind:.Knight),
             Location(rank:8, file:.H): Piece(color:.Black, kind:.Rook),
         ]
-        return Board(board: defaultBoard,
+        return Game(board: defaultBoard,
             activeColor: .White,
             whiteHasKingSideCastleAvailable: true,
             whiteHasQueenSideCastleAvailable: true,

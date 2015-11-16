@@ -8,9 +8,9 @@
 
 import Foundation
 
-if let board = "rnbqkbnr/ppp2ppp/8/4r3/2p2q2/8/PPPPPPPP/RNBQKBNR b k f6 3 1".fenBoard {
-    print("\(board)")
-    for (location,piece) in board.board {
+if let game = "rnbqkbnr/ppp2ppp/8/4r3/2p2q2/8/PPPPPPPP/RNBQKBNR b k f6 3 1".fenGame {
+    print("\(game)")
+    for (location,piece) in game.board {
         print("\(piece) at \(location)")
     }
 } else {

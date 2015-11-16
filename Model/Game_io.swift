@@ -1,5 +1,5 @@
 //
-//  Board_io.swift
+//  Game_io.swift
 //  Chess_cmd
 //
 //  Created by Regan Sarwas on 11/3/15.
@@ -8,7 +8,7 @@
 
 // MARK: CustomStringConvertible
 
-extension Board: CustomStringConvertible, CustomDebugStringConvertible {
+extension Game: CustomStringConvertible, CustomDebugStringConvertible {
     var description: String {
         get {
             return description_FEN
@@ -23,7 +23,7 @@ extension Board: CustomStringConvertible, CustomDebugStringConvertible {
     
     var description_FEN: String {
         get {
-            var fenBoard: String {
+            var fenGame: String {
                 get {
                     var lines :[String] = []
                     for rank in [8,7,6,5,4,3,2,1] {
@@ -58,14 +58,14 @@ extension Board: CustomStringConvertible, CustomDebugStringConvertible {
                     blackHasKingSideCastleAvailable ||
                     blackHasQueenSideCastleAvailable ? "" : "-")
             let color = activeColor == .White ? "w" : "b"
-            return "\(fenBoard) \(color) \(castle) \(enPassant) \(halfMoveClock) \(fullMoveNumber)"
+            return "\(fenGame) \(color) \(castle) \(enPassant) \(halfMoveClock) \(fullMoveNumber)"
         }
     }
 }
 
 extension String {
-    var fenBoard: Board? {
-        //a fen board description is composed of 6 required parts separated by a space
+    var fenGame: Game? {
+        //a fen Game description is composed of 6 required parts separated by a space
         let parts = self.split(" ")
         if parts.count != 6 {
             print("FEN line '\(self)' does not have 6 parts")
@@ -78,7 +78,7 @@ extension String {
                     if ok {
                         if let halfMoveClock = parseFenHalfMoveClock(parts[4]) {
                             if let fullMoveNumber = parseFenFullMoveNumber(parts[5]) {
-                                return Board(board: piecePlacement,
+                                return Game(board: piecePlacement,
                                     activeColor: activeColor,
                                     whiteHasKingSideCastleAvailable: wk,
                                     whiteHasQueenSideCastleAvailable: wq,

@@ -8,7 +8,7 @@
 
 import Foundation
 
-typealias MoveGetter = (Board, History, GameConfig) -> Move
+typealias MoveGetter = (Game, History, GameConfig) -> Move
 
 class GameLoop {
     let config: GameConfig
@@ -16,7 +16,7 @@ class GameLoop {
     let getMove: MoveGetter
 
     var history: History
-    var board: Board
+    var game: Game
     
     init(config:GameConfig, rules: Rules, getMove:MoveGetter) {
         self.rules = rules
@@ -24,21 +24,21 @@ class GameLoop {
         self.getMove = getMove
         
         self.history = History()
-        self.board = Board.defaultBoard()
+        self.game = Game.defaultGame()
     }
     //TODO: init with history and/or board
     
     func run() {
         while true {
-            var move = getMove(board, history, config)
-            move.validateMove(board, history: history, rules: rules)
+            var move = getMove(game, history, config)
+            move.validateMove(game, history: history, rules: rules)
             if (move.isValid) {
                 history.append(move)
-                board = Board.applyMove(board, move: move)
+                game = Game.applyMove(game, move: move)
                 if (move.isCheckMate || move.isConceed){
                     print("Game Over.")
-                    print("board: \(board)")
-                    print("board: \(history)")
+                    print("game: \(game)")
+                    print("history: \(history)")
                     break
                 }
             }

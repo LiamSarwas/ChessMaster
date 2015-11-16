@@ -1,12 +1,12 @@
 //
-//  Board_moves.swift
+//  Game_moves.swift
 //  Chess_cmd
 //
 //  Created by Regan Sarwas on 11/5/15.
 //  Copyright © 2015 Regan Sarwas. All rights reserved.
 //
 
-extension Board {
+extension Game {
     func validMoves(start:Location) -> [Location]
     {
         if let piece = self.board[start]
@@ -22,15 +22,15 @@ extension Board {
         return []
     }
     
-    func makeMove(start: Location, end:Location) -> Board
+    func makeMove(start: Location, end:Location) -> Game
     {
         return self
     }
     
-    static func applyMove(board:Board, move:Move) -> Board {
-        //Assumes the move is valid for board
+    static func applyMove(game:Game, move:Move) -> Game {
+        //Assumes the move is valid for Game
         
-        return board
+        return game
     }
 
 }

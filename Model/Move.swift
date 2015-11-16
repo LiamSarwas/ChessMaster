@@ -58,7 +58,7 @@ struct Move: Equatable {
         }
     }
 
-    mutating func validateMove(board: Board, history: History, rules: Rules) {
+    mutating func validateMove(game: Game, history: History, rules: Rules) {
         self.isValidated = true
     }
 }
