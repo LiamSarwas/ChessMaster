@@ -10,7 +10,9 @@ import SpriteKit
 
 class GameScene: SKScene {
     
-    var game = "rnbqkbnr/ppp2ppp/8/4r3/2p2q2/8/PPPPPPPP/RNBQKBNR b k f6 3 1".fenGame!
+    var game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame!
+    var movingSprite : SKSpriteNode?
+    var validMoves : [Move] = []
     
     override func didMoveToView(view: SKView)
     {
@@ -52,6 +54,7 @@ class GameScene: SKScene {
             }
         }
         
+        //set up board from the FEN
         for (location,piece) in game.board
         {
             if piece.color == .White
@@ -147,16 +150,113 @@ class GameScene: SKScene {
         }
     }
     
-    
     override func mouseDown(theEvent: NSEvent)
     {
         /* Called when a mouse click occurs */
-        
         let location = theEvent.locationInNode(self)
-        let validMoves = game.validMoves(convertToLocation(location))
+        let node = nodeAtPoint(location)
         
+       // print("Node at \(location) is \(node)")
+        if let spriteNode = node as? SKSpriteNode
+        {
+            if spriteNode.texture != nil
+            {
+                movingSprite = spriteNode
+            }
+        }
+        //validMoves = game.validMoves(convertToLocation(location))
     }
-
+    
+    override func mouseDragged(theEvent: NSEvent)
+    {
+        let location = theEvent.locationInNode(self)
+        if(movingSprite != nil)
+        {
+            movingSprite!.position = location
+           // self.addChild(movingSprite!)
+        }
+    }
+    
+    override func mouseUp(theEvent: NSEvent)
+    {
+        let location = theEvent.locationInNode(self)
+        let x = Int(location.x)
+        let y = Int(location.y)
+        var spriteX = 0
+        var spriteY = 0
+        
+        if(movingSprite != nil)
+        {
+            if (x >= 0 && x < 80)
+            {
+                spriteX = 40
+            }
+            if (x >= 80 && x < 160)
+            {
+                spriteX = 120
+            }
+            if (x >= 160 && x < 240)
+            {
+                spriteX = 200
+            }
+            if (x >= 240 && x < 320)
+            {
+                spriteX = 280
+            }
+            if (x >= 320 && x < 400)
+            {
+                spriteX = 360
+            }
+            if (x >= 400 && x < 480)
+            {
+                spriteX = 440
+            }
+            if (x >= 480 && x < 560)
+            {
+                spriteX = 520
+            }
+            if (x >= 560 && x < 640)
+            {
+                spriteX = 600
+            }
+            
+            if (y >= 0 && y < 80)
+            {
+                spriteY = 40
+            }
+            if (y >= 80 && y < 160)
+            {
+                spriteY = 120
+            }
+            if (y >= 160 && y < 240)
+            {
+                spriteY = 200
+            }
+            if (y >= 240 && y < 320)
+            {
+                spriteY = 280
+            }
+            if (y >= 320 && y < 400)
+            {
+                spriteY = 360
+            }
+            if (y >= 400 && y < 480)
+            {
+                spriteY = 440
+            }
+            if (y >= 480 && y < 560)
+            {
+                spriteY = 520
+            }
+            if (y >= 560 && y < 640)
+            {
+                spriteY = 600
+            }
+            
+            movingSprite!.position = CGPointMake(CGFloat(spriteX), CGFloat(spriteY))
+            movingSprite = nil
+        }
+    }
     
     func convertToLocation(point: CGPoint) -> Location
     {
