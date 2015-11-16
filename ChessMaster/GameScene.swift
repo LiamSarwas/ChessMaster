@@ -10,7 +10,8 @@ import SpriteKit
 
 class GameScene: SKScene {
     
-    var game = "rnbqkbnr/pppppppp/8/4r3/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1".fenGame!
+    //var game = "rnbqkbnr/pppppppp/8/4r3/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1".fenGame!
+    var game = "r1bqkb1r/8/8/8/8/8/8/R1BQKB1R b Q - 71 36".fenGame!
     var movingSprite : SKSpriteNode?
     var movedSprite : SKSpriteNode?
     var validLocations : [Location] = []
@@ -268,6 +269,7 @@ class GameScene: SKScene {
             if (validLocations.contains(convertToLocation(movingSprite!.position)))
             {
                 movingSprite!.position = CGPointMake(CGFloat(spriteX), CGFloat(spriteY))
+                game.makeMove(convertToLocation(movedSprite!.position), end: convertToLocation(movingSprite!.position))
                 movingSprite = nil
             }
             else
@@ -365,11 +367,6 @@ class GameScene: SKScene {
         return point
     }
     
-    func getValidMoveLocations()
-    {
-        //validMoves = game.validMoves(convertToLocation(location))
-   
-    }
     override func update(currentTime: CFTimeInterval)
     {
         /* Called before each frame is rendered */
