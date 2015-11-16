@@ -10,18 +10,12 @@
 extension Location {
     var toNorth: [Location]
     {
-        if self.rank == Rank.maxValue {
-            return []
-        }
-        return ((self.rank + 1)...Rank.maxValue).map { Location(rank:$0, file: self.file) }
+        return Rank.toNorth(self.rank).map { Location(rank:$0, file: self.file) }
     }
     
     var toSouth: [Location]
     {
-        if self.rank == Rank.minValue {
-            return []
-        }
-        return (Rank.minValue...(self.rank - 1)).reverse().map { Location(rank:$0, file: self.file) }
+        return Rank.toSouth(self.rank).map { Location(rank:$0, file: self.file) }
     }
     
     var toEast: [Location]
@@ -36,21 +30,21 @@ extension Location {
     
     var toNortheast: [Location]
     {
-        return [self]
+        return zip(Rank.toNorth(self.rank),self.file.toEast()).map { Location(rank:$0, file:$1) }
     }
     
     var toNorthwest: [Location]
     {
-        return [self]
+        return zip(Rank.toNorth(self.rank),self.file.toWest()).map { Location(rank:$0, file:$1) }
     }
     
     var toSoutheast: [Location]
     {
-        return [self]
+        return zip(Rank.toSouth(self.rank),self.file.toEast()).map { Location(rank:$0, file:$1) }
     }
     
     var toSouthwest: [Location]
     {
-        return [self]
+        return zip(Rank.toSouth(self.rank),self.file.toWest()).map { Location(rank:$0, file:$1) }
     }
 }

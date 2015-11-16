@@ -21,8 +21,10 @@ struct Rules {
             return [start.toNorth,start.toSouth,start.toEast,start.toWest,
                 start.toNortheast,start.toNorthwest,start.toSoutheast,start.toSouthwest]
         case .King:
-            return [start.toNorth,start.toSouth,start.toEast,start.toWest,
-                start.toNortheast,start.toNorthwest,start.toSoutheast,start.toSouthwest]
+            return [start.toNorth.firstOrEmpty(),start.toSouth.firstOrEmpty(),
+                start.toEast.firstOrEmpty(),start.toWest.firstOrEmpty(),
+                start.toNortheast.firstOrEmpty(),start.toNorthwest.firstOrEmpty(),
+                start.toSoutheast.firstOrEmpty(),start.toSouthwest.firstOrEmpty()]
         case .Knight:
             //FIXME: Implement
             return [[start]]

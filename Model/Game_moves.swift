@@ -12,9 +12,15 @@ extension Game {
         return Rules.validMoves(self, start:start)
     }
     
-    func makeMove(start: Location, end:Location) -> Game
+    mutating func makeMove(start: Location, end:Location) -> ()
     {
-        return self
+        //FIXME: Check castling, enPassant, Promotion, and Check
+        if validMoves(start).contains(end) {
+            board[end] = board[start]!
+            activeColor = activeColor == Color.White ? .Black : .White
+        } else {
+            print("Illegal Move from \(start) to \(end)")
+        }
     }
     
     static func applyMove(game:Game, move:Move) -> Game {

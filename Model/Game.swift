@@ -9,8 +9,8 @@
 import Foundation
 
 struct Game {
-    let board: [Location: Piece]
-    let activeColor: Color
+    var board: [Location: Piece]
+    var activeColor: Color
     let whiteHasKingSideCastleAvailable: Bool
     let whiteHasQueenSideCastleAvailable: Bool
     let blackHasKingSideCastleAvailable: Bool

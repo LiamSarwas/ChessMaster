@@ -11,3 +11,13 @@ extension String {
         return self.characters.split{$0 == separator}.map(String.init)
     }
 }
+
+extension Array {
+    func firstOrEmpty() -> Array {
+        if count > 0 {
+            return Array(self[0...0])
+        } else {
+            return []
+        }
+    }
+}

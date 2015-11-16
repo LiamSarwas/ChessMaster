@@ -32,6 +32,30 @@ public struct Rank {
     static let minValue = 1
     static let maxValue = 8
     static let allValues = minValue...maxValue
+    
+    static func toNorth(start:Int) -> [Int] {
+        if start == Rank.maxValue {
+            return []
+        }
+        return Array((start + 1)...maxValue)
+    }
+    static func toSouth(start:Int) -> [Int] {
+        if start == Rank.minValue {
+            return []
+        }
+        return (Rank.minValue...(start - 1)).reverse()
+    }
+/*
+    if self.rank == Rank.maxValue {
+    return []
+    }
+    return ((self.rank + 1)...Rank.maxValue).map { Location(rank:$0, file: self.file) }
+
+    if self.rank == Rank.minValue {
+    return []
+    }
+    return (Rank.minValue...(self.rank - 1)).reverse().map { Location(rank:$0, file: self.file) }
+*/
 }
 
 public struct Location: Equatable {
