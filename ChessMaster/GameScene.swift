@@ -10,10 +10,11 @@ import SpriteKit
 
 class GameScene: SKScene {
     
-    var game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame!
+    var game = "rnbqkbnr/pppppppp/8/4r3/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1".fenGame!
     var movingSprite : SKSpriteNode?
     var movedSprite : SKSpriteNode?
     var validLocations : [Location] = []
+    var yellowSquares : [SKSpriteNode] = []
     
     override func didMoveToView(view: SKView)
     {
@@ -163,16 +164,19 @@ class GameScene: SKScene {
             if spriteNode.texture != nil
             {
                 movingSprite = spriteNode
-                movedSprite = spriteNode
+                let node = SKSpriteNode(color: SKColor.yellowColor(), size:CGSizeMake(70, 70))
+                node.position = spriteNode.position
+                movedSprite = node
             }
         }
         validLocations = game.validMoves(convertToLocation(location))
         for loc in validLocations
         {
-            let validNode = SKSpriteNode(color: SKColor.yellowColor(), size:CGSizeMake(70, 70))
-            validNode.position = convertToPoint(loc)
-            self.addChild(validNode)
+            yellowSquares.append(SKSpriteNode(color: SKColor.yellowColor(), size:CGSizeMake(70, 70)))
+            yellowSquares.last!.position = convertToPoint(loc)
+            self.addChild(yellowSquares.last!)
         }
+        
     }
     
     override func mouseDragged(theEvent: NSEvent)
@@ -271,7 +275,8 @@ class GameScene: SKScene {
                 movingSprite!.position = movedSprite!.position
                 movingSprite = nil
             }
-           
+            self.removeChildrenInArray(yellowSquares)
+            yellowSquares.removeAll()
         }
     }
     
@@ -314,7 +319,6 @@ class GameScene: SKScene {
         
         loc += String(Int (point.y/80) + 1)
         
-        print(loc)
         let location = loc.fenLocation
         return location!
     }
