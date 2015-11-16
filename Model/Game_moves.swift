@@ -17,6 +17,7 @@ extension Game {
         //FIXME: Check castling, enPassant, Promotion, and Check
         if validMoves(start).contains(end) {
             board[end] = board[start]!
+            board[start] = nil
             activeColor = activeColor == Color.White ? .Black : .White
         } else {
             print("Illegal Move from \(start) to \(end)")
