@@ -17,5 +17,20 @@ if let game = "rnbqkbnr/ppp2ppp/8/4r3/2p2q2/8/PPPPPPPP/RNBQKBNR b k f6 3 1".fenG
     print("Not a valid FEN line")
 }
 
-
-
+let l = Location(rank:4, file:.E)
+print("North from \(l)")
+for ll in l.toNorth {
+    print("   \(ll)")
+}
+print("South from \(l)")
+for ll in l.toSouth {
+    print("   \(ll)")
+}
+print("East from \(l)")
+for ll in l.toEast {
+    print("   \(ll)")
+}
+print("West from \(l)")
+for ll in l.toWest {
+    print("   \(ll)")
+}

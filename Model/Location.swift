@@ -9,8 +9,29 @@
 import Foundation
 
 
-public enum File: String {
-    case A, B, C, D, E, F, G, H
+public enum File: Int {
+    case A = 1, B, C, D, E, F, G, H
+    static let allValues = [File.A, .B, .C, .D, .E, .F, .G, .H]
+    static let minValue = File.A
+    static let maxValue = File.H
+    func toEast() -> ArraySlice<File> {
+        if self == .H {
+            return []
+        }
+        return File.allValues[self.rawValue...(File.maxValue.rawValue - 1)]
+    }
+    func toWest() -> [File] {
+        if self == .A {
+            return []
+        }
+        return Array(File.allValues[0...(self.rawValue-2)]).reverse()
+    }
+}
+
+public struct Rank {
+    static let minValue = 1
+    static let maxValue = 8
+    static let allValues = minValue...maxValue
 }
 
 public struct Location: Equatable {
@@ -37,7 +58,16 @@ public func == (left:Location, right:Location) -> Bool {
 extension Location: CustomStringConvertible {
     public var description: String {
         get {
-            return "\(file.rawValue.lowercaseString)\(rank)";
+            switch file {
+            case .A: return "a\(rank)"
+            case .B: return "b\(rank)"
+            case .C: return "c\(rank)"
+            case .D: return "d\(rank)"
+            case .E: return "e\(rank)"
+            case .F: return "f\(rank)"
+            case .G: return "g\(rank)"
+            case .H: return "h\(rank)"
+            }
         }
     }
 }

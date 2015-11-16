@@ -9,17 +9,7 @@
 extension Game {
     func validMoves(start:Location) -> [Location]
     {
-        if let piece = self.board[start]
-        {
-            if piece.color == self.activeColor {
-                
-            } else {
-                print("You can't move an opponents piece")
-                return []
-            }
-        }
-        print("No piece at \(start)")
-        return []
+        return Rules.validMoves(self, start:start)
     }
     
     func makeMove(start: Location, end:Location) -> Game

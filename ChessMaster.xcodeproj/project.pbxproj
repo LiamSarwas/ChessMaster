@@ -37,6 +37,8 @@
 		598F229F1BF935DE00182604 /* Piece.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F227B1BF9355D00182604 /* Piece.swift */; };
 		598F22A01BF935DE00182604 /* Rule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F227C1BF9355D00182604 /* Rule.swift */; };
 		598F22A11BF935DE00182604 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F227D1BF9355D00182604 /* Utilities.swift */; };
+		598F22A31BF9773600182604 /* Location_Directions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F22A21BF9773600182604 /* Location_Directions.swift */; };
+		598F22A41BF9773600182604 /* Location_Directions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F22A21BF9773600182604 /* Location_Directions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,6 +107,7 @@
 		598F227B1BF9355D00182604 /* Piece.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Piece.swift; path = Model/Piece.swift; sourceTree = "<group>"; };
 		598F227C1BF9355D00182604 /* Rule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Rule.swift; path = Model/Rule.swift; sourceTree = "<group>"; };
 		598F227D1BF9355D00182604 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Utilities.swift; path = Model/Utilities.swift; sourceTree = "<group>"; };
+		598F22A21BF9773600182604 /* Location_Directions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Location_Directions.swift; path = Model/Location_Directions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -211,6 +214,7 @@
 				598F22771BF9355D00182604 /* GameLoop.swift */,
 				598F22781BF9355D00182604 /* History.swift */,
 				598F22791BF9355D00182604 /* Location.swift */,
+				598F22A21BF9773600182604 /* Location_Directions.swift */,
 				598F227A1BF9355D00182604 /* Move.swift */,
 				598F227B1BF9355D00182604 /* Piece.swift */,
 				598F227C1BF9355D00182604 /* Rule.swift */,
@@ -380,6 +384,7 @@
 				598F229C1BF935DE00182604 /* History.swift in Sources */,
 				598F229D1BF935DE00182604 /* Location.swift in Sources */,
 				598F229E1BF935DE00182604 /* Move.swift in Sources */,
+				598F22A31BF9773600182604 /* Location_Directions.swift in Sources */,
 				598F229F1BF935DE00182604 /* Piece.swift in Sources */,
 				598F22A01BF935DE00182604 /* Rule.swift in Sources */,
 				598F22A11BF935DE00182604 /* Utilities.swift in Sources */,
@@ -418,6 +423,7 @@
 				598F22921BF935BB00182604 /* Move.swift in Sources */,
 				598F22931BF935BB00182604 /* Piece.swift in Sources */,
 				598F22941BF935BB00182604 /* Rule.swift in Sources */,
+				598F22A41BF9773600182604 /* Location_Directions.swift in Sources */,
 				598F22951BF935BB00182604 /* Utilities.swift in Sources */,
 				598F21D71BF9248F00182604 /* main.swift in Sources */,
 			);
