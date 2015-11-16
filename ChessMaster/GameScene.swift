@@ -12,7 +12,8 @@ class GameScene: SKScene {
     
     var game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame!
     var movingSprite : SKSpriteNode?
-    var validMoves : [Move] = []
+    var movedSprite : SKSpriteNode?
+    var validLocations : [Location] = []
     
     override func didMoveToView(view: SKView)
     {
@@ -162,9 +163,16 @@ class GameScene: SKScene {
             if spriteNode.texture != nil
             {
                 movingSprite = spriteNode
+                movedSprite = spriteNode
             }
         }
-        //validMoves = game.validMoves(convertToLocation(location))
+        validLocations = game.validMoves(convertToLocation(location))
+        for loc in validLocations
+        {
+            let validNode = SKSpriteNode(color: SKColor.yellowColor(), size:CGSizeMake(70, 70))
+            validNode.position = convertToPoint(loc)
+            self.addChild(validNode)
+        }
     }
     
     override func mouseDragged(theEvent: NSEvent)
@@ -253,8 +261,17 @@ class GameScene: SKScene {
                 spriteY = 600
             }
             
-            movingSprite!.position = CGPointMake(CGFloat(spriteX), CGFloat(spriteY))
-            movingSprite = nil
+            if (validLocations.contains(convertToLocation(movingSprite!.position)))
+            {
+                movingSprite!.position = CGPointMake(CGFloat(spriteX), CGFloat(spriteY))
+                movingSprite = nil
+            }
+            else
+            {
+                movingSprite!.position = movedSprite!.position
+                movingSprite = nil
+            }
+           
         }
     }
     
@@ -344,6 +361,11 @@ class GameScene: SKScene {
         return point
     }
     
+    func getValidMoveLocations()
+    {
+        //validMoves = game.validMoves(convertToLocation(location))
+   
+    }
     override func update(currentTime: CFTimeInterval)
     {
         /* Called before each frame is rendered */
