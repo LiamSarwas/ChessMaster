@@ -9,8 +9,11 @@
 import SpriteKit
 
 class GameScene: SKScene {
-    override func didMoveToView(view: SKView) {
-        backgroundColor = SKColor.grayColor()
+    
+    var game = "rnbqkbnr/ppp2ppp/8/4r3/2p2q2/8/PPPPPPPP/RNBQKBNR b k f6 3 1".fenGame!
+    
+    override func didMoveToView(view: SKView)
+    {
         
         var sprites : [[SKSpriteNode]] = []
         
@@ -49,162 +52,117 @@ class GameScene: SKScene {
             }
         }
         
-        //set up white pawn row
-        for i in 0...7
+        for (location,piece) in game.board
         {
-            let sprite = SKSpriteNode(imageNamed:"White_Pawn")
-            let x = CGFloat(40 + 80*i)
-            let y = CGFloat(120)
-            sprite.position = CGPointMake(x, y)
-            sprite.setScale(0.4)
-            self.addChild(sprite)
+            if piece.color == .White
+            {
+                if piece.kind == .King
+                {
+                    let spriteKingWhite = SKSpriteNode(imageNamed:"White_King")
+                    spriteKingWhite.position = convertToPoint(location)
+                    spriteKingWhite.setScale(0.4)
+                    self.addChild(spriteKingWhite)
+                }
+                if piece.kind == .Queen
+                {
+                    let spriteQueenWhite = SKSpriteNode(imageNamed:"White_Queen")
+                    spriteQueenWhite.position = convertToPoint(location)
+                    spriteQueenWhite.setScale(0.4)
+                    self.addChild(spriteQueenWhite)
+                }
+                if piece.kind == .Bishop
+                {
+                    let spriteBishopWhite = SKSpriteNode(imageNamed:"White_Bishop")
+                    spriteBishopWhite.position = convertToPoint(location)
+                    spriteBishopWhite.setScale(0.4)
+                    self.addChild(spriteBishopWhite)
+                }
+                if piece.kind == .Knight
+                {
+                    let spriteKnightWhite = SKSpriteNode(imageNamed:"White_Knight")
+                    spriteKnightWhite.position = convertToPoint(location)
+                    spriteKnightWhite.setScale(0.4)
+                    self.addChild(spriteKnightWhite)
+                }
+                if piece.kind == .Rook
+                {
+                    let spriteRookWhite = SKSpriteNode(imageNamed:"White_Rook")
+                    spriteRookWhite.position = convertToPoint(location)
+                    spriteRookWhite.setScale(0.4)
+                    self.addChild(spriteRookWhite)
+                }
+                if piece.kind == .Pawn
+                {
+                    let spritePawnWhite = SKSpriteNode(imageNamed:"White_Pawn")
+                    spritePawnWhite.position = convertToPoint(location)
+                    spritePawnWhite.setScale(0.4)
+                    self.addChild(spritePawnWhite)
+                }
+            }
+            if piece.color == .Black
+            {
+                if piece.kind == .King
+                {
+                    let spriteKingBlack = SKSpriteNode(imageNamed:"Black_King")
+                    spriteKingBlack.position = convertToPoint(location)
+                    spriteKingBlack.setScale(0.4)
+                    self.addChild(spriteKingBlack)
+                }
+                if piece.kind == .Queen
+                {
+                    let spriteQueenBlack = SKSpriteNode(imageNamed:"Black_Queen")
+                    spriteQueenBlack.position = convertToPoint(location)
+                    spriteQueenBlack.setScale(0.4)
+                    self.addChild(spriteQueenBlack)
+                }
+                if piece.kind == .Bishop
+                {
+                    let spriteBishopBlack = SKSpriteNode(imageNamed:"Black_Bishop")
+                    spriteBishopBlack.position = convertToPoint(location)
+                    spriteBishopBlack.setScale(0.4)
+                    self.addChild(spriteBishopBlack)
+                }
+                if piece.kind == .Knight
+                {
+                    let spriteKnightBlack = SKSpriteNode(imageNamed:"Black_Knight")
+                    spriteKnightBlack.position = convertToPoint(location)
+                    spriteKnightBlack.setScale(0.4)
+                    self.addChild(spriteKnightBlack)
+                }
+                if piece.kind == .Rook
+                {
+                    let spriteRookBlack = SKSpriteNode(imageNamed:"Black_Rook")
+                    spriteRookBlack.position = convertToPoint(location)
+                    spriteRookBlack.setScale(0.4)
+                    self.addChild(spriteRookBlack)
+                }
+                if piece.kind == .Pawn
+                {
+                    let spritePawnBlack = SKSpriteNode(imageNamed:"Black_Pawn")
+                    spritePawnBlack.position = convertToPoint(location)
+                    spritePawnBlack.setScale(0.4)
+                    self.addChild(spritePawnBlack)
+                }
+            }
         }
-        
-        //set up black pawn row
-        for i in 0...7
-        {
-            let sprite = SKSpriteNode(imageNamed:"Black_Pawn")
-            let x = CGFloat(40 + 80*i)
-            let y = CGFloat(520)
-            sprite.position = CGPointMake(x, y)
-            sprite.setScale(0.4)
-            self.addChild(sprite)
-        }
-        
-        //set up black back row
-        var y = CGFloat(600)
-        
-        let spriteRookLeftBlack = SKSpriteNode(imageNamed:"Black_Rook")
-        var x = CGFloat(40)
-        spriteRookLeftBlack.position = CGPointMake(x, y)
-        spriteRookLeftBlack.setScale(0.4)
-        self.addChild(spriteRookLeftBlack)
-        
-        let spriteRookRightBlack = SKSpriteNode(imageNamed:"Black_Rook")
-        x = CGFloat(600)
-        spriteRookRightBlack.position = CGPointMake(x, y)
-        spriteRookRightBlack.setScale(0.4)
-        self.addChild(spriteRookRightBlack)
-        
-        
-        let spriteKnightLeftBlack = SKSpriteNode(imageNamed:"Black_Knight")
-        x = CGFloat(120)
-        spriteKnightLeftBlack.position = CGPointMake(x, y)
-        spriteKnightLeftBlack.setScale(0.4)
-        self.addChild(spriteKnightLeftBlack)
-        
-        let spriteKnightRightBlack = SKSpriteNode(imageNamed:"Black_Knight")
-        x = CGFloat(520)
-        spriteKnightRightBlack.position = CGPointMake(x, y)
-        spriteKnightRightBlack.setScale(0.4)
-        self.addChild(spriteKnightRightBlack)
-        
-        
-        let spriteBishopLeftBlack = SKSpriteNode(imageNamed:"Black_Bishop")
-        x = CGFloat(200)
-        spriteBishopLeftBlack.position = CGPointMake(x, y)
-        spriteBishopLeftBlack.setScale(0.4)
-        self.addChild(spriteBishopLeftBlack)
-        
-        let spriteBishopRightBlack = SKSpriteNode(imageNamed:"Black_Bishop")
-        x = CGFloat(440)
-        spriteBishopRightBlack.position = CGPointMake(x, y)
-        spriteBishopRightBlack.setScale(0.4)
-        self.addChild(spriteBishopRightBlack)
-        
-        
-        let spriteQueenBlack = SKSpriteNode(imageNamed:"Black_Queen")
-        x = CGFloat(280)
-        spriteQueenBlack.position = CGPointMake(x, y)
-        spriteQueenBlack.setScale(0.4)
-        self.addChild(spriteQueenBlack)
-        
-        let spriteKingBlack = SKSpriteNode(imageNamed:"Black_King")
-        x = CGFloat(360)
-        spriteKingBlack.position = CGPointMake(x, y)
-        spriteKingBlack.setScale(0.4)
-        self.addChild(spriteKingBlack)
-        
-        
-        //set up whites back row
-        y = CGFloat(40)
-        
-        let spriteRookLeftWhite = SKSpriteNode(imageNamed:"White_Rook")
-        x = CGFloat(40)
-        spriteRookLeftWhite.position = CGPointMake(x, y)
-        spriteRookLeftWhite.setScale(0.4)
-        self.addChild(spriteRookLeftWhite)
-        
-        let spriteRookRightWhite = SKSpriteNode(imageNamed:"White_Rook")
-        x = CGFloat(600)
-        spriteRookRightWhite.position = CGPointMake(x, y)
-        spriteRookRightWhite.setScale(0.4)
-        self.addChild(spriteRookRightWhite)
-        
-        
-        let spriteKnighRightWhite = SKSpriteNode(imageNamed:"White_Knight")
-        x = CGFloat(120)
-        spriteKnighRightWhite.position = CGPointMake(x, y)
-        spriteKnighRightWhite.setScale(0.4)
-        self.addChild(spriteKnighRightWhite)
-        
-        let spriteKnightRightWhite = SKSpriteNode(imageNamed:"White_Knight")
-        x = CGFloat(520)
-        spriteKnightRightWhite.position = CGPointMake(x, y)
-        spriteKnightRightWhite.setScale(0.4)
-        self.addChild(spriteKnightRightWhite)
-        
-        
-        let spriteBishopLeftWhite = SKSpriteNode(imageNamed:"White_Bishop")
-        x = CGFloat(200)
-        spriteBishopLeftWhite.position = CGPointMake(x, y)
-        spriteBishopLeftWhite.setScale(0.4)
-        self.addChild(spriteBishopLeftWhite)
-        
-        let spriteBishopRightWhite = SKSpriteNode(imageNamed:"White_Bishop")
-        x = CGFloat(440)
-        spriteBishopRightWhite.position = CGPointMake(x, y)
-        spriteBishopRightWhite.setScale(0.4)
-        self.addChild(spriteBishopRightWhite)
-        
-        
-        let spriteQueenWhite = SKSpriteNode(imageNamed:"White_Queen")
-        x = CGFloat(280)
-        spriteQueenWhite.position = CGPointMake(x, y)
-        spriteQueenWhite.setScale(0.4)
-        self.addChild(spriteQueenWhite)
-        
-        let spriteKingWhite = SKSpriteNode(imageNamed:"White_King")
-        x = CGFloat(360)
-        spriteKingWhite.position = CGPointMake(x, y)
-        spriteKingWhite.setScale(0.4)
-        self.addChild(spriteKingWhite)
-        
     }
     
     
-    override func mouseDown(theEvent: NSEvent) {
+    override func mouseDown(theEvent: NSEvent)
+    {
         /* Called when a mouse click occurs */
         
         let location = theEvent.locationInNode(self)
+        let validMoves = game.validMoves(convertToLocation(location))
         
-        let sprite = SKSpriteNode(imageNamed:"White_Pawn")
-        sprite.position = location;
-        print(location)
-        sprite.setScale(0.4)
-        
-        /* let action = SKAction.rotateByAngle(CGFloat(M_PI), duration:1)
-        sprite.runAction(SKAction.repeatActionForever(action))
-        */
-        self.addChild(sprite)
     }
+
     
     func convertToLocation(point: CGPoint) -> Location
     {
-        var loc = String(Int (point.y/80) + 1)
-        let val = Int (point.x/80)
-        
-        if (val >= 0) && (val < 80)
+        var loc = ""
+        let val = Int (point.x)
+        if ((val >= 0) && (val < 80))
         {
             loc += "a"
         }
@@ -237,13 +195,57 @@ class GameScene: SKScene {
             loc += "h"
         }
         
+        loc += String(Int (point.y/80) + 1)
+        
+        print(loc)
         let location = loc.fenLocation
         return location!
-        
-        
     }
     
-    override func update(currentTime: CFTimeInterval) {
+    func convertToPoint(loc: Location) -> CGPoint
+    {
+        let y = CGFloat (loc.rank*80 - 40)
+        var x = CGFloat(0)
+        
+        if loc.file == .A
+        {
+            x = CGFloat(40)
+        }
+        if loc.file == .B
+        {
+            x = CGFloat(120)
+        }
+        if loc.file == .C
+        {
+            x = CGFloat(200)
+        }
+        if loc.file == .D
+        {
+            x = CGFloat(280)
+        }
+        if loc.file == .E
+        {
+            x = CGFloat(360)
+        }
+        if loc.file == .F
+        {
+            x = CGFloat(440)
+        }
+        if loc.file == .G
+        {
+            x = CGFloat(520)
+        }
+        if loc.file == .H
+        {
+            x = CGFloat(600)
+        }
+        
+        let point = CGPointMake(x, y)
+        return point
+    }
+    
+    override func update(currentTime: CFTimeInterval)
+    {
         /* Called before each frame is rendered */
     }
 }
