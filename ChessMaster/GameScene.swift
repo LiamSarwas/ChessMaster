@@ -16,6 +16,7 @@ class GameScene: SKScene {
     var movedSprite : SKSpriteNode?
     var validLocations : [Location] = []
     var yellowSquares : [SKSpriteNode] = []
+    var sprites : [SKSpriteNode] = []
     
     override func didMoveToView(view: SKView)
     {
@@ -57,100 +58,8 @@ class GameScene: SKScene {
             }
         }
         
-        //set up board from the FEN
-        for (location,piece) in game.board
-        {
-            if piece.color == .White
-            {
-                if piece.kind == .King
-                {
-                    let spriteKingWhite = SKSpriteNode(imageNamed:"White_King")
-                    spriteKingWhite.position = convertToPoint(location)
-                    spriteKingWhite.setScale(0.4)
-                    self.addChild(spriteKingWhite)
-                }
-                if piece.kind == .Queen
-                {
-                    let spriteQueenWhite = SKSpriteNode(imageNamed:"White_Queen")
-                    spriteQueenWhite.position = convertToPoint(location)
-                    spriteQueenWhite.setScale(0.4)
-                    self.addChild(spriteQueenWhite)
-                }
-                if piece.kind == .Bishop
-                {
-                    let spriteBishopWhite = SKSpriteNode(imageNamed:"White_Bishop")
-                    spriteBishopWhite.position = convertToPoint(location)
-                    spriteBishopWhite.setScale(0.4)
-                    self.addChild(spriteBishopWhite)
-                }
-                if piece.kind == .Knight
-                {
-                    let spriteKnightWhite = SKSpriteNode(imageNamed:"White_Knight")
-                    spriteKnightWhite.position = convertToPoint(location)
-                    spriteKnightWhite.setScale(0.4)
-                    self.addChild(spriteKnightWhite)
-                }
-                if piece.kind == .Rook
-                {
-                    let spriteRookWhite = SKSpriteNode(imageNamed:"White_Rook")
-                    spriteRookWhite.position = convertToPoint(location)
-                    spriteRookWhite.setScale(0.4)
-                    self.addChild(spriteRookWhite)
-                }
-                if piece.kind == .Pawn
-                {
-                    let spritePawnWhite = SKSpriteNode(imageNamed:"White_Pawn")
-                    spritePawnWhite.position = convertToPoint(location)
-                    spritePawnWhite.setScale(0.4)
-                    self.addChild(spritePawnWhite)
-                }
-            }
-            if piece.color == .Black
-            {
-                if piece.kind == .King
-                {
-                    let spriteKingBlack = SKSpriteNode(imageNamed:"Black_King")
-                    spriteKingBlack.position = convertToPoint(location)
-                    spriteKingBlack.setScale(0.4)
-                    self.addChild(spriteKingBlack)
-                }
-                if piece.kind == .Queen
-                {
-                    let spriteQueenBlack = SKSpriteNode(imageNamed:"Black_Queen")
-                    spriteQueenBlack.position = convertToPoint(location)
-                    spriteQueenBlack.setScale(0.4)
-                    self.addChild(spriteQueenBlack)
-                }
-                if piece.kind == .Bishop
-                {
-                    let spriteBishopBlack = SKSpriteNode(imageNamed:"Black_Bishop")
-                    spriteBishopBlack.position = convertToPoint(location)
-                    spriteBishopBlack.setScale(0.4)
-                    self.addChild(spriteBishopBlack)
-                }
-                if piece.kind == .Knight
-                {
-                    let spriteKnightBlack = SKSpriteNode(imageNamed:"Black_Knight")
-                    spriteKnightBlack.position = convertToPoint(location)
-                    spriteKnightBlack.setScale(0.4)
-                    self.addChild(spriteKnightBlack)
-                }
-                if piece.kind == .Rook
-                {
-                    let spriteRookBlack = SKSpriteNode(imageNamed:"Black_Rook")
-                    spriteRookBlack.position = convertToPoint(location)
-                    spriteRookBlack.setScale(0.4)
-                    self.addChild(spriteRookBlack)
-                }
-                if piece.kind == .Pawn
-                {
-                    let spritePawnBlack = SKSpriteNode(imageNamed:"Black_Pawn")
-                    spritePawnBlack.position = convertToPoint(location)
-                    spritePawnBlack.setScale(0.4)
-                    self.addChild(spritePawnBlack)
-                }
-            }
-        }
+        setUpBoard()
+        
     }
     
     override func mouseDown(theEvent: NSEvent)
@@ -277,8 +186,14 @@ class GameScene: SKScene {
                 movingSprite!.position = movedSprite!.position
                 movingSprite = nil
             }
+            
             self.removeChildrenInArray(yellowSquares)
+            self.removeChildrenInArray(sprites)
+            
             yellowSquares.removeAll()
+            sprites.removeAll()
+            
+            setUpBoard()
         }
     }
     
@@ -366,6 +281,119 @@ class GameScene: SKScene {
         let point = CGPointMake(x, y)
         return point
     }
+    
+    func setUpBoard()
+    {
+        //set up board from the FEN
+        for (location,piece) in game.board
+        {
+            if piece.color == .White
+            {
+                if piece.kind == .King
+                {
+                    let spriteKingWhite = SKSpriteNode(imageNamed:"White_King")
+                    spriteKingWhite.position = convertToPoint(location)
+                    spriteKingWhite.setScale(0.4)
+                    sprites.append(spriteKingWhite)
+                    self.addChild(spriteKingWhite)
+                }
+                if piece.kind == .Queen
+                {
+                    let spriteQueenWhite = SKSpriteNode(imageNamed:"White_Queen")
+                    spriteQueenWhite.position = convertToPoint(location)
+                    spriteQueenWhite.setScale(0.4)
+                    sprites.append(spriteQueenWhite)
+                    self.addChild(spriteQueenWhite)
+                }
+                if piece.kind == .Bishop
+                {
+                    let spriteBishopWhite = SKSpriteNode(imageNamed:"White_Bishop")
+                    spriteBishopWhite.position = convertToPoint(location)
+                    spriteBishopWhite.setScale(0.4)
+                    sprites.append(spriteBishopWhite)
+                    self.addChild(spriteBishopWhite)
+                }
+                if piece.kind == .Knight
+                {
+                    let spriteKnightWhite = SKSpriteNode(imageNamed:"White_Knight")
+                    spriteKnightWhite.position = convertToPoint(location)
+                    spriteKnightWhite.setScale(0.4)
+                    sprites.append(spriteKnightWhite)
+                    self.addChild(spriteKnightWhite)
+                }
+                if piece.kind == .Rook
+                {
+                    let spriteRookWhite = SKSpriteNode(imageNamed:"White_Rook")
+                    spriteRookWhite.position = convertToPoint(location)
+                    spriteRookWhite.setScale(0.4)
+                    sprites.append(spriteRookWhite)
+                    self.addChild(spriteRookWhite)
+                }
+                if piece.kind == .Pawn
+                {
+                    let spritePawnWhite = SKSpriteNode(imageNamed:"White_Pawn")
+                    spritePawnWhite.position = convertToPoint(location)
+                    spritePawnWhite.setScale(0.4)
+                    sprites.append(spritePawnWhite)
+                    self.addChild(spritePawnWhite)
+                }
+            }
+            
+            if piece.color == .Black
+            {
+                if piece.kind == .King
+                {
+                    let spriteKingBlack = SKSpriteNode(imageNamed:"Black_King")
+                    spriteKingBlack.position = convertToPoint(location)
+                    spriteKingBlack.setScale(0.4)
+                    sprites.append(spriteKingBlack)
+                    self.addChild(spriteKingBlack)
+                }
+                if piece.kind == .Queen
+                {
+                    let spriteQueenBlack = SKSpriteNode(imageNamed:"Black_Queen")
+                    spriteQueenBlack.position = convertToPoint(location)
+                    spriteQueenBlack.setScale(0.4)
+                    sprites.append(spriteQueenBlack)
+                    self.addChild(spriteQueenBlack)
+                }
+                if piece.kind == .Bishop
+                {
+                    let spriteBishopBlack = SKSpriteNode(imageNamed:"Black_Bishop")
+                    spriteBishopBlack.position = convertToPoint(location)
+                    spriteBishopBlack.setScale(0.4)
+                    sprites.append(spriteBishopBlack)
+                    self.addChild(spriteBishopBlack)
+                }
+                if piece.kind == .Knight
+                {
+                    let spriteKnightBlack = SKSpriteNode(imageNamed:"Black_Knight")
+                    spriteKnightBlack.position = convertToPoint(location)
+                    spriteKnightBlack.setScale(0.4)
+                    sprites.append(spriteKnightBlack)
+                    self.addChild(spriteKnightBlack)
+                }
+                if piece.kind == .Rook
+                {
+                    let spriteRookBlack = SKSpriteNode(imageNamed:"Black_Rook")
+                    spriteRookBlack.position = convertToPoint(location)
+                    spriteRookBlack.setScale(0.4)
+                    sprites.append(spriteRookBlack)
+                    self.addChild(spriteRookBlack)
+                }
+                if piece.kind == .Pawn
+                {
+                    let spritePawnBlack = SKSpriteNode(imageNamed:"Black_Pawn")
+                    spritePawnBlack.position = convertToPoint(location)
+                    spritePawnBlack.setScale(0.4)
+                    sprites.append(spritePawnBlack)
+                    self.addChild(spritePawnBlack)
+                }
+            }
+        }
+        
+    }
+    
     
     override func update(currentTime: CFTimeInterval)
     {
