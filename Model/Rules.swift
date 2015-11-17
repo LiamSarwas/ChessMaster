@@ -56,24 +56,45 @@ struct Rules {
         var moves: [Location] = []
         if let piece = game.board[start]
         {
-            if piece.color == game.activeColor {
-                
-            } else {
+            if piece.color != game.activeColor {
                 print("You can't move an opponents piece")
                 return moves
             }
-            //FIXME: check for Check, enPassant, and Castling
+            //FIXME: check Castling
             for direction in Rules.directions(piece, start: start) {
                 for location in direction {
-                    //FIXME: Pawns can only move diagonal if there is an opponent in that space
-                    if let conflictPiece = game.board[location] {
-                        if conflictPiece.color != piece.color {
-                            moves.append(location)
+                    switch piece.kind {
+                    case .Pawn:
+                        if let color = game.colorOfPieceAtLocation(location) {
+                            if color != piece.color {
+                                if location.file != start.file {
+                                    if !Rules.isPlayerInCheckAfterMove(game, move:(start,location)) {
+                                        moves.append(location)
+                                    }
+                                }
+                            }
+                        } else {
+                            if location.file == start.file ||
+                                location == game.enPassantTargetSquare {
+                                if !Rules.isPlayerInCheckAfterMove(game, move:(start,location)) {
+                                    moves.append(location)
+                                }
+                            }
                         }
-                        break
-                    } else {
-                        // no piece at location
-                        moves.append(location)
+                    default:
+                        if let color = game.colorOfPieceAtLocation(location) {
+                            if color != piece.color {
+                                if !Rules.isPlayerInCheckAfterMove(game, move:(start,location)) {
+                                    moves.append(location)
+                                }
+                            }
+                            break
+                        } else {
+                            // no piece at location; add to list
+                            if !Rules.isPlayerInCheckAfterMove(game, move:(start,location)) {
+                                moves.append(location)
+                            }
+                        }
                     }
                 }
             }
@@ -81,6 +102,38 @@ struct Rules {
             print("No piece at \(start)")
         }
         return moves
+    }
+
+    static func enPassantTargetSquare(game: Game, move:Move) -> Location?{
+        if let piece = game.board[move.start] {
+            if piece.kind == .Pawn {
+                switch piece.color {
+                case .White:
+                    if move.start.rank == 2 && move.end.rank == 4 &&
+                        move.start.file == move.end.file {
+                            let targetSquare = Location(rank:3, file:move.start.file)
+                            if game.board[targetSquare] == nil && game.board[move.end] == nil {
+                                return targetSquare
+                            }
+                    }
+                case .Black:
+                    if move.start.rank == 7 && move.end.rank == 5 &&
+                        move.start.file == move.end.file {
+                            let targetSquare = Location(rank:6, file:move.start.file)
+                            if game.board[targetSquare] == nil && game.board[move.end] == nil {
+                                return targetSquare
+                            }
+                    }
+                }
+            }
+        }
+        return nil
+    }
+
+    static func isPlayerInCheckAfterMove(game:Game, move: Move) -> Bool{
+        //returns true if this move leaves the player in check
+        //FIXME: implement
+        return false
     }
 
     // Mark - Default Starting Board

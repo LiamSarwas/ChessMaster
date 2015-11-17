@@ -94,6 +94,15 @@ class Game {
         get { return _fullMoveNumber }
     }
     
+    // Mark - Status Updates
+    
+    func colorOfPieceAtLocation(location: Location) -> Color? {
+        if let conflictPiece = board[location] {
+            return conflictPiece.color
+        }
+        return nil
+    }
+    
     // Mark - Make Move
     
     func validMoves(start:Location) -> [Location]
@@ -105,6 +114,7 @@ class Game {
     {
         //FIXME: Check castling, enPassant, Promotion, and Check
         if validMoves(start).contains(end) {
+            _enPassantTargetSquare = Rules.enPassantTargetSquare(self, move:(start, end))
             _board[end] = _board[start]!
             _board[start] = nil
             _activeColor = _activeColor == Color.White ? .Black : .White
