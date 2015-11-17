@@ -10,8 +10,8 @@ import SpriteKit
 
 class GameScene: SKScene {
     
-    //var game = "rnbqkbnr/pppppppp/8/4r3/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1".fenGame!
-    var game = "r1bqkb1r/8/8/8/8/8/8/R1BQKB1R b Q - 71 36".fenGame!
+    var game = "rnbqkbnr/pppppppp/8/4r3/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1".fenGame!
+    //var game = "r1bqkb1r/8/8/8/8/8/8/R1BQKB1R b Q - 71 36".fenGame!
     var movingSprite : SKSpriteNode?
     var movedSprite : SKSpriteNode?
     var validLocations : [Location] = []
@@ -242,7 +242,7 @@ class GameScene: SKScene {
     
     func convertToPoint(loc: Location) -> CGPoint
     {
-        let y = CGFloat (loc.rank*80 - 40)
+        let y = CGFloat (loc.rank.value*80 - 40)
         var x = CGFloat(0)
         
         if loc.file == .A

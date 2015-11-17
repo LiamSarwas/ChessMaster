@@ -30,7 +30,7 @@ extension Game: CustomStringConvertible, CustomDebugStringConvertible {
                         var line = ""
                         var emptyCount = 0
                         for file in [File.A, .B, .C, .D, .E, .F, .G, .H] {
-                            if let piece = board[Location(rank:rank, file:file)] {
+                            if let piece = board[Location(rank:Rank(integerLiteral:rank), file:file)] {
                                 if 0 < emptyCount {
                                     line += "\(emptyCount)"
                                     emptyCount = 0
@@ -107,7 +107,7 @@ extension String {
             if let rank_list = parseFenRank(ranks[index]) {
                 let rank = 8 - index
                 for (i,file) in [File.A, .B, .C, .D, .E, .F, .G, .H].enumerate() {
-                    board[Location(rank:rank, file: file)] = rank_list[i]
+                    board[Location(rank:Rank(integerLiteral:rank), file: file)] = rank_list[i]
                 }
             } else {
                 return nil

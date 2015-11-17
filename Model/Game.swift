@@ -8,57 +8,45 @@
 
 import Foundation
 
-struct Game {
-    var board: [Location: Piece]
-    var activeColor: Color
-    let whiteHasKingSideCastleAvailable: Bool
-    let whiteHasQueenSideCastleAvailable: Bool
-    let blackHasKingSideCastleAvailable: Bool
-    let blackHasQueenSideCastleAvailable: Bool
-    let enPassantTargetSquare: Location?
-    let halfMoveClock: Int
-    let fullMoveNumber: Int
+typealias Board = [Location: Piece]
+
+class Game {
+    private var _board: Board
+    private var _activeColor: Color
+    private var _whiteHasKingSideCastleAvailable: Bool
+    private var _whiteHasQueenSideCastleAvailable: Bool
+    private var _blackHasKingSideCastleAvailable: Bool
+    private var _blackHasQueenSideCastleAvailable: Bool
+    private var _enPassantTargetSquare: Location?
+    private var _halfMoveClock: Int
+    private var _fullMoveNumber: Int
     
-    static func defaultGame() -> Game {
-        let defaultBoard = [
-            Location(rank:1, file:.A): Piece(color:.White, kind:.Rook),
-            Location(rank:1, file:.B): Piece(color:.White, kind:.Knight),
-            Location(rank:1, file:.C): Piece(color:.White, kind:.Bishop),
-            Location(rank:1, file:.D): Piece(color:.White, kind:.Queen),
-            Location(rank:1, file:.E): Piece(color:.White, kind:.King),
-            Location(rank:1, file:.F): Piece(color:.White, kind:.Bishop),
-            Location(rank:1, file:.G): Piece(color:.White, kind:.Knight),
-            Location(rank:1, file:.H): Piece(color:.White, kind:.Rook),
-            
-            Location(rank:2, file:.A): Piece(color:.White, kind:.Pawn),
-            Location(rank:2, file:.B): Piece(color:.White, kind:.Pawn),
-            Location(rank:2, file:.C): Piece(color:.White, kind:.Pawn),
-            Location(rank:2, file:.D): Piece(color:.White, kind:.Pawn),
-            Location(rank:2, file:.E): Piece(color:.White, kind:.Pawn),
-            Location(rank:2, file:.F): Piece(color:.White, kind:.Pawn),
-            Location(rank:2, file:.G): Piece(color:.White, kind:.Pawn),
-            Location(rank:2, file:.H): Piece(color:.White, kind:.Pawn),
-            
-            Location(rank:7, file:.A): Piece(color:.Black, kind:.Pawn),
-            Location(rank:7, file:.B): Piece(color:.Black, kind:.Pawn),
-            Location(rank:7, file:.C): Piece(color:.Black, kind:.Pawn),
-            Location(rank:7, file:.D): Piece(color:.Black, kind:.Pawn),
-            Location(rank:7, file:.E): Piece(color:.Black, kind:.Pawn),
-            Location(rank:7, file:.F): Piece(color:.Black, kind:.Pawn),
-            Location(rank:7, file:.G): Piece(color:.Black, kind:.Pawn),
-            Location(rank:7, file:.H): Piece(color:.Black, kind:.Pawn),
-            
-            Location(rank:8, file:.A): Piece(color:.Black, kind:.Rook),
-            Location(rank:8, file:.B): Piece(color:.Black, kind:.Knight),
-            Location(rank:8, file:.C): Piece(color:.Black, kind:.Bishop),
-            Location(rank:8, file:.D): Piece(color:.Black, kind:.Queen),
-            Location(rank:8, file:.E): Piece(color:.Black, kind:.King),
-            Location(rank:8, file:.F): Piece(color:.Black, kind:.Bishop),
-            Location(rank:8, file:.G): Piece(color:.Black, kind:.Knight),
-            Location(rank:8, file:.H): Piece(color:.Black, kind:.Rook),
-        ]
-        return Game(board: defaultBoard,
-            activeColor: .White,
+    init (board: [Location: Piece],
+          activeColor: Color,
+          whiteHasKingSideCastleAvailable: Bool,
+          whiteHasQueenSideCastleAvailable: Bool,
+          blackHasKingSideCastleAvailable: Bool,
+          blackHasQueenSideCastleAvailable: Bool,
+          enPassantTargetSquare: Location?,
+          halfMoveClock: Int,
+          fullMoveNumber: Int)
+    {
+            _board = board
+            _activeColor = activeColor
+            _whiteHasKingSideCastleAvailable = whiteHasKingSideCastleAvailable
+            _whiteHasQueenSideCastleAvailable = whiteHasQueenSideCastleAvailable
+            _blackHasKingSideCastleAvailable = blackHasKingSideCastleAvailable
+            _blackHasQueenSideCastleAvailable = blackHasQueenSideCastleAvailable
+            _enPassantTargetSquare = enPassantTargetSquare
+            _halfMoveClock = halfMoveClock
+            _fullMoveNumber = fullMoveNumber
+    }
+    
+    convenience init()
+    {
+        self.init(
+            board: Rules.defaultStartingBoard,
+            activeColor: Color.White,
             whiteHasKingSideCastleAvailable: true,
             whiteHasQueenSideCastleAvailable: true,
             blackHasKingSideCastleAvailable: true,
@@ -66,5 +54,62 @@ struct Game {
             enPassantTargetSquare: nil,
             halfMoveClock: 0,
             fullMoveNumber: 0)
+    }
+    
+// Mark - Getters
+    
+    var board: Board {
+        get { return _board }
+    }
+    
+    var activeColor: Color {
+        get { return _activeColor }
+    }
+    
+    var whiteHasKingSideCastleAvailable: Bool {
+        get { return _whiteHasKingSideCastleAvailable }
+    }
+    
+    var whiteHasQueenSideCastleAvailable: Bool {
+        get { return _whiteHasQueenSideCastleAvailable }
+    }
+    
+    var blackHasKingSideCastleAvailable: Bool {
+        get { return _blackHasKingSideCastleAvailable }
+    }
+    
+    var blackHasQueenSideCastleAvailable: Bool {
+        get { return _blackHasQueenSideCastleAvailable }
+    }
+    
+    var enPassantTargetSquare: Location? {
+        get { return _enPassantTargetSquare }
+    }
+    
+    var halfMoveClock: Int {
+        get { return _halfMoveClock }
+    }
+    
+    var fullMoveNumber: Int {
+        get { return _fullMoveNumber }
+    }
+    
+    // Mark - Make Move
+    
+    func validMoves(start:Location) -> [Location]
+    {
+        return Rules.validMoves(self, start:start)
+    }
+    
+    func makeMove(start: Location, end:Location) -> ()
+    {
+        //FIXME: Check castling, enPassant, Promotion, and Check
+        if validMoves(start).contains(end) {
+            _board[end] = _board[start]!
+            _board[start] = nil
+            _activeColor = _activeColor == Color.White ? .Black : .White
+        } else {
+            print("Illegal Move from \(start) to \(end)")
+        }
     }
 }

@@ -6,8 +6,65 @@
 //  Copyright © 2015 Regan Sarwas. All rights reserved.
 //
 
-import Foundation
+// MARK: Rank
 
+public struct Rank : IntegerLiteralConvertible {
+    let value: Int
+    
+    //FIXME:  Rank should be limited, and certain integerLiteral should cause exception
+    public init(integerLiteral value: Int) {
+        self.value = value
+    }
+    
+    static let minValue: Rank = 1
+    static let maxValue: Rank = 8
+    static let allValues: [Rank] = [1,2,3,4,5,6,7,8]
+    
+    func toNorth() -> ArraySlice<Rank> {
+        if self == Rank.maxValue {
+            return []
+        }
+        return Rank.allValues[self.value...(Rank.maxValue.value - 1)]
+    }
+    func toSouth() -> [Rank] {
+        if self == Rank.minValue {
+            return []
+        }
+        return Array(Rank.allValues[0...(self.value - 2)]).reverse()
+    }
+}
+
+func + (rank: Rank, n: Int) -> Rank? {
+    let newValue = rank.value + n
+    if newValue < Rank.minValue.value || Rank.maxValue.value < newValue {
+        return nil
+    }
+    return Rank(integerLiteral: newValue)
+}
+
+
+// MARK: Rank - Hashable
+
+extension Rank: Hashable {
+    public var hashValue: Int {
+        return value.hashValue
+    }
+}
+
+// MARK: Rank - Equatable
+
+public func == (left:Rank, right:Rank) -> Bool {
+    return (left.value == right.value)
+}
+
+// MARK: Rank - Comparable
+
+public func < (left:Rank, right:Rank) -> Bool {
+    return (left.value < right.value)
+}
+
+
+// MARK: File
 
 public enum File: Int {
     case A = 1, B, C, D, E, F, G, H
@@ -28,42 +85,20 @@ public enum File: Int {
     }
 }
 
-public struct Rank {
-    static let minValue = 1
-    static let maxValue = 8
-    static let allValues = minValue...maxValue
-    
-    static func toNorth(start:Int) -> [Int] {
-        if start == Rank.maxValue {
-            return []
-        }
-        return Array((start + 1)...maxValue)
-    }
-    static func toSouth(start:Int) -> [Int] {
-        if start == Rank.minValue {
-            return []
-        }
-        return (Rank.minValue...(start - 1)).reverse()
-    }
-/*
-    if self.rank == Rank.maxValue {
-    return []
-    }
-    return ((self.rank + 1)...Rank.maxValue).map { Location(rank:$0, file: self.file) }
-
-    if self.rank == Rank.minValue {
-    return []
-    }
-    return (Rank.minValue...(self.rank - 1)).reverse().map { Location(rank:$0, file: self.file) }
-*/
+func + (file: File, n: Int) -> File? {
+    return File(rawValue: file.rawValue + n)
 }
 
+
+// MARK: Location
+
+
 public struct Location: Equatable {
-    let rank: Int
+    let rank: Rank
     let file: File
 }
 
-// MARK: Hashable
+// MARK: Location - Hashable
 
 extension Location: Hashable {
     public var hashValue: Int {
@@ -71,13 +106,13 @@ extension Location: Hashable {
     }
 }
 
-// MARK: Equatable
+// MARK: Location - Equatable
 
 public func == (left:Location, right:Location) -> Bool {
     return (left.rank == right.rank)  && (left.file == right.file)
 }
 
-// MARK: CustomStringConvertible
+// MARK: Location - CustomStringConvertible
 
 extension Location: CustomStringConvertible {
     public var description: String {
@@ -95,6 +130,8 @@ extension Location: CustomStringConvertible {
         }
     }
 }
+
+//MARK: Extensions
 
 extension Character {
     public var fenFileValue: File? {
@@ -115,7 +152,7 @@ extension Character {
 }
 
 extension Character {
-    public var fenRankValue: Int? {
+    public var fenRankValue: Rank? {
         switch self {
         case "1": return 1
         case "2": return 2

@@ -8,7 +8,13 @@
 
 import Foundation
 
-struct Move: Equatable {
+typealias Move = (start:Location, end:Location)
+
+enum MoveType {
+    case Regular, Castle, Check, CheckMate, Promotion, Capture, EnPassantAble, EnPassant
+}
+
+struct xxMove {
     let start: Location
     let end: Location
     let piece: Piece
@@ -63,23 +69,15 @@ struct Move: Equatable {
     }
 }
 
-// MARK: Hashable
-
-extension Move: Hashable {
-    var hashValue: Int {
-        return start.hashValue ^ end.hashValue ^ piece.hashValue
-    }
-}
-
 // MARK: Equatable
 
 func == (left:Move, right:Move) -> Bool {
-    return (left.start == right.start) && (left.end == right.end) && (left.piece == right.piece)
+    return (left.start == right.start) && (left.end == right.end)
 }
 
 // MARK: CustomStringConvertible
 
-extension Move: CustomStringConvertible {
+extension xxMove: CustomStringConvertible {
     var description: String {
         get {
             if (isKingSideCastle) {

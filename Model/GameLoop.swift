@@ -16,7 +16,7 @@ class GameLoop {
     let getMove: MoveGetter
 
     var history: History
-    var game: Game
+    //var game: Game
     
     init(config:GameConfig, rules: Rules, getMove:MoveGetter) {
         self.rules = rules
@@ -24,10 +24,10 @@ class GameLoop {
         self.getMove = getMove
         
         self.history = History()
-        self.game = Game.defaultGame()
+        //self.game = Game.defaultGame()
     }
     //TODO: init with history and/or board
-    
+/*
     func run() {
         while true {
             var move = getMove(game, history, config)
@@ -47,4 +47,5 @@ class GameLoop {
             }
         }
     }
+*/
 }

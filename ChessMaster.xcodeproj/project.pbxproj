@@ -16,7 +16,6 @@
 		598F21C31BF9245D00182604 /* ChessMasterUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F21C21BF9245D00182604 /* ChessMasterUITests.swift */; };
 		598F21D71BF9248F00182604 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F21D61BF9248F00182604 /* main.swift */; };
 		598F228A1BF935BB00182604 /* Game_io.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F22721BF9355D00182604 /* Game_io.swift */; };
-		598F228B1BF935BB00182604 /* Game_moves.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F22731BF9355D00182604 /* Game_moves.swift */; };
 		598F228C1BF935BB00182604 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F22741BF9355D00182604 /* Game.swift */; };
 		598F228E1BF935BB00182604 /* GameConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F22761BF9355D00182604 /* GameConfig.swift */; };
 		598F228F1BF935BB00182604 /* GameLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F22771BF9355D00182604 /* GameLoop.swift */; };
@@ -24,10 +23,9 @@
 		598F22911BF935BB00182604 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F22791BF9355D00182604 /* Location.swift */; };
 		598F22921BF935BB00182604 /* Move.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F227A1BF9355D00182604 /* Move.swift */; };
 		598F22931BF935BB00182604 /* Piece.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F227B1BF9355D00182604 /* Piece.swift */; };
-		598F22941BF935BB00182604 /* Rule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F227C1BF9355D00182604 /* Rule.swift */; };
+		598F22941BF935BB00182604 /* Rules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F227C1BF9355D00182604 /* Rules.swift */; };
 		598F22951BF935BB00182604 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F227D1BF9355D00182604 /* Utilities.swift */; };
 		598F22961BF935DE00182604 /* Game_io.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F22721BF9355D00182604 /* Game_io.swift */; };
-		598F22971BF935DE00182604 /* Game_moves.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F22731BF9355D00182604 /* Game_moves.swift */; };
 		598F22981BF935DE00182604 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F22741BF9355D00182604 /* Game.swift */; };
 		598F229A1BF935DE00182604 /* GameConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F22761BF9355D00182604 /* GameConfig.swift */; };
 		598F229B1BF935DE00182604 /* GameLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F22771BF9355D00182604 /* GameLoop.swift */; };
@@ -35,7 +33,7 @@
 		598F229D1BF935DE00182604 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F22791BF9355D00182604 /* Location.swift */; };
 		598F229E1BF935DE00182604 /* Move.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F227A1BF9355D00182604 /* Move.swift */; };
 		598F229F1BF935DE00182604 /* Piece.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F227B1BF9355D00182604 /* Piece.swift */; };
-		598F22A01BF935DE00182604 /* Rule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F227C1BF9355D00182604 /* Rule.swift */; };
+		598F22A01BF935DE00182604 /* Rules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F227C1BF9355D00182604 /* Rules.swift */; };
 		598F22A11BF935DE00182604 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F227D1BF9355D00182604 /* Utilities.swift */; };
 		598F22A31BF9773600182604 /* Location_Directions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F22A21BF9773600182604 /* Location_Directions.swift */; };
 		598F22A41BF9773600182604 /* Location_Directions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F22A21BF9773600182604 /* Location_Directions.swift */; };
@@ -97,7 +95,6 @@
 		598F21D41BF9248F00182604 /* chess */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = chess; sourceTree = BUILT_PRODUCTS_DIR; };
 		598F21D61BF9248F00182604 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		598F22721BF9355D00182604 /* Game_io.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Game_io.swift; path = Model/Game_io.swift; sourceTree = "<group>"; };
-		598F22731BF9355D00182604 /* Game_moves.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Game_moves.swift; path = Model/Game_moves.swift; sourceTree = "<group>"; };
 		598F22741BF9355D00182604 /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Game.swift; path = Model/Game.swift; sourceTree = "<group>"; };
 		598F22761BF9355D00182604 /* GameConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameConfig.swift; path = Model/GameConfig.swift; sourceTree = "<group>"; };
 		598F22771BF9355D00182604 /* GameLoop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameLoop.swift; path = Model/GameLoop.swift; sourceTree = "<group>"; };
@@ -105,7 +102,7 @@
 		598F22791BF9355D00182604 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Location.swift; path = Model/Location.swift; sourceTree = "<group>"; };
 		598F227A1BF9355D00182604 /* Move.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Move.swift; path = Model/Move.swift; sourceTree = "<group>"; };
 		598F227B1BF9355D00182604 /* Piece.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Piece.swift; path = Model/Piece.swift; sourceTree = "<group>"; };
-		598F227C1BF9355D00182604 /* Rule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Rule.swift; path = Model/Rule.swift; sourceTree = "<group>"; };
+		598F227C1BF9355D00182604 /* Rules.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Rules.swift; path = Model/Rules.swift; sourceTree = "<group>"; };
 		598F227D1BF9355D00182604 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Utilities.swift; path = Model/Utilities.swift; sourceTree = "<group>"; };
 		598F22A21BF9773600182604 /* Location_Directions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Location_Directions.swift; path = Model/Location_Directions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -208,7 +205,6 @@
 			isa = PBXGroup;
 			children = (
 				598F22721BF9355D00182604 /* Game_io.swift */,
-				598F22731BF9355D00182604 /* Game_moves.swift */,
 				598F22741BF9355D00182604 /* Game.swift */,
 				598F22761BF9355D00182604 /* GameConfig.swift */,
 				598F22771BF9355D00182604 /* GameLoop.swift */,
@@ -217,7 +213,7 @@
 				598F22A21BF9773600182604 /* Location_Directions.swift */,
 				598F227A1BF9355D00182604 /* Move.swift */,
 				598F227B1BF9355D00182604 /* Piece.swift */,
-				598F227C1BF9355D00182604 /* Rule.swift */,
+				598F227C1BF9355D00182604 /* Rules.swift */,
 				598F227D1BF9355D00182604 /* Utilities.swift */,
 			);
 			name = Model;
@@ -377,7 +373,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				598F22961BF935DE00182604 /* Game_io.swift in Sources */,
-				598F22971BF935DE00182604 /* Game_moves.swift in Sources */,
 				598F22981BF935DE00182604 /* Game.swift in Sources */,
 				598F229A1BF935DE00182604 /* GameConfig.swift in Sources */,
 				598F229B1BF935DE00182604 /* GameLoop.swift in Sources */,
@@ -386,7 +381,7 @@
 				598F229E1BF935DE00182604 /* Move.swift in Sources */,
 				598F22A31BF9773600182604 /* Location_Directions.swift in Sources */,
 				598F229F1BF935DE00182604 /* Piece.swift in Sources */,
-				598F22A01BF935DE00182604 /* Rule.swift in Sources */,
+				598F22A01BF935DE00182604 /* Rules.swift in Sources */,
 				598F22A11BF935DE00182604 /* Utilities.swift in Sources */,
 				598F21A61BF9245D00182604 /* GameScene.swift in Sources */,
 				598F21A41BF9245D00182604 /* AppDelegate.swift in Sources */,
@@ -414,7 +409,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				598F228A1BF935BB00182604 /* Game_io.swift in Sources */,
-				598F228B1BF935BB00182604 /* Game_moves.swift in Sources */,
 				598F228C1BF935BB00182604 /* Game.swift in Sources */,
 				598F228E1BF935BB00182604 /* GameConfig.swift in Sources */,
 				598F228F1BF935BB00182604 /* GameLoop.swift in Sources */,
@@ -422,7 +416,7 @@
 				598F22911BF935BB00182604 /* Location.swift in Sources */,
 				598F22921BF935BB00182604 /* Move.swift in Sources */,
 				598F22931BF935BB00182604 /* Piece.swift in Sources */,
-				598F22941BF935BB00182604 /* Rule.swift in Sources */,
+				598F22941BF935BB00182604 /* Rules.swift in Sources */,
 				598F22A41BF9773600182604 /* Location_Directions.swift in Sources */,
 				598F22951BF935BB00182604 /* Utilities.swift in Sources */,
 				598F21D71BF9248F00182604 /* main.swift in Sources */,

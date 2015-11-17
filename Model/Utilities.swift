@@ -13,11 +13,7 @@ extension String {
 }
 
 extension Array {
-    func firstOrEmpty() -> Array {
-        if count > 0 {
-            return Array(self[0...0])
-        } else {
-            return []
-        }
+    func take(n:Int) -> Array {
+        return Array(self.prefix(n))
     }
 }
