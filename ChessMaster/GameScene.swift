@@ -178,7 +178,9 @@ class GameScene: SKScene {
             if (validLocations.contains(convertToLocation(movingSprite!.position)))
             {
                 movingSprite!.position = CGPointMake(CGFloat(spriteX), CGFloat(spriteY))
-                game.makeMove(convertToLocation(movedSprite!.position), end: convertToLocation(movingSprite!.position))
+                let move = (start: convertToLocation(movedSprite!.position),
+                              end: convertToLocation(movingSprite!.position))
+                game.makeMove(move)
                 movingSprite = nil
             }
             else

@@ -110,16 +110,29 @@ class Game {
         return Rules.validMoves(self, start:start)
     }
     
-    func makeMove(start: Location, end:Location) -> ()
+    func makeMove(move:Move) -> ()
     {
         //FIXME: Check castling, enPassant, Promotion, and Check
-        if validMoves(start).contains(end) {
-            _enPassantTargetSquare = Rules.enPassantTargetSquare(self, move:(start, end))
-            _board[end] = _board[start]!
-            _board[start] = nil
+        if validMoves(move.start).contains(move.end) {
+            let newEnPassantTargetSquare = Rules.enPassantTargetSquare(self, move:move)
+            if let enPassantCaptureSquare = enPassantCaptureSquare(move) {
+                _board[enPassantCaptureSquare] = nil
+            }
+            _board[move.end] = _board[move.start]!
+            _board[move.start] = nil
+            _enPassantTargetSquare = newEnPassantTargetSquare
             _activeColor = _activeColor == Color.White ? .Black : .White
         } else {
-            print("Illegal Move from \(start) to \(end)")
+            print("Illegal Move from \(move.start) to \(move.end)")
         }
+    }
+    
+    func enPassantCaptureSquare(move: Move) -> Location? {
+        if let piece = _board[move.start] {
+            if piece.kind == .Pawn && move.end == _enPassantTargetSquare {
+                return Location(rank:move.start.rank, file:move.end.file)
+            }
+        }
+        return nil
     }
 }
