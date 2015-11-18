@@ -63,8 +63,8 @@ struct Rules {
             //FIXME: check Castling
             for direction in Rules.directions(piece, start: start) {
                 for location in direction {
-                    switch piece.kind {
-                    case .Pawn:
+                    //do not use switch here, because we need to 'vreak' out of for loop early
+                    if piece.kind == .Pawn {
                         if let color = game.colorOfPieceAtLocation(location) {
                             if color != piece.color {
                                 if location.file != start.file {
@@ -81,7 +81,7 @@ struct Rules {
                                 }
                             }
                         }
-                    default:
+                    } else {
                         if let color = game.colorOfPieceAtLocation(location) {
                             if color != piece.color {
                                 if !Rules.isPlayerInCheckAfterMove(game, move:(start,location)) {
