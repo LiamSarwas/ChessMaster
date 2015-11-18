@@ -6,8 +6,6 @@
 //  Copyright © 2015 Regan Sarwas. All rights reserved.
 //
 
-import Foundation
-
 typealias Board = [Location: Piece]
 
 class Game {
@@ -110,29 +108,40 @@ class Game {
         return Rules.validMoves(self, start:start)
     }
     
-    func makeMove(move:Move) -> ()
+    func conceed() -> ()
     {
-        //FIXME: Check Promotion, and Check
+        
+    }
+    
+    func makeMove(move:Move, promotionKind:Kind = .Queen) -> ()
+    {
+        //FIXME: Check Promotion
         if validMoves(move.start).contains(move.end) {
-            let piece = _board[move.start]!
+            // Save some state at beginning of move
+            let movingPiece = _board[move.start]!
             let newEnPassantTargetSquare = Rules.enPassantTargetSquare(self, move:move)
+            let castelingRookMove = Rules.rookMoveWhileCastling(self, move: move)
+            let promotionPiece = Rules.promotionPiece(self, move: move, promotionKind: promotionKind)
+            
+            // Update State of Game
             if let enPassantCaptureSquare = enPassantCaptureSquare(move) {
                 _board[enPassantCaptureSquare] = nil
             }
-            let rookMove = Rules.rookMoveWhileCastling(self, move: move)
-            _board[move.end] = piece
+            _board[move.end] = promotionPiece == nil ? movingPiece : promotionPiece
             _board[move.start] = nil
-            if rookMove != nil {
-                _board[rookMove!.end] = _board[rookMove!.start]!
-                _board[rookMove!.start] = nil
+            if castelingRookMove != nil {
+                _board[castelingRookMove!.end] = _board[castelingRookMove!.start]!
+                _board[castelingRookMove!.start] = nil
             }
             _enPassantTargetSquare = newEnPassantTargetSquare
             _activeColor = _activeColor == Color.White ? .Black : .White
             updateCastlingOptions(move.start)
+            
             //FIXME: Save history
             //FIXME: Update Counts
             //FIXME: Set flag if move puts opponent in check
-            //FIXME: Check for checkmate
+            //FIXME: Check for checkmate, stalemate
+            //FIXME: check for 50 mvoe rules, etc
         } else {
             print("Illegal Move from \(move.start) to \(move.end)")
         }

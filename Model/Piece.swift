@@ -23,7 +23,7 @@ struct Piece: Equatable {
 
 extension Piece: Hashable {
     var hashValue: Int {
-        return kind.hashValue ^ kind.hashValue
+        return kind.hashValue ^ color.hashValue
     }
 }
 

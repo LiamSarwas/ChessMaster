@@ -6,8 +6,6 @@
 //  Copyright © 2015 Regan Sarwas. All rights reserved.
 //
 
-import Foundation
-
 struct Rules {
     static func directions(game: Game, piece: Piece, start: Location) -> [[Location]]
     {
@@ -203,11 +201,29 @@ struct Rules {
         return nil
     }
 
-
     static func isPlayerInCheckAfterMove(game:Game, move: Move) -> Bool{
         //returns true if this move leaves the player in check
         //FIXME: implement
         return false
+    }
+    
+    static func isPawnPromotion(game:Game, move:Move) -> Bool {
+        if let piece = game.board[move.start] {
+            if piece.kind == .Pawn {
+                if move.end.rank == Rank.maxValue  || move.end.rank == Rank.minValue {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+    
+    static func promotionPiece(game:Game, move:Move, promotionKind:Kind) -> Piece? {
+        if isPawnPromotion(game, move:move) {
+            let piece = game.board[move.start]!
+            return Piece(color: piece.color, kind: promotionKind)
+        }
+        return nil
     }
 
     // Mark - Default Starting Board
@@ -251,10 +267,3 @@ struct Rules {
     ]
 
 }
-
-//typealias Rule = (Board, Location) -> [Location]
-
-struct Rule {
-    let name: String
-}
-

@@ -6,8 +6,6 @@
 //  Copyright © 2015 Regan Sarwas. All rights reserved.
 //
 
-import Foundation
-
 class History {
     private var history: [Move] = []
     
@@ -24,9 +22,9 @@ extension History: CustomStringConvertible {
             var response: String = ""
             for index in 0..<history.count {
                 if (index % 2 == 0) {
-                    response += "\(1 + index / 2). \(history[index])"
+                    response += "\(1 + index / 2). \(history[index].start)\(history[index].end) "
                 } else {
-                    response += "\(history[index]) "
+                    response += "\(history[index].start)\(history[index].end) "
                 }
             }
             return response
