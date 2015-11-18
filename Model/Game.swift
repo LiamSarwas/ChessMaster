@@ -101,6 +101,13 @@ class Game {
         return nil
     }
     
+    var activeColorInCheck: Bool {
+        get {
+            //FIXME: Implement
+            return false
+        }
+    }
+    
     // Mark - Make Move
     
     func validMoves(start:Location) -> [Location]

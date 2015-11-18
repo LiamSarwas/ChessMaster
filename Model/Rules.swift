@@ -109,21 +109,29 @@ struct Rules {
     // Returns the Castling locations that the King as available
     static func castlingMoves(game:Game, piece:Piece) -> [Location] {
         var moves: [Location] = []
-        //FIXME: check if King is in check; if so return moves
+        if game.activeColorInCheck {
+            return moves
+        }
         if piece == Piece(color: .White, kind: .King) {
             if game.whiteHasKingSideCastleAvailable {
                 if game.board[Location(rank: 1, file: .F)] == nil &&
                     game.board[Location(rank: 1, file: .G)] == nil {
-                        //FIXME Check for check on f1
-                        moves.append(Location(rank: 1, file: .G))
+                        let intermediateMove = (start:Location(rank: 1, file: .E),
+                                                  end:Location(rank: 1, file: .F))
+                        if !isPlayerInCheckAfterMove(game, move:intermediateMove) {
+                            moves.append(Location(rank: 1, file: .G))
+                        }
                 }
             }
             if game.whiteHasQueenSideCastleAvailable {
                 if game.board[Location(rank: 1, file: .B)] == nil &&
                     game.board[Location(rank: 1, file: .C)] == nil &&
                     game.board[Location(rank: 1, file: .D)] == nil {
-                        //FIXME Check for check on d1
-                        moves.append(Location(rank: 1, file: .C))
+                        let intermediateMove = (start:Location(rank: 1, file: .E),
+                            end:Location(rank: 1, file: .D))
+                        if !isPlayerInCheckAfterMove(game, move:intermediateMove) {
+                            moves.append(Location(rank: 1, file: .C))
+                        }
                 }
             }
         }
@@ -131,16 +139,22 @@ struct Rules {
             if game.blackHasKingSideCastleAvailable {
                 if game.board[Location(rank: 8, file: .F)] == nil &&
                     game.board[Location(rank: 8, file: .G)] == nil {
-                        //FIXME Check for check on f8
-                        moves.append(Location(rank: 8, file: .G))
+                        let intermediateMove = (start:Location(rank: 8, file: .E),
+                            end:Location(rank: 8, file: .F))
+                        if !isPlayerInCheckAfterMove(game, move:intermediateMove) {
+                            moves.append(Location(rank: 8, file: .G))
+                        }
                 }
             }
             if game.blackHasQueenSideCastleAvailable {
                 if game.board[Location(rank: 8, file: .B)] == nil &&
                     game.board[Location(rank: 8, file: .C)] == nil &&
                     game.board[Location(rank: 8, file: .D)] == nil {
-                        //FIXME Check for check on d8
-                        moves.append(Location(rank: 8, file: .C))
+                        let intermediateMove = (start:Location(rank: 8, file: .E),
+                            end:Location(rank: 8, file: .D))
+                        if !isPlayerInCheckAfterMove(game, move:intermediateMove) {
+                            moves.append(Location(rank: 8, file: .C))
+                        }
                 }
             }
             
