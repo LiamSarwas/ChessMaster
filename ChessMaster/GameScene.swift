@@ -392,9 +392,12 @@ class GameScene: SKScene {
             }
         }
         
+        let values = Engine.evaluateBoard(game)
+        
+        print("White's board value is: \(values[0])")
+        print("Black's board value is: \(values[1])")
     }
-    
-    
+ 
     override func update(currentTime: CFTimeInterval)
     {
         /* Called before each frame is rendered */
