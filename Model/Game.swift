@@ -112,21 +112,55 @@ class Game {
     
     func makeMove(move:Move) -> ()
     {
-        //FIXME: Check castling, enPassant, Promotion, and Check
+        //FIXME: Check Promotion, and Check
         if validMoves(move.start).contains(move.end) {
+            let piece = _board[move.start]!
             let newEnPassantTargetSquare = Rules.enPassantTargetSquare(self, move:move)
             if let enPassantCaptureSquare = enPassantCaptureSquare(move) {
                 _board[enPassantCaptureSquare] = nil
             }
-            _board[move.end] = _board[move.start]!
+            let rookMove = Rules.rookMoveWhileCastling(self, move: move)
+            _board[move.end] = piece
             _board[move.start] = nil
+            if rookMove != nil {
+                _board[rookMove!.end] = _board[rookMove!.start]!
+                _board[rookMove!.start] = nil
+            }
             _enPassantTargetSquare = newEnPassantTargetSquare
             _activeColor = _activeColor == Color.White ? .Black : .White
+            updateCastlingOptions(move.start)
+            //FIXME: Save history
+            //FIXME: Update Counts
+            //FIXME: Set flag if move puts opponent in check
+            //FIXME: Check for checkmate
         } else {
             print("Illegal Move from \(move.start) to \(move.end)")
         }
     }
-    
+
+    func updateCastlingOptions(location:Location) {
+        if location == Location(rank:1, file:.E) {
+            _whiteHasKingSideCastleAvailable = false
+            _whiteHasQueenSideCastleAvailable = false
+        }
+        if location == Location(rank:1, file:.A) {
+            _whiteHasQueenSideCastleAvailable = false
+        }
+        if location == Location(rank:1, file:.H) {
+            _whiteHasKingSideCastleAvailable = false
+        }
+        if location == Location(rank:8, file:.E) {
+            _blackHasKingSideCastleAvailable = false
+            _blackHasQueenSideCastleAvailable = false
+        }
+        if location == Location(rank:8, file:.A) {
+            _blackHasQueenSideCastleAvailable = false
+        }
+        if location == Location(rank:8, file:.H) {
+            _blackHasKingSideCastleAvailable = false
+        }
+    }
+
     func enPassantCaptureSquare(move: Move) -> Location? {
         if let piece = _board[move.start] {
             if piece.kind == .Pawn && move.end == _enPassantTargetSquare {
@@ -135,4 +169,5 @@ class Game {
         }
         return nil
     }
+    
 }
