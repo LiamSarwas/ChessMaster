@@ -103,7 +103,7 @@ struct Rules {
         } else {
             print("No piece at \(start)")
         }
-        return moves
+        return moves.filter {!isPlayerInCheckAfterMove(game, move:(start:start, end:$0))}
     }
     
     // Returns the Castling locations that the King as available
@@ -218,6 +218,8 @@ struct Rules {
     static func isPlayerInCheckAfterMove(game:Game, move: Move) -> Bool{
         //returns true if this move leaves the player in check
         //FIXME: implement
+        
+        print("eliminating move \(move) beacuse it exposes player to check")
         return false
     }
     
