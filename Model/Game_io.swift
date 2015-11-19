@@ -8,6 +8,30 @@
 
 // MARK: CustomStringConvertible
 
+func fenBoard(board:Board) -> String {
+    var lines :[String] = []
+    for rank in [8,7,6,5,4,3,2,1] {
+        var line = ""
+        var emptyCount = 0
+        for file in [File.A, .B, .C, .D, .E, .F, .G, .H] {
+            if let piece = board[Location(rank:Rank(integerLiteral:rank), file:file)] {
+                if 0 < emptyCount {
+                    line += "\(emptyCount)"
+                    emptyCount = 0
+                }
+                line += "\(piece.fen)"
+            } else {
+                emptyCount += 1
+            }
+        }
+        if emptyCount > 0 {
+            line += "\(emptyCount)"
+        }
+        lines.append(line)
+    }
+    return lines.joinWithSeparator("/")
+}
+
 extension Game: CustomStringConvertible, CustomDebugStringConvertible {
     var description: String {
         get {
@@ -23,31 +47,7 @@ extension Game: CustomStringConvertible, CustomDebugStringConvertible {
     
     var description_FEN: String {
         get {
-            var fenGame: String {
-                get {
-                    var lines :[String] = []
-                    for rank in [8,7,6,5,4,3,2,1] {
-                        var line = ""
-                        var emptyCount = 0
-                        for file in [File.A, .B, .C, .D, .E, .F, .G, .H] {
-                            if let piece = board[Location(rank:Rank(integerLiteral:rank), file:file)] {
-                                if 0 < emptyCount {
-                                    line += "\(emptyCount)"
-                                    emptyCount = 0
-                                }
-                                line += "\(piece.fen)"
-                            } else {
-                                emptyCount += 1
-                            }
-                        }
-                        if emptyCount > 0 {
-                            line += "\(emptyCount)"
-                        }
-                        lines.append(line)
-                    }
-                    return lines.joinWithSeparator("/")
-                }
-            }
+            let fenGame = fenBoard(self.board)
             let enPassant = enPassantTargetSquare == nil ? "-" : "\(enPassantTargetSquare!)"
             let castle = (whiteHasKingSideCastleAvailable ? "K" : "") +
                 (whiteHasQueenSideCastleAvailable ? "Q" : "") +

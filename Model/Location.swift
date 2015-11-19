@@ -63,6 +63,14 @@ public func < (left:Rank, right:Rank) -> Bool {
     return (left.value < right.value)
 }
 
+// MARK: Rank - CustomStringConvertible
+
+extension Rank: CustomStringConvertible {
+    public var description: String {
+        get { return "\(value)" }
+    }
+}
+
 
 // MARK: File
 
@@ -87,6 +95,26 @@ public enum File: Int {
 
 func + (file: File, n: Int) -> File? {
     return File(rawValue: file.rawValue + n)
+}
+
+
+// MARK: File - CustomStringConvertible
+
+extension File: CustomStringConvertible {
+    public var description: String {
+        get {
+            switch self {
+            case .A: return "a"
+            case .B: return "b"
+            case .C: return "c"
+            case .D: return "d"
+            case .E: return "e"
+            case .F: return "f"
+            case .G: return "g"
+            case .H: return "h"
+            }
+        }
+    }
 }
 
 
@@ -116,18 +144,7 @@ public func == (left:Location, right:Location) -> Bool {
 
 extension Location: CustomStringConvertible {
     public var description: String {
-        get {
-            switch file {
-            case .A: return "a\(rank)"
-            case .B: return "b\(rank)"
-            case .C: return "c\(rank)"
-            case .D: return "d\(rank)"
-            case .E: return "e\(rank)"
-            case .F: return "f\(rank)"
-            case .G: return "g\(rank)"
-            case .H: return "h\(rank)"
-            }
-        }
+        get { return "\(file)\(rank)" }
     }
 }
 
