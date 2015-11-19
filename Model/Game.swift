@@ -19,6 +19,8 @@ class Game {
     private var _halfMoveClock: Int
     private var _fullMoveNumber: Int
     
+    private var _lastCapturedPiece: Piece?
+    
     init (board: [Location: Piece],
           activeColor: Color,
           whiteHasKingSideCastleAvailable: Bool,
@@ -108,6 +110,12 @@ class Game {
         }
     }
     
+    var lastCapturedPiece: Piece? {
+        get {
+            return _lastCapturedPiece
+        }
+    }
+    
     // Mark - Make Move
     
     func validMoves(start:Location) -> [Location]
@@ -131,8 +139,13 @@ class Game {
             let promotionPiece = Rules.promotionPiece(self, move: move, promotionKind: promotionKind)
             
             // Update State of Game
+            _lastCapturedPiece = nil
             if let enPassantCaptureSquare = enPassantCaptureSquare(move) {
+                _lastCapturedPiece = _board[enPassantCaptureSquare]
                 _board[enPassantCaptureSquare] = nil
+            }
+            if _lastCapturedPiece == nil {
+                _lastCapturedPiece = _board[move.end]
             }
             _board[move.end] = promotionPiece == nil ? movingPiece : promotionPiece
             _board[move.start] = nil
