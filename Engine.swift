@@ -10,19 +10,77 @@ import Foundation
 
 struct Engine
 {
+    static let depth = 2
+    static var score = 0
+    static var bestMove : (Location, Location) = ("a1".fenLocation!, "a1".fenLocation!)
     
-    func search()
+   
+    static func getMove(game: Game) -> Move
     {
-        
+        var max = 500000;
+        for (locStart, locEnd) in getAllMoves(game)
+        {
+            game.makeMove((locStart, locEnd))
+            score = -1*search(depth - 1, game: game)
+            if score > max
+            {
+                bestMove = (locStart, locEnd)
+                max = score;
+            }
+           // game.undoLastMove()
+        }
+        return bestMove
+    }
+
+    
+    static func search(depth: Int, game: Game) -> Int
+    {
+        if depth == 0
+        {
+            return evaluateBoard(game)
+        }
+        var max = 500000;
+        for (locStart, locEnd) in getAllMoves(game)
+        {
+            game.makeMove((locStart, locEnd))
+            score = -1*search(depth - 1, game: game)
+            if score > max
+            {
+                bestMove = (locStart, locEnd)
+                max = score;
+            }
+            //game.undoLastmove
+        }
+            return max
     }
     
-    //should i use another method to take a board, a move, and an old value 
-    //that way i dont have to go through all pieces when only one changes
-    //harder with captures tho
-    
-    static func evaluateBoard(game: Game) -> [Int]
+    static func getAllMoves(game: Game) -> [(Location, Location)]
     {
-        var boardValues = [0, 0]
+        var moves : [(Location, Location)] = []
+        for (location, _) in game.board
+        {
+            moves += mapLocToMove(location, game: game)
+        }
+        return moves
+    }
+    
+    
+    //I still think that validMoves might want to return a [Move], rather than a [Location]
+    //No reason for it not to (except needing to refactor code)
+    static func mapLocToMove(location: Location, game: Game) -> [(Location, Location)]
+    {
+        let moveEnds = game.validMoves(location)
+        var allMoves : [(Location, Location)] = []
+        for loc in moveEnds
+        {
+            allMoves += [(location, loc)]
+        }
+        return allMoves
+    }
+    
+    static func evaluateBoard(game: Game) -> Int
+    {
+        var boardValue = 0
         var whiteBoardValue = 0
         var blackBoardValue = 0
         
@@ -97,10 +155,13 @@ struct Engine
             }
         }
         
-        boardValues[0] = whiteBoardValue
-        boardValues[1] = blackBoardValue
+        boardValue = whiteBoardValue - blackBoardValue
         
-        return boardValues
+        if game.activeColor == .Black
+        {
+            boardValue *= -1
+        }
+        return boardValue
     }
     
     static func convertToWhiteArrayIndex(loc: Location) -> Int
@@ -180,7 +241,7 @@ struct Engine
     
     static func convertToBlackArrayIndex(loc: Location) -> Int
     {
-        var y = (loc.rank.value - 1)*8
+        let y = (loc.rank.value - 1)*8
         var x = 0
     
         

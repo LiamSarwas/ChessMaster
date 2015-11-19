@@ -394,10 +394,11 @@ class GameScene: SKScene {
             }
         }
         
-        let values = Engine.evaluateBoard(game)
+        let boardValue = Engine.evaluateBoard(game)
+      //  let bestMove = Engine.getMove(game)
         
-        print("White's board value is: \(values[0])")
-        print("Black's board value is: \(values[1])")
+        print("The net board value is: \(boardValue)")
+     //   print("The best move is: \(bestMove)")
     }
  
     override func update(currentTime: CFTimeInterval)
