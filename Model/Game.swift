@@ -20,6 +20,7 @@ class Game {
     private var _fullMoveNumber: Int
     
     private var _lastCapturedPiece: Piece?
+    private var _activeColorInCheck: Bool
     
     init (board: [Location: Piece],
           activeColor: Color,
@@ -40,6 +41,7 @@ class Game {
             _enPassantTargetSquare = enPassantTargetSquare
             _halfMoveClock = halfMoveClock
             _fullMoveNumber = fullMoveNumber
+            _activeColorInCheck = Rules.isPlayerInCheck(board, kingsColor: _activeColor)
     }
     
     convenience init()
@@ -105,8 +107,7 @@ class Game {
     
     var activeColorInCheck: Bool {
         get {
-            //FIXME: Implement
-            return false
+            return _activeColorInCheck
         }
     }
     
@@ -130,7 +131,6 @@ class Game {
     
     func makeMove(move:Move, promotionKind:Kind = .Queen) -> ()
     {
-        //FIXME: Check Promotion
         if validMoves(move.start).contains(move.end) {
             // Save some state at beginning of move
             let movingPiece = _board[move.start]!
@@ -156,12 +156,13 @@ class Game {
             _enPassantTargetSquare = newEnPassantTargetSquare
             _activeColor = _activeColor == Color.White ? .Black : .White
             updateCastlingOptions(move.start)
+            _activeColorInCheck = Rules.isPlayerInCheck(board, kingsColor: _activeColor)
+            _halfMoveClock += 1
+            _fullMoveNumber += (_activeColor == .Black ? 1 : 0)
             
             //FIXME: Save history
-            //FIXME: Update Counts
-            //FIXME: Set flag if move puts opponent in check
             //FIXME: Check for checkmate, stalemate
-            //FIXME: check for 50 mvoe rules, etc
+            //FIXME: check for 50 move rules, etc
         } else {
             print("Illegal Move from \(move.start) to \(move.end)")
         }

@@ -220,7 +220,15 @@ struct Rules {
         //only need to check the new positions of the pieces on the board; i.e ignore promotions, castling,
         //do not need to move the rook (when castling), because that the rules of castling
         //will prevent a change in the opponents checking oportunities based on its before/after location.
-        
+        var board = game.board
+        board[move.end] = board[move.start]
+        board[move.start] = nil
+        return isPlayerInCheck(board, kingsColor:game.activeColor)
+    }
+    
+    static func isPlayerInCheck(board:Board, kingsColor:Color) -> Bool{
+        //returns true if the player with color is in check
+    
         func findKing(board:Board, color:Color) -> Location? {
             let king = Piece(color:color, kind: .King)
             for (location,piece) in board {
@@ -230,12 +238,6 @@ struct Rules {
             }
             return nil // by laws of chess this should never happen; required for type safety
         }
-        
-        var board = game.board
-        board[move.end] = board[move.start]
-        board[move.start] = nil
-        //find the king
-        let kingsColor = game.activeColor
         if let kingsSquare = findKing(board, color:kingsColor) {
             //look for an attacking opponent from the kings perspective
             //Check horizontal and vertical attacks
@@ -246,7 +248,7 @@ struct Rules {
                             break
                         } else {
                             if otherPiece.kind == .Queen || otherPiece.kind == .Rook {
-                                print("eliminating move \(move) because it exposes player to check from queen/rook")
+                                //print("eliminating move because it exposes player to check from queen/rook")
                                 return true
                             } else {
                                 break
@@ -263,7 +265,7 @@ struct Rules {
                             break
                         } else {
                             if otherPiece.kind == .Queen || otherPiece.kind == .Bishop {
-                                print("eliminating move \(move) because it exposes player to check from queen/bishop")
+                                //print("eliminating move \(move) because it exposes player to check from queen/bishop")
                                 return true
                             } else {
                                 break
@@ -289,7 +291,7 @@ struct Rules {
                             break
                         } else {
                             if otherPiece.kind == .Knight {
-                                print("eliminating move \(move) because it exposes player to check from knight")
+                                //print("eliminating move \(move) because it exposes player to check from knight")
                                 return true
                             } else {
                                 break
@@ -312,7 +314,7 @@ struct Rules {
                             break
                         } else {
                             if otherPiece.kind == .Pawn {
-                                print("eliminating move \(move) because it exposes player to check from a pawn")
+                                //print("eliminating move \(move) because it exposes player to check from a pawn")
                                 return true
                             } else {
                                 break
@@ -344,21 +346,6 @@ struct Rules {
         return nil
     }
 
-    //will only return true if checked before the move is applied
-    //assumes valid move
-    /*
-    static func isCapture(game:Game, move:Move) -> Bool{
-        if game.board[move.end] != nil
-        {
-            return true
-        }
-        else
-        {
-            return false
-        }
-    }
-    */
-    
     // Mark - Default Starting Board
     
     static let defaultStartingBoard : Board = [
