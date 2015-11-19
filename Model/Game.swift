@@ -123,7 +123,7 @@ class Game {
         return Rules.validMoves(self, start:start)
     }
     
-    func conceed() -> ()
+    func concede() -> ()
     {
         
     }

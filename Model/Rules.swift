@@ -344,6 +344,21 @@ struct Rules {
         return nil
     }
 
+    //will only return true if checked before the move is applied
+    //assumes valid move
+    /*
+    static func isCapture(game:Game, move:Move) -> Bool{
+        if game.board[move.end] != nil
+        {
+            return true
+        }
+        else
+        {
+            return false
+        }
+    }
+    */
+    
     // Mark - Default Starting Board
     
     static let defaultStartingBoard : Board = [

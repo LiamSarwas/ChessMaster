@@ -22,10 +22,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if let scene = GameScene(fileNamed:"GameScene") {
             /* Set the scale mode to scale to fit the window */
             
-            let dim = CGSize(width: 640, height: 640)
+            let dim = CGSize(width: 840, height: 640)
             window.contentMinSize = dim
             window.contentMaxSize = dim
             window.setContentSize(dim)
+            
             
             scene.scaleMode = .ResizeFill
             
