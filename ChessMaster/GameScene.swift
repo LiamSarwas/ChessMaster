@@ -186,6 +186,8 @@ class GameScene: SKScene {
                 let move = (start: convertToLocation(movedSprite!.position),
                               end: convertToLocation(movingSprite!.position))
                 
+                
+                game.makeMove(move)
                 if let capturedPiece = game.lastCapturedPiece
                 {
                     if capturedPiece.color == .White
@@ -197,7 +199,6 @@ class GameScene: SKScene {
                         capturedBlackPieces.append(capturedPiece)
                     }
                 }
-                game.makeMove(move)
                 movingSprite = nil
             }
             else
@@ -219,41 +220,51 @@ class GameScene: SKScene {
     func convertToLocation(point: CGPoint) -> Location
     {
         var loc = ""
-        let val = Int (point.x)
-        if ((val >= 0) && (val < 80))
+        let valX = Int (point.x)
+        let valY = Int (point.y)
+        if (valY >= 0 && valY < 640) && (valX >= 0 && valX < 640)
         {
-            loc += "a"
+            if (valX >= 0) && (valX < 80)
+            {
+                loc += "a"
+            }
+            if (valX >= 80) && (valX < 160)
+            {
+                loc += "b"
+            }
+            if (valX >= 160) && (valX < 240)
+            {
+                loc += "c"
+            }
+            if (valX >= 240) && (valX < 320)
+            {
+                loc += "d"
+            }
+            if (valX >= 320) && (valX < 400)
+            {
+                loc += "e"
+            }
+            if (valX >= 400) && (valX < 480)
+            {
+                loc += "f"
+            }
+            if (valX >= 480) && (valX < 560)
+            {
+                loc += "g"
+            }
+            if (valX >= 560) && (valX < 640)
+            {
+                loc += "h"
+            }
+            
+            let rank = Int (valY/80) + 1
+            loc += String(rank)
         }
-        if (val >= 80) && (val < 160)
+        else
         {
-            loc += "b"
-        }
-        if (val >= 160) && (val < 240)
-        {
-            loc += "c"
-        }
-        if (val >= 240) && (val < 320)
-        {
-            loc += "d"
-        }
-        if (val >= 320) && (val < 400)
-        {
-            loc += "e"
-        }
-        if (val >= 400) && (val < 480)
-        {
-            loc += "f"
-        }
-        if (val >= 480) && (val < 560)
-        {
-            loc += "g"
-        }
-        if (val >= 560) && (val < 640)
-        {
-            loc += "h"
+            loc = "a1"
         }
         
-        loc += String(Int (point.y/80) + 1)
         
         let location = loc.fenLocation
         return location!
