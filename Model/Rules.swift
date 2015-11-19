@@ -9,7 +9,6 @@
 struct Rules {
     static func directions(game: Game, piece: Piece, start: Location) -> [[Location]]
     {
-        
         switch piece.kind {
         case .Rook:
             return [start.toNorth,start.toSouth,start.toEast,start.toWest]
@@ -217,9 +216,112 @@ struct Rules {
 
     static func isPlayerInCheckAfterMove(game:Game, move: Move) -> Bool{
         //returns true if this move leaves the player in check
-        //FIXME: implement
+        //assumes move is valid
+        //only need to check the new positions of the pieces on the board; i.e ignore promotions, castling,
+        //do not need to move the rook (when castling), because that the rules of castling
+        //will prevent a change in the opponents checking oportunities based on its before/after location.
         
-        print("eliminating move \(move) beacuse it exposes player to check")
+        func findKing(board:Board, color:Color) -> Location? {
+            let king = Piece(color:color, kind: .King)
+            for (location,piece) in board {
+                if piece == king {
+                    return location
+                }
+            }
+            return nil // by laws of chess this should never happen; required for type safety
+        }
+        
+        var board = game.board
+        board[move.end] = board[move.start]
+        board[move.start] = nil
+        //find the king
+        let kingsColor = game.activeColor
+        if let kingsSquare = findKing(board, color:kingsColor) {
+            //look for an attacking opponent from the kings perspective
+            //Check horizontal and vertical attacks
+            for direction in [kingsSquare.toNorth, kingsSquare.toSouth,  kingsSquare.toEast,kingsSquare.toWest] {
+                for location in direction {
+                    if let otherPiece = board[location] {
+                        if otherPiece.color == kingsColor {
+                            break
+                        } else {
+                            if otherPiece.kind == .Queen || otherPiece.kind == .Rook {
+                                print("eliminating move \(move) because it exposes player to check from queen/rook")
+                                return true
+                            } else {
+                                break
+                            }
+                        }
+                    }
+                }
+            }
+            //Check diagonal attacks
+            for direction in [kingsSquare.toNortheast, kingsSquare.toSoutheast,  kingsSquare.toNorthwest,kingsSquare.toSouthwest] {
+                for location in direction {
+                    if let otherPiece = board[location] {
+                        if otherPiece.color == kingsColor {
+                            break
+                        } else {
+                            if otherPiece.kind == .Queen || otherPiece.kind == .Bishop {
+                                print("eliminating move \(move) because it exposes player to check from queen/bishop")
+                                return true
+                            } else {
+                                break
+                            }
+                        }
+                    }
+                }
+            }
+            //Check knight attacks
+            let offsets = [(-2,1), (-1,2), (1,2), (2,1), (2,-1), (1,-2), (-1,-2), (-2,-1)]
+            let directions: [[Location]] = offsets.map {
+                if let newRank = kingsSquare.rank + $0 {
+                    if let newFile = kingsSquare.file + $1 {
+                        return [Location(rank: newRank, file: newFile)]
+                    }
+                }
+                return []
+            }
+            for direction in directions {
+                for location in direction {
+                    if let otherPiece = board[location] {
+                        if otherPiece.color == kingsColor {
+                            break
+                        } else {
+                            if otherPiece.kind == .Knight {
+                                print("eliminating move \(move) because it exposes player to check from knight")
+                                return true
+                            } else {
+                                break
+                            }
+                        }
+                    }
+                }
+            }
+            //Check pawn attacks
+            var pawnDirections:[[Location]] = [[]]
+            if kingsColor == .White {
+                pawnDirections = [kingsSquare.toNortheast.take(1), kingsSquare.toNorthwest.take(1)]
+            } else {
+                pawnDirections = [kingsSquare.toSoutheast.take(1), kingsSquare.toSouthwest.take(1)]
+            }
+            for direction in pawnDirections {
+                for location in direction {
+                    if let otherPiece = board[location] {
+                        if otherPiece.color == kingsColor {
+                            break
+                        } else {
+                            if otherPiece.kind == .Queen || otherPiece.kind == .Bishop {
+                                print("eliminating move \(move) because it exposes player to check from a pawn")
+                                return true
+                            } else {
+                                break
+                            }
+                        }
+                    }
+                }
+            }
+        }
         return false
     }
     
