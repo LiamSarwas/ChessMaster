@@ -84,7 +84,15 @@ class GameScene: SKScene {
                 movedSprite = node
             }
         }
-        validLocations = game.validMoves(convertToLocation(location))
+      
+        if let validLocation = convertToLocation(location)
+        {
+            validLocations = game.validMoves(validLocation)
+        }
+        else
+        {
+            validLocations = []
+        }
         for loc in validLocations
         {
             yellowSquares.append(SKSpriteNode(color: SKColor.yellowColor(), size:CGSizeMake(70, 70)))
@@ -179,29 +187,35 @@ class GameScene: SKScene {
             {
                 spriteY = 600
             }
-            
-            if (validLocations.contains(convertToLocation(movingSprite!.position)))
+            var resetSprite = true
+            if let end = convertToLocation(movingSprite!.position)
             {
-                movingSprite!.position = CGPointMake(CGFloat(spriteX), CGFloat(spriteY))
-                let move = (start: convertToLocation(movedSprite!.position),
-                              end: convertToLocation(movingSprite!.position))
-                
-                
-                game.makeMove(move)
-                if let capturedPiece = game.lastCapturedPiece
+                if validLocations.contains(end)
                 {
-                    if capturedPiece.color == .White
+                    movingSprite!.position = CGPointMake(CGFloat(spriteX), CGFloat(spriteY))
+                    
+                    if let start = convertToLocation(movedSprite!.position)
                     {
-                        capturedWhitePieces.append(capturedPiece)
-                    }
-                    if capturedPiece.color == .Black
-                    {
-                        capturedBlackPieces.append(capturedPiece)
+                        let move = (start: start, end: end)
+                        
+                        game.makeMove(move)
+                        if let capturedPiece = game.lastCapturedPiece
+                        {
+                            if capturedPiece.color == .White
+                            {
+                                capturedWhitePieces.append(capturedPiece)
+                            }
+                            if capturedPiece.color == .Black
+                            {
+                                capturedBlackPieces.append(capturedPiece)
+                            }
+                        }
+                        movingSprite = nil
+                        resetSprite = false
                     }
                 }
-                movingSprite = nil
             }
-            else
+            if resetSprite
             {
                 movingSprite!.position = movedSprite!.position
                 movingSprite = nil
@@ -217,7 +231,7 @@ class GameScene: SKScene {
         }
     }
     
-    func convertToLocation(point: CGPoint) -> Location
+    func convertToLocation(point: CGPoint) -> Location?
     {
         var loc = ""
         let valX = Int (point.x)
@@ -262,12 +276,12 @@ class GameScene: SKScene {
         }
         else
         {
-            loc = "a1"
+            loc = ""
         }
         
         
         let location = loc.fenLocation
-        return location!
+        return location
     }
     
     func convertToPoint(loc: Location) -> CGPoint
