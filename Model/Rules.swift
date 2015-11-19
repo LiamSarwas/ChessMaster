@@ -311,7 +311,7 @@ struct Rules {
                         if otherPiece.color == kingsColor {
                             break
                         } else {
-                            if otherPiece.kind == .Queen || otherPiece.kind == .Bishop {
+                            if otherPiece.kind == .Pawn {
                                 print("eliminating move \(move) because it exposes player to check from a pawn")
                                 return true
                             } else {
