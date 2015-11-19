@@ -186,13 +186,13 @@ class GameScene: SKScene {
                 let move = (start: convertToLocation(movedSprite!.position),
                               end: convertToLocation(movingSprite!.position))
                 
-                if let capturedPiece = game.board.lastCapturedPiece
+                if let capturedPiece = game.lastCapturedPiece
                 {
-                    if capturedPiece.kind == .White
+                    if capturedPiece.color == .White
                     {
                         capturedWhitePieces.append(capturedPiece)
                     }
-                    if capturedPiece.kind == .Black
+                    if capturedPiece.color == .Black
                     {
                         capturedBlackPieces.append(capturedPiece)
                     }
