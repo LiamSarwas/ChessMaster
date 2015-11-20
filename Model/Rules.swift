@@ -49,8 +49,8 @@ struct Rules {
         }
     }
     
-    static func validMoves(game:Game, start:Location) -> [Location]
-    {
+//    static func validMoves(game:Game, start:Location) -> [Location]
+    static func validMoves(game: Game, start:Location) -> [Location] {
         var moves: [Location] = []
         if let piece = game.board[start]
         {
@@ -65,7 +65,7 @@ struct Rules {
                         if let color = game.colorOfPieceAtLocation(location) {
                             if color != piece.color {
                                 if location.file != start.file {
-                                    if !Rules.isPlayerInCheckAfterMove(game, move:(start,location)) {
+                                    if !Rules.isPlayerInCheckAfterMove(game.board, activeColor: game.activeColor, move:(start,location)) {
                                         moves.append(location)
                                     }
                                 }
@@ -77,7 +77,7 @@ struct Rules {
                         } else {
                             if location.file == start.file ||
                                 location == game.enPassantTargetSquare {
-                                if !Rules.isPlayerInCheckAfterMove(game, move:(start,location)) {
+                                if !Rules.isPlayerInCheckAfterMove(game.board, activeColor: game.activeColor, move:(start,location)) {
                                     moves.append(location)
                                 }
                             }
@@ -85,14 +85,14 @@ struct Rules {
                     } else {
                         if let color = game.colorOfPieceAtLocation(location) {
                             if color != piece.color {
-                                if !Rules.isPlayerInCheckAfterMove(game, move:(start,location)) {
+                                if !Rules.isPlayerInCheckAfterMove(game.board, activeColor: game.activeColor, move:(start,location)) {
                                     moves.append(location)
                                 }
                             }
                             break
                         } else {
                             // no piece at location; add to list
-                            if !Rules.isPlayerInCheckAfterMove(game, move:(start,location)) {
+                            if !Rules.isPlayerInCheckAfterMove(game.board, activeColor: game.activeColor, move:(start,location)) {
                                 moves.append(location)
                             }
                         }
@@ -102,11 +102,11 @@ struct Rules {
         } else {
             print("No piece at \(start)")
         }
-        return moves.filter {!isPlayerInCheckAfterMove(game, move:(start:start, end:$0))}
+        return moves.filter {!isPlayerInCheckAfterMove(game.board, activeColor: game.activeColor, move:(start:start, end:$0))}
     }
     
     // Returns the Castling locations that the King as available
-    static func castlingMoves(game:Game, piece:Piece) -> [Location] {
+    static func castlingMoves(game: Game, piece:Piece) -> [Location] {
         var moves: [Location] = []
         if game.activeColorInCheck {
             return moves
@@ -117,7 +117,7 @@ struct Rules {
                     game.board[Location(rank: 1, file: .G)] == nil {
                         let intermediateMove = (start:Location(rank: 1, file: .E),
                                                   end:Location(rank: 1, file: .F))
-                        if !isPlayerInCheckAfterMove(game, move:intermediateMove) {
+                        if !isPlayerInCheckAfterMove(game.board, activeColor: game.activeColor, move:intermediateMove) {
                             moves.append(Location(rank: 1, file: .G))
                         }
                 }
@@ -128,7 +128,7 @@ struct Rules {
                     game.board[Location(rank: 1, file: .D)] == nil {
                         let intermediateMove = (start:Location(rank: 1, file: .E),
                             end:Location(rank: 1, file: .D))
-                        if !isPlayerInCheckAfterMove(game, move:intermediateMove) {
+                        if !isPlayerInCheckAfterMove(game.board, activeColor: game.activeColor, move:intermediateMove) {
                             moves.append(Location(rank: 1, file: .C))
                         }
                 }
@@ -140,7 +140,7 @@ struct Rules {
                     game.board[Location(rank: 8, file: .G)] == nil {
                         let intermediateMove = (start:Location(rank: 8, file: .E),
                             end:Location(rank: 8, file: .F))
-                        if !isPlayerInCheckAfterMove(game, move:intermediateMove) {
+                        if !isPlayerInCheckAfterMove(game.board, activeColor: game.activeColor, move:intermediateMove) {
                             moves.append(Location(rank: 8, file: .G))
                         }
                 }
@@ -151,7 +151,7 @@ struct Rules {
                     game.board[Location(rank: 8, file: .D)] == nil {
                         let intermediateMove = (start:Location(rank: 8, file: .E),
                             end:Location(rank: 8, file: .D))
-                        if !isPlayerInCheckAfterMove(game, move:intermediateMove) {
+                        if !isPlayerInCheckAfterMove(game.board, activeColor: game.activeColor, move:intermediateMove) {
                             moves.append(Location(rank: 8, file: .C))
                         }
                 }
@@ -163,15 +163,15 @@ struct Rules {
     
     // Returns an Location? vulnerable to enPassant; does not check if move is legal
     // (i.e., pawn may be pinned or blocked)
-    static func enPassantTargetSquare(game: Game, move:Move) -> Location?{
-        if let piece = game.board[move.start] {
+    static func enPassantTargetSquare(board:Board, move:Move) -> Location?{
+        if let piece = board[move.start] {
             if piece.kind == .Pawn {
                 switch piece.color {
                 case .White:
                     if move.start.rank == 2 && move.end.rank == 4 &&
                         move.start.file == move.end.file {
                             let targetSquare = Location(rank:3, file:move.start.file)
-                            if game.board[targetSquare] == nil && game.board[move.end] == nil {
+                            if board[targetSquare] == nil && board[move.end] == nil {
                                 return targetSquare
                             }
                     }
@@ -179,7 +179,7 @@ struct Rules {
                     if move.start.rank == 7 && move.end.rank == 5 &&
                         move.start.file == move.end.file {
                             let targetSquare = Location(rank:6, file:move.start.file)
-                            if game.board[targetSquare] == nil && game.board[move.end] == nil {
+                            if board[targetSquare] == nil && board[move.end] == nil {
                                 return targetSquare
                             }
                     }
@@ -192,8 +192,8 @@ struct Rules {
     // Returns the Rook's counter-part move to the King's castle move
     // does not check if the castle is legal at this point in the game
     // will return nil if the move provided is not a King's castle move
-    static func rookMoveWhileCastling(game: Game, move: Move) -> Move? {
-        if let piece = game.board[move.start] {
+    static func rookMoveWhileCastling(board:Board, move: Move) -> Move? {
+        if let piece = board[move.start] {
             if piece.kind == .King {
                 let blackKing = Location(rank:8, file:.E)
                 let whiteKing = Location(rank:1, file:.E)
@@ -214,16 +214,27 @@ struct Rules {
         return nil
     }
 
-    static func isPlayerInCheckAfterMove(game:Game, move: Move) -> Bool{
+    static func doesActivePlayerHaveMoves(game: Game) -> Bool {
+        for (location,piece) in game.board {
+            if piece.color == game.activeColor {
+                let validMoves = Rules.validMoves(game, start: location)
+                if validMoves.count > 0 {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
+    static func isPlayerInCheckAfterMove(var board:Board, activeColor: Color, move: Move) -> Bool {
         //returns true if this move leaves the player in check
         //assumes move is valid
         //only need to check the new positions of the pieces on the board; i.e ignore promotions, castling,
         //do not need to move the rook (when castling), because that the rules of castling
         //will prevent a change in the opponents checking oportunities based on its before/after location.
-        var board = game.board
         board[move.end] = board[move.start]
         board[move.start] = nil
-        return isPlayerInCheck(board, kingsColor:game.activeColor)
+        return isPlayerInCheck(board, kingsColor:activeColor)
     }
     
     static func isPlayerInCheck(board:Board, kingsColor:Color) -> Bool{
@@ -327,8 +338,8 @@ struct Rules {
         return false
     }
     
-    static func isPawnPromotion(game:Game, move:Move) -> Bool {
-        if let piece = game.board[move.start] {
+    static func isPawnPromotion(board: Board, move:Move) -> Bool {
+        if let piece = board[move.start] {
             if piece.kind == .Pawn {
                 if move.end.rank == Rank.maxValue  || move.end.rank == Rank.minValue {
                     return true
@@ -338,9 +349,9 @@ struct Rules {
         return false
     }
     
-    static func promotionPiece(game:Game, move:Move, promotionKind:Kind) -> Piece? {
-        if isPawnPromotion(game, move:move) {
-            let piece = game.board[move.start]!
+    static func promotionPiece(board: Board, move:Move, promotionKind:Kind) -> Piece? {
+        if isPawnPromotion(board, move:move) {
+            let piece = board[move.start]!
             return Piece(color: piece.color, kind: promotionKind)
         }
         return nil

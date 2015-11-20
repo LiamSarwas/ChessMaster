@@ -21,6 +21,10 @@ class Game {
     
     private var _lastCapturedPiece: Piece?
     private var _activeColorInCheck: Bool
+    private var _activeColorHasMoves: Bool
+    private var _winningColor: Color?
+    private var _gameOver: Bool
+    private var _isOfferOfDrawAvailable: Bool
     
     init (board: [Location: Piece],
           activeColor: Color,
@@ -32,16 +36,24 @@ class Game {
           halfMoveClock: Int,
           fullMoveNumber: Int)
     {
-            _board = board
-            _activeColor = activeColor
-            _whiteHasKingSideCastleAvailable = whiteHasKingSideCastleAvailable
-            _whiteHasQueenSideCastleAvailable = whiteHasQueenSideCastleAvailable
-            _blackHasKingSideCastleAvailable = blackHasKingSideCastleAvailable
-            _blackHasQueenSideCastleAvailable = blackHasQueenSideCastleAvailable
-            _enPassantTargetSquare = enPassantTargetSquare
-            _halfMoveClock = halfMoveClock
-            _fullMoveNumber = fullMoveNumber
-            _activeColorInCheck = Rules.isPlayerInCheck(board, kingsColor: _activeColor)
+        _board = board
+        _activeColor = activeColor
+        _whiteHasKingSideCastleAvailable = whiteHasKingSideCastleAvailable
+        _whiteHasQueenSideCastleAvailable = whiteHasQueenSideCastleAvailable
+        _blackHasKingSideCastleAvailable = blackHasKingSideCastleAvailable
+        _blackHasQueenSideCastleAvailable = blackHasQueenSideCastleAvailable
+        _enPassantTargetSquare = enPassantTargetSquare
+        _halfMoveClock = halfMoveClock
+        _fullMoveNumber = fullMoveNumber
+        
+        _isOfferOfDrawAvailable = false
+        
+        //Set the end of move variable to a best guess, so that self is fully initialized
+        _gameOver = false
+        _activeColorInCheck = false
+        _activeColorHasMoves = true
+        //Set the end of move variables
+        endOfMoveChecks()
     }
     
     convenience init()
@@ -66,6 +78,10 @@ class Game {
     
     var activeColor: Color {
         get { return _activeColor }
+    }
+    
+    var inActiveColor: Color {
+        get { return _activeColor == .White ? .Black : .White }
     }
     
     var whiteHasKingSideCastleAvailable: Bool {
@@ -96,7 +112,7 @@ class Game {
         get { return _fullMoveNumber }
     }
     
-    // Mark - Status Updates
+    // Mark - Get Game Status
     
     func colorOfPieceAtLocation(location: Location) -> Color? {
         if let conflictPiece = board[location] {
@@ -106,37 +122,75 @@ class Game {
     }
     
     var activeColorInCheck: Bool {
-        get {
-            return _activeColorInCheck
-        }
+        get { return _activeColorInCheck }
     }
     
     var lastCapturedPiece: Piece? {
-        get {
-            return _lastCapturedPiece
-        }
+        get { return _lastCapturedPiece }
     }
     
-    // Mark - Make Move
+    var isOfferOfDrawAvailable: Bool {
+        get { return _isOfferOfDrawAvailable }
+    }
+    
+    var isCheckMate: Bool {
+        get { return _activeColorInCheck && !_activeColorHasMoves }
+    }
+    
+    var isStaleMate: Bool {
+        get { return !_activeColorInCheck && !_activeColorHasMoves }
+    }
+    
+    var isGameOver: Bool {
+        get { return _gameOver }
+    }
+    
+    var winningColor: Color? {
+        get { return _winningColor }
+    }
     
     func validMoves(start:Location) -> [Location]
     {
         return Rules.validMoves(self, start:start)
     }
     
-    func concede() -> ()
+    // Mark - Moves
+    
+    func resign()
     {
-        
+        _gameOver = true
+        _winningColor = inActiveColor
+    }
+    
+    func offerDraw()
+    {
+        _isOfferOfDrawAvailable = true
+    }
+    
+    func acceptDraw()
+    {
+        if _isOfferOfDrawAvailable {
+            _gameOver = true
+        }
+    }
+    
+    func claimDraw()
+    {
+        //Check rules for draw 9.2 & 9.3, and set _gameOver as appropriate
+        //FIXME: Implement
     }
     
     func makeMove(move:Move, promotionKind:Kind = .Queen) -> ()
     {
+        if isGameOver {
+            return
+        }
         if validMoves(move.start).contains(move.end) {
             // Save some state at beginning of move
             let movingPiece = _board[move.start]!
-            let newEnPassantTargetSquare = Rules.enPassantTargetSquare(self, move:move)
-            let castelingRookMove = Rules.rookMoveWhileCastling(self, move: move)
-            let promotionPiece = Rules.promotionPiece(self, move: move, promotionKind: promotionKind)
+            let newEnPassantTargetSquare = Rules.enPassantTargetSquare(board, move:move)
+            let castelingRookMove = Rules.rookMoveWhileCastling(board, move: move)
+            let promotionPiece = Rules.promotionPiece(board, move: move, promotionKind: promotionKind)
             
             // Update State of Game
             _lastCapturedPiece = nil
@@ -153,22 +207,29 @@ class Game {
                 _board[castelingRookMove!.end] = _board[castelingRookMove!.start]!
                 _board[castelingRookMove!.start] = nil
             }
-            _enPassantTargetSquare = newEnPassantTargetSquare
-            _activeColor = _activeColor == Color.White ? .Black : .White
             updateCastlingOptions(move.start)
-            _activeColorInCheck = Rules.isPlayerInCheck(board, kingsColor: _activeColor)
+            _enPassantTargetSquare = newEnPassantTargetSquare
+            _activeColor = inActiveColor
+            _isOfferOfDrawAvailable = false
             _halfMoveClock += 1
             _fullMoveNumber += (_activeColor == .Black ? 1 : 0)
+            endOfMoveChecks()
             
             //FIXME: Save history
-            //FIXME: Check for checkmate, stalemate
-            //FIXME: check for 50 move rules, etc
+            
         } else {
             print("Illegal Move from \(move.start) to \(move.end)")
         }
     }
-
+    
+    func endOfMoveChecks() {
+        _activeColorInCheck = Rules.isPlayerInCheck(board, kingsColor: _activeColor)
+        _activeColorHasMoves = Rules.doesActivePlayerHaveMoves(self)
+        _winningColor = isCheckMate ? inActiveColor : nil
+        _gameOver = !_activeColorHasMoves
+    }
     func updateCastlingOptions(location:Location) {
+        //Options decrease if king or rook moves
         if location == Location(rank:1, file:.E) {
             _whiteHasKingSideCastleAvailable = false
             _whiteHasQueenSideCastleAvailable = false
