@@ -553,6 +553,24 @@ class GameScene: SKScene {
 
         }
         
+        //Add a turn display
+        if game.activeColor == .White
+        {
+            let spriteW = SKSpriteNode(imageNamed: "W")
+            spriteW.position = CGPointMake(CGFloat(740), CGFloat(100))
+            spriteW.setScale(0.4)
+            sprites.append(spriteW)
+            self.addChild(spriteW)
+        }
+        else
+        {
+            let spriteB = SKSpriteNode(imageNamed: "B")
+            spriteB.position = CGPointMake(CGFloat(740), CGFloat(100))
+            spriteB.setScale(0.4)
+            sprites.append(spriteB)
+            self.addChild(spriteB)
+        }
+        
         let boardValue = Engine.evaluateBoard(game)
       //  let bestMove = Engine.getMove(game)
         
