@@ -358,6 +358,14 @@ struct Rules {
         return nil
     }
     
+    static func resetHalfMoveClock(board: Board, move : Move) -> Bool {
+        //Rule 9.3: 50 moves without movement of any pawn or a capture
+        if board[move.end] != nil || board[move.start]?.kind == .Pawn {
+            return true
+        }
+        return false
+    }
+    
     static func explainMove(game:Game, move:Move) -> String {
         return "explain \(move)"
         //FIXME: Implement

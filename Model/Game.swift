@@ -189,6 +189,7 @@ class Game {
             let newEnPassantTargetSquare = Rules.enPassantTargetSquare(board, move:move)
             let castelingRookMove = Rules.rookMoveWhileCastling(board, move: move)
             let promotionPiece = Rules.promotionPiece(board, move: move, promotionKind: promotionKind)
+            let resetHalfMoveClock = Rules.resetHalfMoveClock(board, move: move)
             
             // Update State of Game
             _lastCapturedPiece = nil
@@ -209,8 +210,9 @@ class Game {
             _enPassantTargetSquare = newEnPassantTargetSquare
             _activeColor = inActiveColor
             _isOfferOfDrawAvailable = false
-            _halfMoveClock += 1
-            _fullMoveNumber += (activeColor == .Black ? 1 : 0)
+            //FIXME:
+            _halfMoveClock = resetHalfMoveClock ? 0 : halfMoveClock + 1
+            _fullMoveNumber += (activeColor == .White ? 1 : 0)
             endOfMoveChecks()
             
             //FIXME: Save history
