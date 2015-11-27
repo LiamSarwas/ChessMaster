@@ -8,29 +8,10 @@
 
 // MARK: CustomStringConvertible
 
-func fenBoard(board:Board) -> String {
-    var lines :[String] = []
-    for rank in [8,7,6,5,4,3,2,1] {
-        var line = ""
-        var emptyCount = 0
-        for file in [File.A, .B, .C, .D, .E, .F, .G, .H] {
-            if let piece = board[Location(rank:Rank(integerLiteral:rank), file:file)] {
-                if 0 < emptyCount {
-                    line += "\(emptyCount)"
-                    emptyCount = 0
-                }
-                line += "\(piece.fen)"
-            } else {
-                emptyCount += 1
-            }
-        }
-        if emptyCount > 0 {
-            line += "\(emptyCount)"
-        }
-        lines.append(line)
-    }
-    return lines.joinWithSeparator("/")
-}
+// Forsyth–Edwards Notation (FEN) is a standard notation for describing a board position in Chess
+// https://en.wikipedia.org/wiki/Forsyth–Edwards_Notation
+// It is an ASCII character string composed of 6 required parts separated by a space
+// for additional details see section 16.1 at http://www.thechessdrum.net/PGN_Reference.txt
 
 extension Game: CustomStringConvertible, CustomDebugStringConvertible {
     var description: String {
@@ -47,6 +28,30 @@ extension Game: CustomStringConvertible, CustomDebugStringConvertible {
     
     var description_FEN: String {
         get {
+            func fenBoard(board:Board) -> String {
+                var lines :[String] = []
+                for rank in [8,7,6,5,4,3,2,1] {
+                    var line = ""
+                    var emptyCount = 0
+                    for file in [File.A, .B, .C, .D, .E, .F, .G, .H] {
+                        if let piece = board[Location(rank:Rank(integerLiteral:rank), file:file)] {
+                            if 0 < emptyCount {
+                                line += "\(emptyCount)"
+                                emptyCount = 0
+                            }
+                            line += "\(piece.fen)"
+                        } else {
+                            emptyCount += 1
+                        }
+                    }
+                    if emptyCount > 0 {
+                        line += "\(emptyCount)"
+                    }
+                    lines.append(line)
+                }
+                return lines.joinWithSeparator("/")
+            }
+            
             let fenGame = fenBoard(self.board)
             let enPassant = enPassantTargetSquare == nil ? "-" : "\(enPassantTargetSquare!)"
             let color = activeColor == .White ? "w" : "b"
@@ -61,9 +66,10 @@ extension Game: CustomStringConvertible, CustomDebugStringConvertible {
     }
 }
 
+//MARK: Input
+
 extension String {
     var fenGame: Game? {
-        //a fen Game description is composed of 6 required parts separated by a space
         let parts = self.split(" ")
         if parts.count != 6 {
             print("FEN line '\(self)' does not have 6 parts")
@@ -212,8 +218,3 @@ extension String {
         return s
     }
 }
-
-
-
-
-

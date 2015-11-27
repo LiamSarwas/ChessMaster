@@ -39,11 +39,11 @@ class Game {
         
         _isOfferOfDrawAvailable = false
         
-        //Set the end of move variable to a best guess, so that self is fully initialized
+        //Set the end of move variable to a best guess, so that self is fully initialized before calling any methods
         _gameOver = false
         _isActiveColorInCheck = false
         _activeColorHasMoves = true
-        //Set the end of move variables
+        //Set the end of move variables to the real values
         endOfMoveChecks()
     }
     
@@ -186,7 +186,6 @@ class Game {
             _enPassantTargetSquare = newEnPassantTargetSquare
             _activeColor = inActiveColor
             _isOfferOfDrawAvailable = false
-            //FIXME:
             _halfMoveClock = resetHalfMoveClock ? 0 : halfMoveClock + 1
             _fullMoveNumber += (activeColor == .White ? 1 : 0)
             endOfMoveChecks()

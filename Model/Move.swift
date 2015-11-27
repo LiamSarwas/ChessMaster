@@ -6,9 +6,16 @@
 //  Copyright © 2015 Regan Sarwas. All rights reserved.
 //
 
-typealias Move = (start:Location, end:Location)
+// In chess, all moves require only a start location to an end location.
+// While castling involves two pieces/moves, the movement of the
+// king unabmiguously determines the start and end location of the rook.
+// Therefore, a castling move is specified by the movement of the king only.
 
-// MARK: Equatable
+// Obviously, not all possible moves are valid.
+// The validity of a move is determined by the rules of chess (Rules.swift),
+// given the board position at the time of the move.
+
+typealias Move = (start:Location, end:Location)
 
 func == (left:Move, right:Move) -> Bool {
     return (left.start == right.start) && (left.end == right.end)
