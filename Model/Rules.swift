@@ -112,7 +112,7 @@ struct Rules {
             return moves
         }
         if piece == Piece(color: .White, kind: .King) {
-            if game.whiteHasKingSideCastleAvailable {
+            if game.castlingOptions.contains(.WhiteKingSide) {
                 if game.board[Location(rank: 1, file: .F)] == nil &&
                     game.board[Location(rank: 1, file: .G)] == nil {
                         let intermediateMove = (start:Location(rank: 1, file: .E),
@@ -122,7 +122,7 @@ struct Rules {
                         }
                 }
             }
-            if game.whiteHasQueenSideCastleAvailable {
+            if game.castlingOptions.contains(.WhiteQueenSide) {
                 if game.board[Location(rank: 1, file: .B)] == nil &&
                     game.board[Location(rank: 1, file: .C)] == nil &&
                     game.board[Location(rank: 1, file: .D)] == nil {
@@ -135,7 +135,7 @@ struct Rules {
             }
         }
         if piece == Piece(color: .Black, kind: .King) {
-            if game.blackHasKingSideCastleAvailable {
+            if game.castlingOptions.contains(.BlackKingSide) {
                 if game.board[Location(rank: 8, file: .F)] == nil &&
                     game.board[Location(rank: 8, file: .G)] == nil {
                         let intermediateMove = (start:Location(rank: 8, file: .E),
@@ -145,7 +145,7 @@ struct Rules {
                         }
                 }
             }
-            if game.blackHasQueenSideCastleAvailable {
+            if game.castlingOptions.contains(.BlackQueenSide) {
                 if game.board[Location(rank: 8, file: .B)] == nil &&
                     game.board[Location(rank: 8, file: .C)] == nil &&
                     game.board[Location(rank: 8, file: .D)] == nil {

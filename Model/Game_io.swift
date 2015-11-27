@@ -49,15 +49,13 @@ extension Game: CustomStringConvertible, CustomDebugStringConvertible {
         get {
             let fenGame = fenBoard(self.board)
             let enPassant = enPassantTargetSquare == nil ? "-" : "\(enPassantTargetSquare!)"
-            let castle = (whiteHasKingSideCastleAvailable ? "K" : "") +
-                (whiteHasQueenSideCastleAvailable ? "Q" : "") +
-                (blackHasKingSideCastleAvailable ? "k" : "") +
-                (blackHasQueenSideCastleAvailable ? "q" : "") +
-                (whiteHasKingSideCastleAvailable ||
-                    whiteHasQueenSideCastleAvailable ||
-                    blackHasKingSideCastleAvailable ||
-                    blackHasQueenSideCastleAvailable ? "" : "-")
             let color = activeColor == .White ? "w" : "b"
+            let castle =
+                (castlingOptions.contains(.WhiteKingSide) ? "K" : "") +
+                (castlingOptions.contains(.WhiteQueenSide) ? "Q" : "") +
+                (castlingOptions.contains(.BlackQueenSide) ? "k" : "") +
+                (castlingOptions.contains(.BlackQueenSide) ? "q" : "") +
+                (castlingOptions.contains(.None) ? "-" : "")
             return "\(fenGame) \(color) \(castle) \(enPassant) \(halfMoveClock) \(fullMoveNumber)"
         }
     }
@@ -73,17 +71,14 @@ extension String {
         }
         if let piecePlacement = parseFenPiecePlacement(parts[0]) {
             if let activeColor = parseFenActiveColor(parts[1]) {
-                if let (wk,wq,bk,bq) = parseFenCastlingAvailability(parts[2]) {
+                if let castlingOptions = parseFenCastlingOptions(parts[2]) {
                     let (ok, enPassant) = parseFenEnPassantTargetSquare(parts[3])
                     if ok {
                         if let halfMoveClock = parseFenHalfMoveClock(parts[4]) {
                             if let fullMoveNumber = parseFenFullMoveNumber(parts[5]) {
                                 return Game(board: piecePlacement,
                                     activeColor: activeColor,
-                                    whiteHasKingSideCastleAvailable: wk,
-                                    whiteHasQueenSideCastleAvailable: wq,
-                                    blackHasKingSideCastleAvailable: bk,
-                                    blackHasQueenSideCastleAvailable: bq,
+                                    castlingOptions: castlingOptions,
                                     enPassantTargetSquare: enPassant,
                                     halfMoveClock: halfMoveClock,
                                     fullMoveNumber: fullMoveNumber)
@@ -122,28 +117,28 @@ extension String {
         return nil
     }
     
-    func parseFenCastlingAvailability(str:String) -> (Bool, Bool, Bool, Bool)? {
+    func parseFenCastlingOptions(str:String) -> CastlingOptions? {
         var s = str
-        if s == "-" { return (false, false, false, false) }
-        var (wk, wq, bk, bq) = (false, false, false, false)
+        var castlingOptions = CastlingOptions.None
+        if s == "-" { return castlingOptions }
         if s.hasPrefix("K") {
-            wk = true
+            castlingOptions.insert(.WhiteKingSide)
             s.removeAtIndex(s.startIndex)
         }
         if s.hasPrefix("Q") {
-            wq = true
+            castlingOptions.insert(.WhiteQueenSide)
             s.removeAtIndex(s.startIndex)
         }
         if s.hasPrefix("k") {
-            bk = true
+            castlingOptions.insert(.BlackKingSide)
             s.removeAtIndex(s.startIndex)
         }
         if s.hasPrefix("q") {
-            bq = true
+            castlingOptions.insert(.BlackQueenSide)
             s.removeAtIndex(s.startIndex)
         }
         if s.characters.count == 0 {
-            return (wk, wq, bk, bq)
+            return castlingOptions
         } else {
             print("FEN Castle Availability '\(str)' has unexpected characters or order")
         }

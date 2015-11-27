@@ -11,10 +11,7 @@ typealias Board = [Location: Piece]
 class Game {
     private var _board: Board
     private var _activeColor: Color
-    private var _whiteHasKingSideCastleAvailable: Bool
-    private var _whiteHasQueenSideCastleAvailable: Bool
-    private var _blackHasKingSideCastleAvailable: Bool
-    private var _blackHasQueenSideCastleAvailable: Bool
+    private var _castlingOptions: CastlingOptions
     private var _enPassantTargetSquare: Location?
     private var _halfMoveClock: Int
     private var _fullMoveNumber: Int
@@ -28,20 +25,14 @@ class Game {
     
     init (board: [Location: Piece],
           activeColor: Color,
-          whiteHasKingSideCastleAvailable: Bool,
-          whiteHasQueenSideCastleAvailable: Bool,
-          blackHasKingSideCastleAvailable: Bool,
-          blackHasQueenSideCastleAvailable: Bool,
+          castlingOptions: CastlingOptions,
           enPassantTargetSquare: Location?,
           halfMoveClock: Int,
           fullMoveNumber: Int)
     {
         _board = board
         _activeColor = activeColor
-        _whiteHasKingSideCastleAvailable = whiteHasKingSideCastleAvailable
-        _whiteHasQueenSideCastleAvailable = whiteHasQueenSideCastleAvailable
-        _blackHasKingSideCastleAvailable = blackHasKingSideCastleAvailable
-        _blackHasQueenSideCastleAvailable = blackHasQueenSideCastleAvailable
+        _castlingOptions = castlingOptions
         _enPassantTargetSquare = enPassantTargetSquare
         _halfMoveClock = halfMoveClock
         _fullMoveNumber = fullMoveNumber
@@ -61,10 +52,7 @@ class Game {
         self.init(
             board: Rules.defaultStartingBoard,
             activeColor: Color.White,
-            whiteHasKingSideCastleAvailable: true,
-            whiteHasQueenSideCastleAvailable: true,
-            blackHasKingSideCastleAvailable: true,
-            blackHasQueenSideCastleAvailable: true,
+            castlingOptions: CastlingOptions.All,
             enPassantTargetSquare: nil,
             halfMoveClock: 0,
             fullMoveNumber: 0)
@@ -89,22 +77,10 @@ class Game {
         get { return _activeColor == .White ? .Black : .White }
     }
     
-    var whiteHasKingSideCastleAvailable: Bool {
-        get { return _whiteHasKingSideCastleAvailable }
+    var castlingOptions: CastlingOptions {
+        get { return _castlingOptions }
     }
-    
-    var whiteHasQueenSideCastleAvailable: Bool {
-        get { return _whiteHasQueenSideCastleAvailable }
-    }
-    
-    var blackHasKingSideCastleAvailable: Bool {
-        get { return _blackHasKingSideCastleAvailable }
-    }
-    
-    var blackHasQueenSideCastleAvailable: Bool {
-        get { return _blackHasQueenSideCastleAvailable }
-    }
-    
+
     var enPassantTargetSquare: Location? {
         get { return _enPassantTargetSquare }
     }
@@ -244,24 +220,22 @@ class Game {
     func updateCastlingOptions(location:Location) {
         //Options decrease if king or rook moves
         if location == Location(rank:1, file:.E) {
-            _whiteHasKingSideCastleAvailable = false
-            _whiteHasQueenSideCastleAvailable = false
+            _castlingOptions.subtractInPlace(.BothWhite)
         }
         if location == Location(rank:1, file:.A) {
-            _whiteHasQueenSideCastleAvailable = false
+            _castlingOptions.subtractInPlace(.WhiteQueenSide)
         }
         if location == Location(rank:1, file:.H) {
-            _whiteHasKingSideCastleAvailable = false
+            _castlingOptions.subtractInPlace(.WhiteKingSide)
         }
         if location == Location(rank:8, file:.E) {
-            _blackHasKingSideCastleAvailable = false
-            _blackHasQueenSideCastleAvailable = false
+            _castlingOptions.subtractInPlace(.BothBlack)
         }
         if location == Location(rank:8, file:.A) {
-            _blackHasQueenSideCastleAvailable = false
+            _castlingOptions.subtractInPlace(.BlackQueenSide)
         }
         if location == Location(rank:8, file:.H) {
-            _blackHasKingSideCastleAvailable = false
+            _castlingOptions.subtractInPlace(.BlackKingSide)
         }
     }
 
