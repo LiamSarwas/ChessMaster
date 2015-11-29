@@ -9,6 +9,7 @@
 class Game {
     private var _history: History
     private var _boardState: BoardState
+    private var _currentState: Int
     
     private var _lastCapturedPiece: Piece?
     private var _isActiveColorInCheck: Bool
@@ -21,6 +22,7 @@ class Game {
     {
         _history = []
         _boardState = boardState
+        _currentState = 0
 
         _isOfferOfDrawAvailable = false
         
@@ -39,32 +41,36 @@ class Game {
 
     //MARK: Getters
     
-    var board: Board {
-        get { return _boardState.board }
+    var boardState: BoardState {
+        return _currentState < _history.count ? _history[_currentState].board : _boardState
     }
-    
+
+    var board: Board {
+        get { return boardState.board }
+    }
+
     var activeColor: Color {
-        get { return _boardState.activeColor }
+        get { return boardState.activeColor }
     }
     
     var inActiveColor: Color {
-        get { return _boardState.activeColor == .White ? .Black : .White }
+        get { return boardState.activeColor == .White ? .Black : .White }
     }
     
     var castlingOptions: CastlingOptions {
-        get { return _boardState.castlingOptions }
+        get { return boardState.castlingOptions }
     }
 
     var enPassantTargetSquare: Location? {
-        get { return _boardState.enPassantTargetSquare }
+        get { return boardState.enPassantTargetSquare }
     }
     
     var halfMoveClock: Int {
-        get { return _boardState.halfMoveClock }
+        get { return boardState.halfMoveClock }
     }
     
     var fullMoveNumber: Int {
-        get { return _boardState.fullMoveNumber }
+        get { return boardState.fullMoveNumber }
     }
     
     //MARK: Get Game Status
@@ -168,18 +174,18 @@ class Game {
                 fullMoveNumber: fullMoveNumber + (activeColor == .White ? 1 : 0)
             )
 
-            //updateCastlingOptions(move.start)
-            //_enPassantTargetSquare = newEnPassantTargetSquare
-            //_activeColor = inActiveColor
-            //_halfMoveClock = resetHalfMoveClock ? 0 : halfMoveClock + 1
-            //_fullMoveNumber += (activeColor == .White ? 1 : 0)
             _isOfferOfDrawAvailable = false
             endOfMoveChecks()
 
+            //Happens if you backup several moves, and then start to replay
+            //Since we can no longer redo moves, we need to trim the abandoned branch
+            while _currentState < _history.count {
+                _history.removeLast()
+            }
+            _history.append((board: _boardState, move: move))
+            _currentState += 1
             _boardState = newBoardState
-            
-            //FIXME: Save history
-            
+
         } else {
             print("Illegal Move from \(move.start) to \(move.end)")
         }
@@ -187,12 +193,14 @@ class Game {
     
     func undoMove() {
         //Undoes the last move
-        //FIXME: Implement
+        _currentState -= 1
     }
     
     func redoMove() {
         //Restores the last undone move
-        //FIXME: Implement
+        if _currentState < _history.count {
+            _currentState += 1
+        }
     }
     
     //MARK: Private methods
