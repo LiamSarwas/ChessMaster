@@ -130,8 +130,9 @@ class Game {
     
     func claimDraw()
     {
-        //Check rules for draw 9.2 & 9.3, and set _gameOver as appropriate
-        //FIXME: Implement
+        if _history.filter({$0.board == _boardState}).count >= 3 {
+            _gameOver = true
+        }
     }
     
     func makeMove(move:Move, promotionKind:Kind = .Queen) -> ()
@@ -146,7 +147,6 @@ class Game {
             let castelingRookMove = Rules.rookMoveWhileCastling(board, move: move)
             let promotionPiece = Rules.promotionPiece(board, move: move, promotionKind: promotionKind)
             let resetHalfMoveClock = Rules.resetHalfMoveClock(board, move: move)
-
 
             // Update State of Game
             var newBoard = board
@@ -209,7 +209,7 @@ class Game {
         _isActiveColorInCheck = Rules.isPlayerInCheck(board, kingsColor: activeColor)
         _activeColorHasMoves = Rules.doesActivePlayerHaveMoves(self)
         _winningColor = isCheckMate ? inActiveColor : nil
-        _gameOver = !_activeColorHasMoves
+        _gameOver = !_activeColorHasMoves || mandatoryDraw()
     }
     
     func newCastlingOptions(location:Location) -> CastlingOptions {
@@ -243,5 +243,9 @@ class Game {
             }
         }
         return nil
+    }
+
+    func mandatoryDraw() -> Bool {
+        return halfMoveClock == 75 || _history.filter({$0.board == _boardState}).count == 5
     }
 }
