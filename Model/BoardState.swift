@@ -6,8 +6,6 @@
 //  Copyright © 2015 Regan Sarwas. All rights reserved.
 //
 
-typealias Board = [Location: Piece]
-
 struct BoardState {
     let board: Board
     let activeColor: Color

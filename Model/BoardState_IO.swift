@@ -27,32 +27,8 @@ extension BoardState: CustomStringConvertible, CustomDebugStringConvertible {
     }
     
     var description_FEN: String {
-        get {
-            func fenBoard(board:Board) -> String {
-                var lines :[String] = []
-                for rank in [8,7,6,5,4,3,2,1] {
-                    var line = ""
-                    var emptyCount = 0
-                    for file in [File.A, .B, .C, .D, .E, .F, .G, .H] {
-                        if let piece = board[Location(rank:Rank(integerLiteral:rank), file:file)] {
-                            if 0 < emptyCount {
-                                line += "\(emptyCount)"
-                                emptyCount = 0
-                            }
-                            line += "\(piece.fen)"
-                        } else {
-                            emptyCount += 1
-                        }
-                    }
-                    if emptyCount > 0 {
-                        line += "\(emptyCount)"
-                    }
-                    lines.append(line)
-                }
-                return lines.joinWithSeparator("/")
-            }
-            
-            let fenGame = fenBoard(self.board)
+        get {            
+            let fenBoard = fenDescription(board)
             let enPassant = enPassantTargetSquare == nil ? "-" : "\(enPassantTargetSquare!)"
             let color = activeColor == .White ? "w" : "b"
             let castle =
@@ -61,7 +37,7 @@ extension BoardState: CustomStringConvertible, CustomDebugStringConvertible {
                 (castlingOptions.contains(.BlackQueenSide) ? "k" : "") +
                 (castlingOptions.contains(.BlackQueenSide) ? "q" : "") +
                 (castlingOptions.contains(.None) ? "-" : "")
-            return "\(fenGame) \(color) \(castle) \(enPassant) \(halfMoveClock) \(fullMoveNumber)"
+            return "\(fenBoard) \(color) \(castle) \(enPassant) \(halfMoveClock) \(fullMoveNumber)"
         }
     }
 }

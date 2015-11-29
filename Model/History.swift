@@ -8,6 +8,7 @@
 
 typealias History = [(board:BoardState,move:Move)]
 
+//TODO:  Make this global function an extension to History (if possible)
 func PGNstring(history:History) -> String
 {
     var response: String = ""
