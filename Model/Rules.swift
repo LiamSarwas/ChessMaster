@@ -373,6 +373,15 @@ struct Rules {
 
     //MARK: Default Starting Board
     
+    static let defaultStartingBoardState = BoardState(
+        board: Rules.defaultStartingBoard,
+        activeColor: Color.White,
+        castlingOptions: CastlingOptions.All,
+        enPassantTargetSquare: nil,
+        halfMoveClock: 0,
+        fullMoveNumber: 0
+    )
+
     static let defaultStartingBoard : Board = [
         Location(rank:1, file:.A): Piece(color:.White, kind:.Rook),
         Location(rank:1, file:.B): Piece(color:.White, kind:.Knight),

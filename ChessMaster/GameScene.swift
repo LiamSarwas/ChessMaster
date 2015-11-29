@@ -10,7 +10,7 @@ import SpriteKit
 
 class GameScene: SKScene {
     
-    var game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame!
+    var game = Game(boardState: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame!)
     //var game = "r1bqkb1r/8/8/8/8/8/8/R1BQKB1R b Q - 71 36".fenGame!
     var movingSprite : SKSpriteNode?
     var movedSprite : SKSpriteNode?

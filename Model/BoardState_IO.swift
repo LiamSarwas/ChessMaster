@@ -1,6 +1,6 @@
 //
-//  Game_io.swift
-//  Chess_cmd
+//  BoardState_IO.swift
+//  ChessMaster
 //
 //  Created by Regan Sarwas on 11/3/15.
 //  Copyright © 2015 Regan Sarwas. All rights reserved.
@@ -13,7 +13,7 @@
 // It is an ASCII character string composed of 6 required parts separated by a space
 // for additional details see section 16.1 at http://www.thechessdrum.net/PGN_Reference.txt
 
-extension Game: CustomStringConvertible, CustomDebugStringConvertible {
+extension BoardState: CustomStringConvertible, CustomDebugStringConvertible {
     var description: String {
         get {
             return description_FEN
@@ -69,7 +69,7 @@ extension Game: CustomStringConvertible, CustomDebugStringConvertible {
 //MARK: Input
 
 extension String {
-    var fenGame: Game? {
+    var fenGame: BoardState? {
         let parts = self.split(" ")
         if parts.count != 6 {
             print("FEN line '\(self)' does not have 6 parts")
@@ -82,7 +82,7 @@ extension String {
                     if ok {
                         if let halfMoveClock = parseFenHalfMoveClock(parts[4]) {
                             if let fullMoveNumber = parseFenFullMoveNumber(parts[5]) {
-                                return Game(board: piecePlacement,
+                                return BoardState(board: piecePlacement,
                                     activeColor: activeColor,
                                     castlingOptions: castlingOptions,
                                     enPassantTargetSquare: enPassant,

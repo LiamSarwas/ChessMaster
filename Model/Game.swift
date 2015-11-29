@@ -1,20 +1,14 @@
 //
 //  Game.swift
-//  Chess
+//  ChessMaster
 //
 //  Created by Regan Sarwas on 11/1/15.
 //  Copyright © 2015 Regan Sarwas. All rights reserved.
 //
 
-typealias Board = [Location: Piece]
-
 class Game {
-    private var _board: Board
-    private var _activeColor: Color
-    private var _castlingOptions: CastlingOptions
-    private var _enPassantTargetSquare: Location?
-    private var _halfMoveClock: Int
-    private var _fullMoveNumber: Int
+    private var _history: History
+    private var _boardState: BoardState
     
     private var _lastCapturedPiece: Piece?
     private var _isActiveColorInCheck: Bool
@@ -23,20 +17,11 @@ class Game {
     private var _gameOver: Bool
     private var _isOfferOfDrawAvailable: Bool
     
-    init (board: [Location: Piece],
-          activeColor: Color,
-          castlingOptions: CastlingOptions,
-          enPassantTargetSquare: Location?,
-          halfMoveClock: Int,
-          fullMoveNumber: Int)
+    init (boardState: BoardState)
     {
-        _board = board
-        _activeColor = activeColor
-        _castlingOptions = castlingOptions
-        _enPassantTargetSquare = enPassantTargetSquare
-        _halfMoveClock = halfMoveClock
-        _fullMoveNumber = fullMoveNumber
-        
+        _history = []
+        _boardState = boardState
+
         _isOfferOfDrawAvailable = false
         
         //Set the end of move variable to a best guess, so that self is fully initialized before calling any methods
@@ -46,51 +31,40 @@ class Game {
         //Set the end of move variables to the real values
         endOfMoveChecks()
     }
-    
-    convenience init()
-    {
-        self.init(
-            board: Rules.defaultStartingBoard,
-            activeColor: Color.White,
-            castlingOptions: CastlingOptions.All,
-            enPassantTargetSquare: nil,
-            halfMoveClock: 0,
-            fullMoveNumber: 0)
-    }
 
     func Clone() -> Game {
         return self
         //FIXME: Implement
     }
-    
+
     //MARK: Getters
     
     var board: Board {
-        get { return _board }
+        get { return _boardState.board }
     }
     
     var activeColor: Color {
-        get { return _activeColor }
+        get { return _boardState.activeColor }
     }
     
     var inActiveColor: Color {
-        get { return _activeColor == .White ? .Black : .White }
+        get { return _boardState.activeColor == .White ? .Black : .White }
     }
     
     var castlingOptions: CastlingOptions {
-        get { return _castlingOptions }
+        get { return _boardState.castlingOptions }
     }
 
     var enPassantTargetSquare: Location? {
-        get { return _enPassantTargetSquare }
+        get { return _boardState.enPassantTargetSquare }
     }
     
     var halfMoveClock: Int {
-        get { return _halfMoveClock }
+        get { return _boardState.halfMoveClock }
     }
     
     var fullMoveNumber: Int {
-        get { return _fullMoveNumber }
+        get { return _boardState.fullMoveNumber }
     }
     
     //MARK: Get Game Status
@@ -166,29 +140,43 @@ class Game {
             let castelingRookMove = Rules.rookMoveWhileCastling(board, move: move)
             let promotionPiece = Rules.promotionPiece(board, move: move, promotionKind: promotionKind)
             let resetHalfMoveClock = Rules.resetHalfMoveClock(board, move: move)
-            
+
+
             // Update State of Game
+            var newBoard = board
             _lastCapturedPiece = nil
             if let enPassantCaptureSquare = enPassantCaptureSquare(move) {
                 _lastCapturedPiece = board[enPassantCaptureSquare]
-                _board[enPassantCaptureSquare] = nil
+                newBoard[enPassantCaptureSquare] = nil
             }
             if _lastCapturedPiece == nil {
                 _lastCapturedPiece = board[move.end]
             }
-            _board[move.end] = promotionPiece == nil ? movingPiece : promotionPiece
-            _board[move.start] = nil
+            newBoard[move.end] = promotionPiece == nil ? movingPiece : promotionPiece
+            newBoard[move.start] = nil
             if castelingRookMove != nil {
-                _board[castelingRookMove!.end] = board[castelingRookMove!.start]!
-                _board[castelingRookMove!.start] = nil
+                newBoard[castelingRookMove!.end] = board[castelingRookMove!.start]!
+                newBoard[castelingRookMove!.start] = nil
             }
-            updateCastlingOptions(move.start)
-            _enPassantTargetSquare = newEnPassantTargetSquare
-            _activeColor = inActiveColor
+
+            let newBoardState = BoardState(
+                board: newBoard,
+                activeColor: inActiveColor,
+                castlingOptions: newCastlingOptions(move.start),
+                enPassantTargetSquare: newEnPassantTargetSquare,
+                halfMoveClock: resetHalfMoveClock ? 0 : halfMoveClock + 1,
+                fullMoveNumber: fullMoveNumber + (activeColor == .White ? 1 : 0)
+            )
+
+            //updateCastlingOptions(move.start)
+            //_enPassantTargetSquare = newEnPassantTargetSquare
+            //_activeColor = inActiveColor
+            //_halfMoveClock = resetHalfMoveClock ? 0 : halfMoveClock + 1
+            //_fullMoveNumber += (activeColor == .White ? 1 : 0)
             _isOfferOfDrawAvailable = false
-            _halfMoveClock = resetHalfMoveClock ? 0 : halfMoveClock + 1
-            _fullMoveNumber += (activeColor == .White ? 1 : 0)
             endOfMoveChecks()
+
+            _boardState = newBoardState
             
             //FIXME: Save history
             
@@ -216,26 +204,28 @@ class Game {
         _gameOver = !_activeColorHasMoves
     }
     
-    func updateCastlingOptions(location:Location) {
+    func newCastlingOptions(location:Location) -> CastlingOptions {
+        var newCastlingOptions = castlingOptions
         //Options decrease if king or rook moves
         if location == Location(rank:1, file:.E) {
-            _castlingOptions.subtractInPlace(.BothWhite)
+            newCastlingOptions.subtractInPlace(.BothWhite)
         }
         if location == Location(rank:1, file:.A) {
-            _castlingOptions.subtractInPlace(.WhiteQueenSide)
+            newCastlingOptions.subtractInPlace(.WhiteQueenSide)
         }
         if location == Location(rank:1, file:.H) {
-            _castlingOptions.subtractInPlace(.WhiteKingSide)
+            newCastlingOptions.subtractInPlace(.WhiteKingSide)
         }
         if location == Location(rank:8, file:.E) {
-            _castlingOptions.subtractInPlace(.BothBlack)
+            newCastlingOptions.subtractInPlace(.BothBlack)
         }
         if location == Location(rank:8, file:.A) {
-            _castlingOptions.subtractInPlace(.BlackQueenSide)
+            newCastlingOptions.subtractInPlace(.BlackQueenSide)
         }
         if location == Location(rank:8, file:.H) {
-            _castlingOptions.subtractInPlace(.BlackKingSide)
+            newCastlingOptions.subtractInPlace(.BlackKingSide)
         }
+        return newCastlingOptions
     }
 
     func enPassantCaptureSquare(move: Move) -> Location? {
