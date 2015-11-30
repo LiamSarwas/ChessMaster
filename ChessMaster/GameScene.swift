@@ -573,13 +573,15 @@ class GameScene: SKScene {
             sprites.append(spriteB)
             self.addChild(spriteB)
         }
-        
+
+        //Update the UI via the delegate
+        setMessage()
+
         let boardValue = Engine.evaluateBoard(game)
       //  let bestMove = Engine.getMove(game)
         
         print("The net board value is: \(boardValue)")
      //   print("The best move is: \(bestMove)")
-        setMessage()
     }
 
     func setMessage() {
@@ -588,18 +590,18 @@ class GameScene: SKScene {
             msg += " You are in Check."
         }
         if game.isOfferOfDrawAvailable {
-            msg += " \(game.inActiveColor) has offered a draw."
+            msg += " \(game.activeColor) has offered a draw."
         }
         if game.isGameOver {
             if let winner = game.winningColor {
                 if game.isCheckMate {
-                    "Game Over - \(winner) wins by checkmate!"
+                    msg = "Game Over - \(winner) wins by checkmate!"
                 } else {
                     msg = "Game Over - \(winner) wins by resignation."
                 }
             } else {
                 if game.isStaleMate {
-                    "Game Over - Draw by stalemate"
+                    msg = "Game Over - Draw by stalemate"
                 } else {
                     msg = "Game Over - Draw"
                 }
