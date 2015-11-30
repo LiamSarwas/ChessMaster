@@ -184,7 +184,7 @@ class Game {
                 castlingOptions: newCastlingOptions(move.start),
                 enPassantTargetSquare: newEnPassantTargetSquare,
                 halfMoveClock: resetHalfMoveClock ? 0 : halfMoveClock + 1,
-                fullMoveNumber: fullMoveNumber + (activeColor == .White ? 1 : 0)
+                fullMoveNumber: fullMoveNumber + (activeColor == .Black ? 1 : 0)
             )
 
             //Happens if you backup several moves, and then start to replay
@@ -207,10 +207,8 @@ class Game {
     func undoMove() {
         //Undoes the last move
         if 0 < _currentState {
-            _currentState += 1
+            _currentState -= 1
         }
-
-        _currentState -= 1
     }
     
     func redoMove() {
@@ -264,5 +262,28 @@ class Game {
 
     func mandatoryDraw() -> Bool {
         return halfMoveClock == 75 || _history.filter({$0.board == _boardState}).count == 5
+    }
+}
+
+//MARK: CustomDebugStringConvertible, CustomStringConvertible
+
+extension Game: CustomDebugStringConvertible, CustomStringConvertible {
+    var description: String {
+        return "\(boardState)"
+    }
+
+    var debugDescription: String {
+        return description
+    }
+}
+
+//MARK: String Extension
+
+extension String {
+    var fenGame: Game? {
+        if let boardState = self.fenBoard {
+            return Game(boardState: boardState)
+        }
+        return nil
     }
 }
