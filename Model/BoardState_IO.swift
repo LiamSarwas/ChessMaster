@@ -36,7 +36,7 @@ extension BoardState: CustomStringConvertible, CustomDebugStringConvertible {
                 (castlingOptions.contains(.WhiteQueenSide) ? "Q" : "") +
                 (castlingOptions.contains(.BlackQueenSide) ? "k" : "") +
                 (castlingOptions.contains(.BlackQueenSide) ? "q" : "") +
-                (castlingOptions.contains(.None) ? "-" : "")
+                (castlingOptions == .None ? "-" : "")
             return "\(fenBoard) \(color) \(castle) \(enPassant) \(halfMoveClock) \(fullMoveNumber)"
         }
     }
@@ -45,7 +45,7 @@ extension BoardState: CustomStringConvertible, CustomDebugStringConvertible {
 //MARK: Input
 
 extension String {
-    var fenGame: BoardState? {
+    var fenBoard: BoardState? {
         let parts = self.split(" ")
         if parts.count != 6 {
             print("FEN line '\(self)' does not have 6 parts")
