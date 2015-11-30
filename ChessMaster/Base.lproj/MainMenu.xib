@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9060"/>
+        <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -110,22 +111,139 @@
                 <rect key="frame" x="0.0" y="0.0" width="800" height="600"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="efi-QJ-Pbq">
+                        <rect key="frame" x="18" y="563" width="764" height="17"/>
+                        <animations/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Message" id="ZWo-BT-MyN">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="539" customClass="SKView">
-                        <rect key="frame" x="0.0" y="0.0" width="800" height="600"/>
+                        <rect key="frame" x="134" y="0.0" width="666" height="555"/>
                         <animations/>
                     </customView>
+                    <stackView distribution="fill" orientation="vertical" alignment="centerX" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qx2-Hx-u8V">
+                        <rect key="frame" x="20" y="360" width="106" height="195"/>
+                        <subviews>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wXw-l7-47f">
+                                <rect key="frame" x="15.5" y="167" width="75" height="32"/>
+                                <animations/>
+                                <buttonCell key="cell" type="push" title="Reset" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="bee-Iu-HLt">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="reset:" target="494" id="8AB-fc-p2A"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KuC-zJ-5RQ">
+                                <rect key="frame" x="12.5" y="138" width="81" height="32"/>
+                                <animations/>
+                                <buttonCell key="cell" type="push" title="Resign" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="xKc-ci-LCI">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="resign:" target="494" id="tbH-Mc-5GD"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="A9e-7Y-Zco">
+                                <rect key="frame" x="0.0" y="109" width="106" height="32"/>
+                                <animations/>
+                                <buttonCell key="cell" type="push" title="Offer Draw" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="YMo-yV-ao2">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="offerDraw:" target="494" id="uER-Wh-9h2"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="EgI-85-9gK">
+                                <rect key="frame" x="-6" y="80" width="118" height="32"/>
+                                <animations/>
+                                <buttonCell key="cell" type="push" title="Accept Draw" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ZN7-TJ-clG">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="acceptDraw:" target="494" id="mKf-CD-kYS"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="m1j-7X-Mfa">
+                                <rect key="frame" x="-1.5" y="51" width="109" height="32"/>
+                                <animations/>
+                                <buttonCell key="cell" type="push" title="Claim Draw" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ZLq-pG-QJi">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="claimDraw:" target="494" id="pS5-ar-OZx"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="rFd-b0-rPw">
+                                <rect key="frame" x="16.5" y="22" width="73" height="32"/>
+                                <animations/>
+                                <buttonCell key="cell" type="push" title="Undo" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="QtG-0K-g67">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="undo:" target="494" id="sSa-Yo-Ij5"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="T9g-nG-YaL">
+                                <rect key="frame" x="17" y="-7" width="72" height="32"/>
+                                <animations/>
+                                <buttonCell key="cell" type="push" title="Redo" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="DYZ-bk-n8m">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="redo:" target="494" id="nHv-bT-JwZ"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <animations/>
+                        <visibilityPriorities>
+                            <integer value="1000"/>
+                            <integer value="1000"/>
+                            <integer value="1000"/>
+                            <integer value="1000"/>
+                            <integer value="1000"/>
+                            <integer value="1000"/>
+                            <integer value="1000"/>
+                        </visibilityPriorities>
+                        <customSpacing>
+                            <real value="3.4028234663852886e+38"/>
+                            <real value="3.4028234663852886e+38"/>
+                            <real value="3.4028234663852886e+38"/>
+                            <real value="3.4028234663852886e+38"/>
+                            <real value="3.4028234663852886e+38"/>
+                            <real value="3.4028234663852886e+38"/>
+                            <real value="3.4028234663852886e+38"/>
+                        </customSpacing>
+                    </stackView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="539" firstAttribute="bottom" secondItem="372" secondAttribute="bottom" id="541"/>
-                    <constraint firstItem="539" firstAttribute="top" secondItem="372" secondAttribute="top" id="542"/>
                     <constraint firstItem="539" firstAttribute="trailing" secondItem="372" secondAttribute="trailing" id="543"/>
-                    <constraint firstItem="539" firstAttribute="leading" secondItem="372" secondAttribute="leading" id="544"/>
+                    <constraint firstItem="efi-QJ-Pbq" firstAttribute="leading" secondItem="372" secondAttribute="leading" constant="20" symbolic="YES" id="Ex1-hT-a2j"/>
+                    <constraint firstItem="efi-QJ-Pbq" firstAttribute="top" secondItem="372" secondAttribute="top" constant="20" symbolic="YES" id="Gnv-ec-J7H"/>
+                    <constraint firstItem="qx2-Hx-u8V" firstAttribute="leading" secondItem="372" secondAttribute="leading" constant="20" symbolic="YES" id="Hdl-dg-Fos"/>
+                    <constraint firstItem="qx2-Hx-u8V" firstAttribute="top" secondItem="539" secondAttribute="top" id="RDY-f6-CkB"/>
+                    <constraint firstItem="539" firstAttribute="top" secondItem="efi-QJ-Pbq" secondAttribute="bottom" constant="8" symbolic="YES" id="ept-kQ-cIA"/>
+                    <constraint firstItem="539" firstAttribute="leading" secondItem="qx2-Hx-u8V" secondAttribute="trailing" constant="8" symbolic="YES" id="j61-WV-juM"/>
+                    <constraint firstAttribute="trailing" secondItem="efi-QJ-Pbq" secondAttribute="trailing" constant="20" symbolic="YES" id="paM-Oo-fxX"/>
                 </constraints>
                 <animations/>
             </view>
+            <point key="canvasLocation" x="556" y="306"/>
         </window>
         <customObject id="494" customClass="AppDelegate" customModule="ChessMaster" customModuleProvider="target">
             <connections>
+                <outlet property="messageTextField" destination="efi-QJ-Pbq" id="aES-gF-IrZ"/>
                 <outlet property="skView" destination="539" id="540"/>
                 <outlet property="window" destination="371" id="532"/>
             </connections>

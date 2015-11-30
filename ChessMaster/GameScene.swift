@@ -10,7 +10,8 @@ import SpriteKit
 
 class GameScene: SKScene {
     
-    var game = Game(boardState: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame!)
+    var game:Game! = nil
+    var appDelegate: ChessSceneDelegate! = nil
     //var game = "r1bqkb1r/8/8/8/8/8/8/R1BQKB1R b Q - 71 36".fenGame!
     var movingSprite : SKSpriteNode?
     var movedSprite : SKSpriteNode?
@@ -66,6 +67,7 @@ class GameScene: SKScene {
         setUpBoard()
         
     }
+
     
     override func mouseDown(theEvent: NSEvent)
     {
@@ -222,11 +224,9 @@ class GameScene: SKScene {
             }
             
             self.removeChildrenInArray(yellowSquares)
-            self.removeChildrenInArray(sprites)
-            
+
             yellowSquares.removeAll()
-            sprites.removeAll()
-            
+
             setUpBoard()
         }
     }
@@ -328,6 +328,9 @@ class GameScene: SKScene {
     
     func setUpBoard()
     {
+        self.removeChildrenInArray(sprites)
+        sprites.removeAll()
+
         //set up board from the FEN
         for (location,piece) in game.board
         {
@@ -576,8 +579,34 @@ class GameScene: SKScene {
         
         print("The net board value is: \(boardValue)")
      //   print("The best move is: \(bestMove)")
+        setMessage()
     }
 
+    func setMessage() {
+        var msg = "\(game.activeColor)'s move."
+        if game.isActiveColorInCheck && !game.isCheckMate {
+            msg += " You are in Check."
+        }
+        if game.isOfferOfDrawAvailable {
+            msg += " \(game.inActiveColor) has offered a draw."
+        }
+        if game.isGameOver {
+            if let winner = game.winningColor {
+                if game.isCheckMate {
+                    "Game Over - \(winner) wins by checkmate!"
+                } else {
+                    msg = "Game Over - \(winner) wins by resignation."
+                }
+            } else {
+                if game.isStaleMate {
+                    "Game Over - Draw by stalemate"
+                } else {
+                    msg = "Game Over - Draw"
+                }
+            }
+        }
+        appDelegate.updateMessage(msg)
+    }
     override func update(currentTime: CFTimeInterval)
     {
         /* Called before each frame is rendered */
