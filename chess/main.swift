@@ -30,6 +30,21 @@ if let game = "rnbqkbnr/pppppppp/8/4k3/8/8/PPPPPPPP/RNBQKBNR b k f6 3 1".fenGame
     print("Not a valid FEN line")
 }
 
+print("Check make move")
+if let game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame {
+    print("  Start: \(game)")
+    var move = (Location(rank: 2, file: .E), Location(rank: 4, file: .E))
+    print("   Move: \(move)")
+    game.makeMove(move)
+    print("   End1: \(game)")
+    move = (Location(rank: 8, file: .B), Location(rank: 6, file: .C))
+    print("   Move: \(move)")
+    game.makeMove(move)
+    print("   End2: \(game)")
+} else {
+    print("  Fail - initial board is invalid")
+}
+
 /*
 let l = Location(rank:5, file:.E)
 print("North from \(l)")
