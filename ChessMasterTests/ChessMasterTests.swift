@@ -61,6 +61,101 @@ class ChessMasterTests: XCTestCase {
         }
     }
 
+    func testCastleBlackKingSide() {
+        if let game = "r3k2r/8/8/8/8/8/8/R3K2R b KQk - 0 1".fenGame {
+            let move = (start:Location(rank: 8, file: .E), end:Location(rank: 8, file: .G))
+            game.makeMove(move)
+            XCTAssertTrue("\(game)" == "r4rk1/8/8/8/8/8/8/R3K2R w KQ - 1 2")
+        } else {
+            XCTFail()
+        }
+    }
+
+    func testCastleBlackQueenSide() {
+        if let game = "r3k2r/8/8/8/8/8/8/R3K2R b KQkq - 0 1".fenGame {
+            let move = (start:Location(rank: 8, file: .E), end:Location(rank: 8, file: .C))
+            game.makeMove(move)
+            XCTAssertTrue("\(game)" == "2kr3r/8/8/8/8/8/8/R3K2R w KQ - 1 2")
+        } else {
+            XCTFail()
+        }
+    }
+    
+    func testCastleWhiteKingSide() {
+        if let game = "r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1".fenGame {
+            let move = (start:Location(rank: 1, file: .E), end:Location(rank: 1, file: .G))
+            game.makeMove(move)
+            XCTAssertTrue("\(game)" == "r3k2r/8/8/8/8/8/8/R4RK1 b kq - 1 1")
+        } else {
+            XCTFail()
+        }
+    }
+
+    func testCastleWhiteQueenSide() {
+        if let game = "r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1".fenGame {
+            let move = (start:Location(rank: 1, file: .E), end:Location(rank: 1, file: .C))
+            game.makeMove(move)
+            XCTAssertTrue("\(game)" == "r3k2r/8/8/8/8/8/8/2KR3R b kq - 1 1")
+        } else {
+            XCTFail()
+        }
+    }
+    
+    func testCastleOK() {
+        if let game = "4k2r/R7/8/8/8/8/8/3R4 b k - 0 1".fenGame {
+            let start = Location(rank: 8, file: .E)
+            let end = Location(rank: 8, file: .G)
+            XCTAssertTrue(game.validMoves(start).contains(end))
+        } else {
+            XCTFail()
+        }
+    }
+    func testCastleFailNotOption() {
+        if let game = "4k2r/R7/8/8/8/8/8/3R4 b q - 0 1".fenGame {
+            let start = Location(rank: 8, file: .E)
+            let end = Location(rank: 8, file: .G)
+            XCTAssertFalse(game.validMoves(start).contains(end))
+        } else {
+            XCTFail()
+        }
+    }
+    func testCastleFailPieceInWay() {
+        if let game = "4k1br/R7/8/8/8/8/8/3R4 b k - 0 1".fenGame {
+            let start = Location(rank: 8, file: .E)
+            let end = Location(rank: 8, file: .G)
+            XCTAssertFalse(game.validMoves(start).contains(end))
+        } else {
+            XCTFail()
+        }
+    }
+    func testCastleFailKingCheck() {
+        if let game = "4k2r/R7/8/8/8/8/8/4R3 b k - 0 1".fenGame {
+            let start = Location(rank: 8, file: .E)
+            let end = Location(rank: 8, file: .G)
+            XCTAssertFalse(game.validMoves(start).contains(end))
+        } else {
+            XCTFail()
+        }
+    }
+    func testCastleFailPassingCheck() {
+        if let game = "4k2r/R7/8/8/8/8/8/5R2 b k - 0 1".fenGame {
+            let start = Location(rank: 8, file: .E)
+            let end = Location(rank: 8, file: .G)
+            XCTAssertFalse(game.validMoves(start).contains(end))
+        } else {
+            XCTFail()
+        }
+    }
+    func testCastleFailDestibationCheck() {
+        if let game = "4k2r/R7/8/8/8/8/8/6R1 b k - 0 1".fenGame {
+            let start = Location(rank: 8, file: .E)
+            let end = Location(rank: 8, file: .G)
+            XCTAssertFalse(game.validMoves(start).contains(end))
+        } else {
+            XCTFail()
+        }
+    }
+
     func testPerformanceExample() {
         // This is an example of a performance test case.
         self.measureBlock {
