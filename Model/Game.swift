@@ -122,11 +122,17 @@ class Game {
     
     func offerDraw()
     {
+        if isGameOver {
+            return
+        }
         _isOfferOfDrawAvailable = true
     }
     
     func acceptDraw()
     {
+        if isGameOver {
+            return
+        }
         if isOfferOfDrawAvailable {
             _gameOver = true
         }
@@ -134,6 +140,9 @@ class Game {
     
     func claimDraw()
     {
+        if isGameOver {
+            return
+        }
         if _history.filter({$0.board == _boardState}).count >= 3 {
             _gameOver = true
         }
