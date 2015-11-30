@@ -34,6 +34,10 @@ class Game {
         endOfMoveChecks()
     }
 
+    convenience init() {
+        self.init(boardState: Rules.defaultStartingBoardState)
+    }
+
     func Clone() -> Game {
         return self
         //FIXME: Implement
@@ -174,9 +178,6 @@ class Game {
                 fullMoveNumber: fullMoveNumber + (activeColor == .White ? 1 : 0)
             )
 
-            _isOfferOfDrawAvailable = false
-            endOfMoveChecks()
-
             //Happens if you backup several moves, and then start to replay
             //Since we can no longer redo moves, we need to trim the abandoned branch
             while _currentState < _history.count {
@@ -186,6 +187,9 @@ class Game {
             _currentState += 1
             _boardState = newBoardState
 
+            _isOfferOfDrawAvailable = false
+            endOfMoveChecks()
+
         } else {
             print("Illegal Move from \(move.start) to \(move.end)")
         }
@@ -193,6 +197,10 @@ class Game {
     
     func undoMove() {
         //Undoes the last move
+        if 0 < _currentState {
+            _currentState += 1
+        }
+
         _currentState -= 1
     }
     
