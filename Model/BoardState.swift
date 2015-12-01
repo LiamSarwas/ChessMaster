@@ -13,6 +13,10 @@ struct BoardState {
     let enPassantTargetSquare: Location?
     let halfMoveClock: Int
     let fullMoveNumber: Int
+
+    var inActiveColor : Color {
+        return activeColor == .White ? .Black : .White 
+    }
 }
 
 extension BoardState : Equatable {}

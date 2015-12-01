@@ -154,38 +154,7 @@ class Game {
             return
         }
         if validMoves(move.start).contains(move.end) {
-            // Save some state at beginning of move
-            let movingPiece = board[move.start]!
-            let newEnPassantTargetSquare = Rules.enPassantTargetSquare(board, move:move)
-            let castelingRookMove = Rules.rookMoveWhileCastling(board, move: move)
-            let promotionPiece = Rules.promotionPiece(board, move: move, promotionKind: promotionKind)
-            let resetHalfMoveClock = Rules.resetHalfMoveClock(board, move: move)
-
-            // Update State of Game
-            var newBoard = board
-            _lastCapturedPiece = nil
-            if let enPassantCaptureSquare = enPassantCaptureSquare(move) {
-                _lastCapturedPiece = board[enPassantCaptureSquare]
-                newBoard[enPassantCaptureSquare] = nil
-            }
-            if _lastCapturedPiece == nil {
-                _lastCapturedPiece = board[move.end]
-            }
-            newBoard[move.end] = promotionPiece == nil ? movingPiece : promotionPiece
-            newBoard[move.start] = nil
-            if castelingRookMove != nil {
-                newBoard[castelingRookMove!.end] = board[castelingRookMove!.start]!
-                newBoard[castelingRookMove!.start] = nil
-            }
-
-            let newBoardState = BoardState(
-                board: newBoard,
-                activeColor: inActiveColor,
-                castlingOptions: newCastlingOptions(move.start),
-                enPassantTargetSquare: newEnPassantTargetSquare,
-                halfMoveClock: resetHalfMoveClock ? 0 : halfMoveClock + 1,
-                fullMoveNumber: fullMoveNumber + (activeColor == .Black ? 1 : 0)
-            )
+            let (newBoardState,lastCapturedPiece) = Rules.makeMove(self, move: move)
 
             //Happens if you backup several moves, and then start to replay
             //Since we can no longer redo moves, we need to trim the abandoned branch
@@ -195,10 +164,10 @@ class Game {
             _history.append((board: _boardState, move: move))
             _currentState += 1
             _boardState = newBoardState
+            _lastCapturedPiece = lastCapturedPiece
 
             _isOfferOfDrawAvailable = false
             endOfMoveChecks()
-
         } else {
             print("Illegal Move from \(move.start) to \(move.end)")
         }
@@ -227,38 +196,6 @@ class Game {
         _gameOver = !_activeColorHasMoves || mandatoryDraw()
     }
     
-    func newCastlingOptions(location:Location) -> CastlingOptions {
-        var newCastlingOptions = castlingOptions
-        //Options decrease if king or rook moves
-        if location == Location(rank:1, file:.E) {
-            newCastlingOptions.subtractInPlace(.BothWhite)
-        }
-        if location == Location(rank:1, file:.A) {
-            newCastlingOptions.subtractInPlace(.WhiteQueenSide)
-        }
-        if location == Location(rank:1, file:.H) {
-            newCastlingOptions.subtractInPlace(.WhiteKingSide)
-        }
-        if location == Location(rank:8, file:.E) {
-            newCastlingOptions.subtractInPlace(.BothBlack)
-        }
-        if location == Location(rank:8, file:.A) {
-            newCastlingOptions.subtractInPlace(.BlackQueenSide)
-        }
-        if location == Location(rank:8, file:.H) {
-            newCastlingOptions.subtractInPlace(.BlackKingSide)
-        }
-        return newCastlingOptions
-    }
-
-    func enPassantCaptureSquare(move: Move) -> Location? {
-        if let piece = board[move.start] {
-            if piece.kind == .Pawn && move.end == enPassantTargetSquare {
-                return Location(rank:move.start.rank, file:move.end.file)
-            }
-        }
-        return nil
-    }
 
     func mandatoryDraw() -> Bool {
         return halfMoveClock == 75 || _history.filter({$0.board == _boardState}).count == 5

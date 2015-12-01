@@ -365,10 +365,81 @@ struct Rules {
         }
         return false
     }
-    
+
+    static func makeMove(game:Game, move:Move, promotionKind:Kind = .Queen) -> (BoardState, Piece?) {
+        // Save some state at beginning of move
+        let boardState = game.boardState
+        let board = boardState.board
+        let movingPiece = board[move.start]!
+        let newEnPassantTargetSquare = Rules.enPassantTargetSquare(board, move:move)
+        let castelingRookMove = Rules.rookMoveWhileCastling(board, move: move)
+        let promotionPiece = Rules.promotionPiece(board, move: move, promotionKind: promotionKind)
+        let resetHalfMoveClock = Rules.resetHalfMoveClock(board, move: move)
+
+        // Update State of Game
+        var newBoard = board
+        var lastCapturedPiece: Piece? = nil
+        if let enPassantCaptureSquare = Rules.enPassantCaptureSquare(boardState, move:move) {
+            lastCapturedPiece = board[enPassantCaptureSquare]
+            newBoard[enPassantCaptureSquare] = nil
+        }
+        if lastCapturedPiece == nil {
+            lastCapturedPiece = board[move.end]
+        }
+        newBoard[move.end] = promotionPiece == nil ? movingPiece : promotionPiece
+        newBoard[move.start] = nil
+        if castelingRookMove != nil {
+            newBoard[castelingRookMove!.end] = board[castelingRookMove!.start]!
+            newBoard[castelingRookMove!.start] = nil
+        }
+
+        let newBoardState = BoardState(
+            board: newBoard,
+            activeColor: boardState.inActiveColor,
+            castlingOptions: Rules.newCastlingOptions(boardState.castlingOptions, location: move.start),
+            enPassantTargetSquare: newEnPassantTargetSquare,
+            halfMoveClock: resetHalfMoveClock ? 0 : boardState.halfMoveClock + 1,
+            fullMoveNumber: boardState.fullMoveNumber + (boardState.activeColor == .Black ? 1 : 0)
+        )
+        return (newBoardState, lastCapturedPiece)
+    }
+
     static func explainMove(game:Game, move:Move) -> String {
         return "explain \(move)"
         //FIXME: Implement
+    }
+
+    static func newCastlingOptions(castlingOptions: CastlingOptions,location:Location) -> CastlingOptions {
+        var newCastlingOptions = castlingOptions
+        //Options decrease if king or rook moves
+        if location == Location(rank:1, file:.E) {
+            newCastlingOptions.subtractInPlace(.BothWhite)
+        }
+        if location == Location(rank:1, file:.A) {
+            newCastlingOptions.subtractInPlace(.WhiteQueenSide)
+        }
+        if location == Location(rank:1, file:.H) {
+            newCastlingOptions.subtractInPlace(.WhiteKingSide)
+        }
+        if location == Location(rank:8, file:.E) {
+            newCastlingOptions.subtractInPlace(.BothBlack)
+        }
+        if location == Location(rank:8, file:.A) {
+            newCastlingOptions.subtractInPlace(.BlackQueenSide)
+        }
+        if location == Location(rank:8, file:.H) {
+            newCastlingOptions.subtractInPlace(.BlackKingSide)
+        }
+        return newCastlingOptions
+    }
+
+    static func enPassantCaptureSquare(boardState: BoardState, move: Move) -> Location? {
+        if let piece = boardState.board[move.start] {
+            if piece.kind == .Pawn && move.end == boardState.enPassantTargetSquare {
+                return Location(rank:move.start.rank, file:move.end.file)
+            }
+        }
+        return nil
     }
 
     //MARK: Default Starting Board
