@@ -9,7 +9,7 @@
 class Game {
     private var _history: History
     private var _boardState: BoardState
-    private var _currentState: Int
+    private var _currentStateIndex: Int
     
     private var _lastCapturedPiece: Piece?
     private var _isActiveColorInCheck: Bool
@@ -22,7 +22,7 @@ class Game {
     {
         _history = []
         _boardState = boardState
-        _currentState = 0
+        _currentStateIndex = 0
 
         _isOfferOfDrawAvailable = false
         
@@ -38,15 +38,10 @@ class Game {
         self.init(boardState: Rules.defaultStartingBoardState)
     }
 
-    func Clone() -> Game {
-        return self
-        //FIXME: Implement
-    }
-
     //MARK: Getters
     
     var boardState: BoardState {
-        return _currentState < _history.count ? _history[_currentState].board : _boardState
+        return _currentStateIndex < _history.count ? _history[_currentStateIndex].board : _boardState
     }
 
     var board: Board {
@@ -106,10 +101,18 @@ class Game {
     var winningColor: Color? {
         get { return _winningColor }
     }
-    
+
+    var isOptionalDraw: Bool {
+        return 50 <= halfMoveClock || 3 <= _history.filter({$0.board == _boardState}).count
+    }
+
+    var isMandatoryDraw: Bool {
+        return 75 <= halfMoveClock || 5 <= _history.filter({$0.board == _boardState}).count
+    }
+
     func validMoves(start:Location) -> [Location]
     {
-        return Rules.validMoves(self, start:start)
+        return Rules.validMoves(boardState, start:start)
     }
     
     //MARK:  Moves
@@ -143,7 +146,7 @@ class Game {
         if isGameOver {
             return
         }
-        if _history.filter({$0.board == _boardState}).count >= 3 {
+        if isOptionalDraw {
             _gameOver = true
         }
     }
@@ -153,20 +156,18 @@ class Game {
         if isGameOver {
             return
         }
-        if validMoves(move.start).contains(move.end) {
-            let (newBoardState,lastCapturedPiece) = Rules.makeMove(self, move: move)
+        if let (newBoardState,lastCapturedPiece) = Rules.makeMove(boardState, move: move) {
 
             //Happens if you backup several moves, and then start to replay
             //Since we can no longer redo moves, we need to trim the abandoned branch
-            while _currentState < _history.count {
+            while _currentStateIndex < _history.count {
                 _history.removeLast()
             }
             _history.append((board: _boardState, move: move))
-            _currentState += 1
+            _currentStateIndex += 1
             _boardState = newBoardState
             _lastCapturedPiece = lastCapturedPiece
 
-            _isOfferOfDrawAvailable = false
             endOfMoveChecks()
         } else {
             print("Illegal Move from \(move.start) to \(move.end)")
@@ -175,30 +176,26 @@ class Game {
     
     func undoMove() {
         //Undoes the last move
-        if 0 < _currentState {
-            _currentState -= 1
+        if 0 < _currentStateIndex {
+            _currentStateIndex -= 1
         }
     }
     
     func redoMove() {
         //Restores the last undone move
-        if _currentState < _history.count {
-            _currentState += 1
+        if _currentStateIndex < _history.count {
+            _currentStateIndex += 1
         }
     }
     
     //MARK: Private methods
     
     func endOfMoveChecks() {
+        _isOfferOfDrawAvailable = false
         _isActiveColorInCheck = Rules.isPlayerInCheck(board, kingsColor: activeColor)
-        _activeColorHasMoves = Rules.doesActivePlayerHaveMoves(self)
+        _activeColorHasMoves = Rules.doesActivePlayerHaveMoves(boardState)
         _winningColor = isCheckMate ? inActiveColor : nil
-        _gameOver = !_activeColorHasMoves || mandatoryDraw()
-    }
-    
-
-    func mandatoryDraw() -> Bool {
-        return halfMoveClock == 75 || _history.filter({$0.board == _boardState}).count == 5
+        _gameOver = !_activeColorHasMoves || isMandatoryDraw
     }
 }
 
