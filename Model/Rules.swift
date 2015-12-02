@@ -244,8 +244,7 @@ struct Rules {
     }
 
     static func isPlayerInCheck(board:Board, kingsColor:Color) -> Bool{
-            //returns true if the player with color is in check
-
+        //returns true if the player with color is in check
         func findKing(board:Board, color:Color) -> Location? {
             let king = Piece(color:color, kind: .King)
             for (location,piece) in board {

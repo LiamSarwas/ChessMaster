@@ -7,27 +7,19 @@
 //
 
 class Game {
-    private var _history: History
     private var _boardState: BoardState
-    private var _currentStateIndex: Int
+    private var _history: History = []
+    private var _currentStateIndex = 0 //The length of the array (one more than the stack)
     
     private var _lastCapturedPiece: Piece?
+    private var _isOfferOfDrawAvailable = false
+    private var _gameOver = false
     private var _winningColor: Color?
-    private var _gameOver: Bool
-    private var _isOfferOfDrawAvailable: Bool
-    
+
     init (boardState: BoardState)
     {
-        _history = []
         _boardState = boardState
-        _currentStateIndex = 0
-
-        _isOfferOfDrawAvailable = false
-        _gameOver = false
-
-        //Set the end of move variable to a best guess, so that self is fully initialized before calling any methods
-        //Set the end of move variables to the real values
-        endOfMoveChecks()
+        CheckForGameOver()
     }
 
     convenience init() {
@@ -109,24 +101,24 @@ class Game {
     
     func makeMove(move:Move, promotionKind:Kind = .Queen) -> ()
     {
-        if isGameOver {
-            return
-        }
-        if let (newBoardState,lastCapturedPiece) = Rules.makeMove(boardState, move: move) {
+        if !isGameOver {
+            if let (newBoardState,lastCapturedPiece) = Rules.makeMove(boardState, move: move) {
+                // Making a valid move implicitly rejects an offer for a draw
+                _isOfferOfDrawAvailable = false
 
-            //Happens if you backup several moves, and then start to replay
-            //Since we can no longer redo moves, we need to trim the abandoned branch
-            while _currentStateIndex < _history.count {
-                _history.removeLast()
+                //If we make a valid move after 'undo's without matching 'redo's, we need to
+                //erase the abandoned state on the history stack
+                while _currentStateIndex < _history.count {
+                    (_boardState,_) = _history.removeLast()
+                }
+                _history.append((board: boardState, move: move))
+                _currentStateIndex += 1
+                _boardState = newBoardState
+                _lastCapturedPiece = lastCapturedPiece
+                CheckForGameOver()
+            } else {
+                print("Illegal Move from \(move.start) to \(move.end) for \(boardState)")
             }
-            _history.append((board: _boardState, move: move))
-            _currentStateIndex += 1
-            _boardState = newBoardState
-            _lastCapturedPiece = lastCapturedPiece
-
-            endOfMoveChecks()
-        } else {
-            print("Illegal Move from \(move.start) to \(move.end)")
         }
     }
     
@@ -134,6 +126,9 @@ class Game {
         //Undoes the last move
         if 0 < _currentStateIndex {
             _currentStateIndex -= 1
+            if isGameOver {
+                CheckForGameOver() // Will undo the game over state
+            }
         }
     }
     
@@ -141,13 +136,13 @@ class Game {
         //Restores the last undone move
         if _currentStateIndex < _history.count {
             _currentStateIndex += 1
+            CheckForGameOver()
         }
     }
     
     //MARK: Private methods
     
-    func endOfMoveChecks() {
-        _isOfferOfDrawAvailable = false
+    func CheckForGameOver() {
         _winningColor = isCheckMate ? boardState.inActiveColor : nil
         _gameOver = !boardState.activeColorHasMoves || isMandatoryDraw
     }

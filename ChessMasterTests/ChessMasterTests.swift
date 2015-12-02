@@ -156,11 +156,29 @@ class ChessMasterTests: XCTestCase {
         }
     }
 
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
+    func testPerformanceExample1() {
+        let game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame!
         self.measureBlock {
-            // Put the code you want to measure the time of here.
+            game.boardState.inActiveColor
         }
     }
-    
+    func testPerformanceExample2() {
+        let game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame!
+        self.measureBlock {
+            game.boardState.isActiveColorInCheck
+        }
+    }
+    func testPerformanceExample3() {
+        let game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame!
+        self.measureBlock {
+            game.boardState.activeColorHasMoves
+        }
+    }
+    func testPerformanceExample4() {
+        let game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame!
+        self.measureBlock {
+            game.CheckForGameOver()
+        }
+    }
+
 }
