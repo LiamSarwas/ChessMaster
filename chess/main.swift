@@ -21,7 +21,7 @@ if let game = "rnbqkbnr/pppppppp/8/4k3/8/8/PPPPPPPP/RNBQKBNR b k f6 3 1".fenGame
     
     print("Check modifying board does not change game")
     //game.board[Location(rank:1, file:.A)] = nil  //compiler error: board is a get-only property
-    var myboard = game.board
+    var myboard = game.boardState.board
     myboard[Location(rank:8, file:.A)] = nil
     print("myboard: \(fenDescription(myboard))")
     print("game: \(game)")

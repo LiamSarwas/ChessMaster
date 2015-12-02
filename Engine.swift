@@ -57,7 +57,7 @@ struct Engine
     static func getAllMoves(game: Game) -> [(Location, Location)]
     {
         var moves : [(Location, Location)] = []
-        for (location, _) in game.board
+        for (location, _) in game.boardState.board
         {
             moves += mapLocToMove(location, game: game)
         }
@@ -69,7 +69,7 @@ struct Engine
     //No reason for it not to (except needing to refactor code)
     static func mapLocToMove(location: Location, game: Game) -> [(Location, Location)]
     {
-        let moveEnds = game.validMoves(location)
+        let moveEnds = Rules.validMoves(game.boardState, start: location)
         var allMoves : [(Location, Location)] = []
         for loc in moveEnds
         {
@@ -84,7 +84,7 @@ struct Engine
         var whiteBoardValue = 0
         var blackBoardValue = 0
         
-        for (location, piece) in game.board
+        for (location, piece) in game.boardState.board
         {
             if piece.color == .White
             {
@@ -157,7 +157,7 @@ struct Engine
         
         boardValue = whiteBoardValue - blackBoardValue
         
-        if game.activeColor == .Black
+        if game.boardState.activeColor == .Black
         {
             boardValue *= -1
         }

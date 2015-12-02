@@ -89,7 +89,7 @@ class GameScene: SKScene {
       
         if let validLocation = convertToLocation(location)
         {
-            validLocations = game.validMoves(validLocation)
+            validLocations = Rules.validMoves(game.boardState, start: validLocation)
         }
         else
         {
@@ -332,7 +332,7 @@ class GameScene: SKScene {
         sprites.removeAll()
 
         //set up board from the FEN
-        for (location,piece) in game.board
+        for (location,piece) in game.boardState.board
         {
             if piece.color == .White
             {
@@ -557,7 +557,7 @@ class GameScene: SKScene {
         }
         
         //Add a turn display
-        if game.activeColor == .White
+        if game.boardState.activeColor == .White
         {
             let spriteW = SKSpriteNode(imageNamed: "W")
             spriteW.position = CGPointMake(CGFloat(740), CGFloat(100))
@@ -585,12 +585,12 @@ class GameScene: SKScene {
     }
 
     func setMessage() {
-        var msg = "\(game.activeColor)'s move."
-        if game.isActiveColorInCheck && !game.isCheckMate {
+        var msg = "\(game.boardState.activeColor)'s move."
+        if game.boardState.isActiveColorInCheck && !game.isCheckMate {
             msg += " You are in Check."
         }
         if game.isOfferOfDrawAvailable {
-            msg += " \(game.activeColor) has offered a draw."
+            msg += " \(game.boardState.activeColor) has offered a draw."
         }
         if game.isGameOver {
             if let winner = game.winningColor {

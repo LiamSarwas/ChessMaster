@@ -12,8 +12,6 @@ class Game {
     private var _currentStateIndex: Int
     
     private var _lastCapturedPiece: Piece?
-    private var _isActiveColorInCheck: Bool
-    private var _activeColorHasMoves: Bool
     private var _winningColor: Color?
     private var _gameOver: Bool
     private var _isOfferOfDrawAvailable: Bool
@@ -25,11 +23,9 @@ class Game {
         _currentStateIndex = 0
 
         _isOfferOfDrawAvailable = false
-        
-        //Set the end of move variable to a best guess, so that self is fully initialized before calling any methods
         _gameOver = false
-        _isActiveColorInCheck = false
-        _activeColorHasMoves = true
+
+        //Set the end of move variable to a best guess, so that self is fully initialized before calling any methods
         //Set the end of move variables to the real values
         endOfMoveChecks()
     }
@@ -44,109 +40,69 @@ class Game {
         return _currentStateIndex < _history.count ? _history[_currentStateIndex].board : _boardState
     }
 
-    var board: Board {
-        get { return boardState.board }
+    var history: History {
+        return _history
     }
 
-    var activeColor: Color {
-        get { return boardState.activeColor }
-    }
-    
-    var inActiveColor: Color {
-        get { return boardState.activeColor == .White ? .Black : .White }
-    }
-    
-    var castlingOptions: CastlingOptions {
-        get { return boardState.castlingOptions }
-    }
-
-    var enPassantTargetSquare: Location? {
-        get { return boardState.enPassantTargetSquare }
-    }
-    
-    var halfMoveClock: Int {
-        get { return boardState.halfMoveClock }
-    }
-    
-    var fullMoveNumber: Int {
-        get { return boardState.fullMoveNumber }
-    }
-    
     //MARK: Get Game Status
     
-    var isActiveColorInCheck: Bool {
-        get { return _isActiveColorInCheck }
-    }
-    
     var lastCapturedPiece: Piece? {
-        get { return _lastCapturedPiece }
+        return _lastCapturedPiece
     }
     
     var isOfferOfDrawAvailable: Bool {
-        get { return _isOfferOfDrawAvailable }
+        return _isOfferOfDrawAvailable
     }
     
     var isCheckMate: Bool {
-        get { return _isActiveColorInCheck && !_activeColorHasMoves }
+        return boardState.isActiveColorInCheck && !boardState.activeColorHasMoves
     }
     
     var isStaleMate: Bool {
-        get { return !_isActiveColorInCheck && !_activeColorHasMoves }
+        return !boardState.isActiveColorInCheck && !boardState.activeColorHasMoves
     }
     
     var isGameOver: Bool {
-        get { return _gameOver }
+        return _gameOver
     }
     
     var winningColor: Color? {
-        get { return _winningColor }
+        return _winningColor
     }
 
     var isOptionalDraw: Bool {
-        return 50 <= halfMoveClock || 3 <= _history.filter({$0.board == _boardState}).count
+        return 50 <= boardState.halfMoveClock || 3 <= history.filter({$0.board == boardState}).count
     }
 
     var isMandatoryDraw: Bool {
-        return 75 <= halfMoveClock || 5 <= _history.filter({$0.board == _boardState}).count
+        return 75 <= boardState.halfMoveClock || 5 <= history.filter({$0.board == boardState}).count
     }
 
-    func validMoves(start:Location) -> [Location]
-    {
-        return Rules.validMoves(boardState, start:start)
-    }
-    
     //MARK:  Moves
     
     func resign()
     {
         _gameOver = true
-        _winningColor = inActiveColor
+        _winningColor = boardState.inActiveColor
     }
     
     func offerDraw()
     {
-        if isGameOver {
-            return
+        if !isGameOver {
+            _isOfferOfDrawAvailable = true
         }
-        _isOfferOfDrawAvailable = true
     }
     
     func acceptDraw()
     {
-        if isGameOver {
-            return
-        }
-        if isOfferOfDrawAvailable {
+        if !isGameOver && isOfferOfDrawAvailable {
             _gameOver = true
         }
     }
     
     func claimDraw()
     {
-        if isGameOver {
-            return
-        }
-        if isOptionalDraw {
+        if !isGameOver && isOptionalDraw {
             _gameOver = true
         }
     }
@@ -192,10 +148,8 @@ class Game {
     
     func endOfMoveChecks() {
         _isOfferOfDrawAvailable = false
-        _isActiveColorInCheck = Rules.isPlayerInCheck(board, kingsColor: activeColor)
-        _activeColorHasMoves = Rules.doesActivePlayerHaveMoves(boardState)
-        _winningColor = isCheckMate ? inActiveColor : nil
-        _gameOver = !_activeColorHasMoves || isMandatoryDraw
+        _winningColor = isCheckMate ? boardState.inActiveColor : nil
+        _gameOver = !boardState.activeColorHasMoves || isMandatoryDraw
     }
 }
 

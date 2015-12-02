@@ -13,6 +13,7 @@ func PGNstring(history:History) -> String
 {
     var response: String = ""
     for index in 0..<history.count {
+        //TODO: Implement the PGN Protocol
         if (index % 2 == 0) {
             response += "\(1 + index / 2). \(history[index].move.start)\(history[index].move.end) "
         } else {

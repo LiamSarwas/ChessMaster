@@ -17,6 +17,14 @@ struct BoardState {
     var inActiveColor : Color {
         return activeColor == .White ? .Black : .White 
     }
+
+    var isActiveColorInCheck: Bool {
+        return Rules.isActivePlayerInCheck(self)
+    }
+
+    var activeColorHasMoves: Bool {
+        return Rules.doesActivePlayerHaveMoves(self)
+    }
 }
 
 extension BoardState : Equatable {}

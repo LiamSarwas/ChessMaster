@@ -77,7 +77,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ChessSceneDelegate {
             scene.scaleMode = .AspectFit
             
             scene.game = game
-            updateMessage("The Game is on! - \(game.activeColor)'s move.")
+            updateMessage("The Game is on! - \(game.boardState.activeColor)'s move.")
             scene.appDelegate = self
             self.skView!.presentScene(scene)
 
