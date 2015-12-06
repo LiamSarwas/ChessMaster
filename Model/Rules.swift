@@ -229,8 +229,8 @@ struct Rules {
 
     static func isPlayerInCheckAfterMove(board:Board, activeColor: Color, move: Move) -> Bool {
         //returns true if this move leaves the player in check
-        //FIXME:  This results in an infinite loop, checking the validity of the move which checks if a player is in check...
-        if let (newBoard,_) = board.makeMove(move) {
+        //validating the move will cause an infinte loop.
+        if let (newBoard,_) = board.makeMoveWithoutValidation(move) {
             return isPlayerInCheck(newBoard, kingsColor:activeColor)
         }
         return false

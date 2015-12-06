@@ -155,29 +155,69 @@ class ChessMasterTests: XCTestCase {
             XCTFail()
         }
     }
+    //This check is to ensure the an invalid move does not crash
+    func testMakeInvalidMoveWithoutValidation() {
+        let game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame!
+        let board = game.board
+        let start = Location(rank: 7, file: .E)
+        let end = Location(rank: 1, file: .F)
+        let move = (start: start, end: end)
+        if let (newboard,_) = game.board.makeMoveWithoutValidation(move) {
+            XCTAssertTrue(newboard != game.board)
+            XCTAssertTrue(board == game.board)
+        }
+    }
 
-    func testPerformanceExample1() {
+    // average: 0.0000005, relative standard deviation: 212.378%
+    func testPerformanceActiveColorPropertyAccess() {
         let game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame!
         self.measureBlock {
             game.board.inActiveColor
         }
     }
-    func testPerformanceExample2() {
+    // average: 0.0001, relative standard deviation: 16.009%
+    func testPerformanceActiveColorInCheckCheck() {
         let game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame!
         self.measureBlock {
             game.board.isActiveColorInCheck
         }
     }
-    func testPerformanceExample3() {
+    // average: 0.001, relative standard deviation: 56.229%
+    func testPerformanceActiveColorHasMovesCheck() {
         let game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame!
         self.measureBlock {
             game.board.activeColorHasMoves
         }
     }
-    func testPerformanceExample4() {
+    // average: 0.001, relative standard deviation: 19.922%
+    func testPerformanceGameOverCheck() {
         let game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame!
         self.measureBlock {
-            game.CheckForGameOver()
+            game.isGameOver
+        }
+    }
+    // average: 0.001, relative standard deviation: 24.707%
+    func testPerformanceStaleMateCheck() {
+        let game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame!
+        self.measureBlock {
+            game.isStaleMate
+        }
+    }
+    // average: 0.0001, relative standard deviation: 86.550%
+    func testPerformanceCheckMateCheck() {
+        let game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame!
+        self.measureBlock {
+            game.isCheckMate
+        }
+    }
+    // average: 0.000038, relative standard deviation: 47.129%
+    func testPerformanceMakeMoveWithoutValidation() {
+        let game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame!
+        let start = Location(rank: 2, file: .E)
+        let end = Location(rank: 4, file: .E)
+        let move = (start: start, end: end)
+        self.measureBlock {
+            game.board.makeMoveWithoutValidation(move)
         }
     }
 

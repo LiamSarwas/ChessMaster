@@ -74,8 +74,17 @@ struct Board {
 
     func makeMove(move:Move, promotionKind:Kind = .Queen) -> (Board, Piece?)? {
         if Rules.validMoves(self, start:move.start).contains(move.end) {
-            // Save some state at beginning of move
-            let movingPiece = self.pieceAt(move.start)!
+            return makeMoveWithoutValidation(move, promotionKind:promotionKind)
+        } else {
+            return nil
+        }
+    }
+
+    // We need this public method to avoid an infinite loop when checking valid moves
+    // It is also faster if we know that a move is valid
+    func makeMoveWithoutValidation(move:Move, promotionKind:Kind = .Queen) -> (Board, Piece?)? {
+        // Save some state at beginning of move
+        if let movingPiece = self.pieceAt(move.start) {
             let newEnPassantTargetSquare = Rules.enPassantTargetSquare(self, move:move)
             let castelingRookMove = Rules.rookMoveWhileCastling(self, move: move)
             let promotionPiece = Rules.promotionPiece(self, move: move, promotionKind: promotionKind)
@@ -107,11 +116,9 @@ struct Board {
                 fullMoveNumber: self.fullMoveNumber + (self.activeColor == .Black ? 1 : 0)
             )
             return (newBoard, lastCapturedPiece)
-        } else {
-            return nil
         }
+        return nil
     }
-
 }
 
 extension Board : Equatable {}
