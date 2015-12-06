@@ -1,5 +1,5 @@
 //
-//  BoardState_IO.swift
+//  Board_IO.swift
 //  ChessMaster
 //
 //  Created by Regan Sarwas on 11/3/15.
@@ -13,7 +13,7 @@
 // It is an ASCII character string composed of 6 required parts separated by a space
 // for additional details see section 16.1 at http://www.thechessdrum.net/PGN_Reference.txt
 
-extension BoardState: CustomStringConvertible, CustomDebugStringConvertible {
+extension Board: CustomStringConvertible, CustomDebugStringConvertible {
     var description: String {
         get {
             return description_FEN
@@ -25,10 +25,34 @@ extension BoardState: CustomStringConvertible, CustomDebugStringConvertible {
             return description_FEN
         }
     }
-    
+
+    var fenBoardDescription: String {
+        var lines :[String] = []
+        for rank in Rank.allValues.reverse() {
+            var line = ""
+            var emptyCount = 0
+            for file in File.allValues {
+                if let piece = pieceAt(Location(rank:rank, file:file)) {
+                    if 0 < emptyCount {
+                        line += "\(emptyCount)"
+                        emptyCount = 0
+                    }
+                    line += "\(piece.fen)"
+                } else {
+                    emptyCount += 1
+                }
+            }
+            if emptyCount > 0 {
+                line += "\(emptyCount)"
+            }
+            lines.append(line)
+        }
+        return lines.joinWithSeparator("/")
+    }
+
     var description_FEN: String {
         get {            
-            let fenBoard = fenDescription(board)
+            let fenBoard = fenBoardDescription
             let enPassant = enPassantTargetSquare == nil ? "-" : "\(enPassantTargetSquare!)"
             let color = activeColor == .White ? "w" : "b"
             let castle =
@@ -45,7 +69,7 @@ extension BoardState: CustomStringConvertible, CustomDebugStringConvertible {
 //MARK: Input
 
 extension String {
-    var fenBoard: BoardState? {
+    var fenBoard: Board? {
         let parts = self.split(" ")
         if parts.count != 6 {
             print("FEN line '\(self)' does not have 6 parts")
@@ -58,7 +82,7 @@ extension String {
                     if ok {
                         if let halfMoveClock = parseFenHalfMoveClock(parts[4]) {
                             if let fullMoveNumber = parseFenFullMoveNumber(parts[5]) {
-                                return BoardState(board: piecePlacement,
+                                return Board(pieces: piecePlacement,
                                     activeColor: activeColor,
                                     castlingOptions: castlingOptions,
                                     enPassantTargetSquare: enPassant,

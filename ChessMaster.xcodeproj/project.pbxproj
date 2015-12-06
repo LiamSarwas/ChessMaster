@@ -10,10 +10,8 @@
 		0CEB1C191BFC1297005376EB /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEB1C181BFC1297005376EB /* Engine.swift */; };
 		594A1D6B1C07B4E7009D54DB /* CastlingOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 594A1D6A1C07B4E7009D54DB /* CastlingOptions.swift */; };
 		594A1D6C1C08E1E9009D54DB /* CastlingOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 594A1D6A1C07B4E7009D54DB /* CastlingOptions.swift */; };
-		594A1D6E1C097951009D54DB /* BoardState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 594A1D6D1C097951009D54DB /* BoardState.swift */; };
-		594A1D6F1C097C83009D54DB /* BoardState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 594A1D6D1C097951009D54DB /* BoardState.swift */; };
-		594A1D711C0A939E009D54DB /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 594A1D701C0A939E009D54DB /* Board.swift */; };
-		594A1D721C0A956C009D54DB /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 594A1D701C0A939E009D54DB /* Board.swift */; };
+		594A1D6E1C097951009D54DB /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 594A1D6D1C097951009D54DB /* Board.swift */; };
+		594A1D6F1C097C83009D54DB /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 594A1D6D1C097951009D54DB /* Board.swift */; };
 		598F21A41BF9245D00182604 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F21A31BF9245D00182604 /* AppDelegate.swift */; };
 		598F21A61BF9245D00182604 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F21A51BF9245D00182604 /* GameScene.swift */; };
 		598F21A81BF9245D00182604 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 598F21A71BF9245D00182604 /* GameScene.sks */; };
@@ -22,7 +20,7 @@
 		598F21B81BF9245D00182604 /* ChessMasterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F21B71BF9245D00182604 /* ChessMasterTests.swift */; };
 		598F21C31BF9245D00182604 /* ChessMasterUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F21C21BF9245D00182604 /* ChessMasterUITests.swift */; };
 		598F21D71BF9248F00182604 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F21D61BF9248F00182604 /* main.swift */; };
-		598F228A1BF935BB00182604 /* BoardState_IO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F22721BF9355D00182604 /* BoardState_IO.swift */; };
+		598F228A1BF935BB00182604 /* Board_IO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F22721BF9355D00182604 /* Board_IO.swift */; };
 		598F228C1BF935BB00182604 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F22741BF9355D00182604 /* Game.swift */; };
 		598F228E1BF935BB00182604 /* GameConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F22761BF9355D00182604 /* GameConfig.swift */; };
 		598F228F1BF935BB00182604 /* GameLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F22771BF9355D00182604 /* GameLoop.swift */; };
@@ -32,7 +30,7 @@
 		598F22931BF935BB00182604 /* Piece.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F227B1BF9355D00182604 /* Piece.swift */; };
 		598F22941BF935BB00182604 /* Rules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F227C1BF9355D00182604 /* Rules.swift */; };
 		598F22951BF935BB00182604 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F227D1BF9355D00182604 /* Utilities.swift */; };
-		598F22961BF935DE00182604 /* BoardState_IO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F22721BF9355D00182604 /* BoardState_IO.swift */; };
+		598F22961BF935DE00182604 /* Board_IO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F22721BF9355D00182604 /* Board_IO.swift */; };
 		598F22981BF935DE00182604 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F22741BF9355D00182604 /* Game.swift */; };
 		598F229A1BF935DE00182604 /* GameConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F22761BF9355D00182604 /* GameConfig.swift */; };
 		598F229B1BF935DE00182604 /* GameLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598F22771BF9355D00182604 /* GameLoop.swift */; };
@@ -88,8 +86,7 @@
 /* Begin PBXFileReference section */
 		0CEB1C181BFC1297005376EB /* Engine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Engine.swift; sourceTree = "<group>"; };
 		594A1D6A1C07B4E7009D54DB /* CastlingOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CastlingOptions.swift; path = Model/CastlingOptions.swift; sourceTree = "<group>"; };
-		594A1D6D1C097951009D54DB /* BoardState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BoardState.swift; path = Model/BoardState.swift; sourceTree = "<group>"; };
-		594A1D701C0A939E009D54DB /* Board.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Board.swift; path = Model/Board.swift; sourceTree = "<group>"; };
+		594A1D6D1C097951009D54DB /* Board.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = Board.swift; path = Model/Board.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		598F21A01BF9245D00182604 /* ChessMaster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChessMaster.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		598F21A31BF9245D00182604 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		598F21A51BF9245D00182604 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -105,15 +102,15 @@
 		598F21C41BF9245D00182604 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		598F21D41BF9248F00182604 /* chess */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = chess; sourceTree = BUILT_PRODUCTS_DIR; };
 		598F21D61BF9248F00182604 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		598F22721BF9355D00182604 /* BoardState_IO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BoardState_IO.swift; path = Model/BoardState_IO.swift; sourceTree = "<group>"; };
-		598F22741BF9355D00182604 /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Game.swift; path = Model/Game.swift; sourceTree = "<group>"; };
+		598F22721BF9355D00182604 /* Board_IO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = Board_IO.swift; path = Model/Board_IO.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		598F22741BF9355D00182604 /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = Game.swift; path = Model/Game.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		598F22761BF9355D00182604 /* GameConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameConfig.swift; path = Model/GameConfig.swift; sourceTree = "<group>"; };
 		598F22771BF9355D00182604 /* GameLoop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameLoop.swift; path = Model/GameLoop.swift; sourceTree = "<group>"; };
-		598F22781BF9355D00182604 /* History.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = History.swift; path = Model/History.swift; sourceTree = "<group>"; };
+		598F22781BF9355D00182604 /* History.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = History.swift; path = Model/History.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		598F22791BF9355D00182604 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Location.swift; path = Model/Location.swift; sourceTree = "<group>"; };
 		598F227A1BF9355D00182604 /* Move.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Move.swift; path = Model/Move.swift; sourceTree = "<group>"; };
 		598F227B1BF9355D00182604 /* Piece.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Piece.swift; path = Model/Piece.swift; sourceTree = "<group>"; };
-		598F227C1BF9355D00182604 /* Rules.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Rules.swift; path = Model/Rules.swift; sourceTree = "<group>"; };
+		598F227C1BF9355D00182604 /* Rules.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = Rules.swift; path = Model/Rules.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		598F227D1BF9355D00182604 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Utilities.swift; path = Model/Utilities.swift; sourceTree = "<group>"; };
 		598F22A21BF9773600182604 /* Location_Directions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Location_Directions.swift; path = Model/Location_Directions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -218,9 +215,8 @@
 				598F22741BF9355D00182604 /* Game.swift */,
 				598F22761BF9355D00182604 /* GameConfig.swift */,
 				598F22771BF9355D00182604 /* GameLoop.swift */,
-				594A1D6D1C097951009D54DB /* BoardState.swift */,
-				598F22721BF9355D00182604 /* BoardState_IO.swift */,
-				594A1D701C0A939E009D54DB /* Board.swift */,
+				594A1D6D1C097951009D54DB /* Board.swift */,
+				598F22721BF9355D00182604 /* Board_IO.swift */,
 				598F227C1BF9355D00182604 /* Rules.swift */,
 				598F22781BF9355D00182604 /* History.swift */,
 				598F22791BF9355D00182604 /* Location.swift */,
@@ -387,12 +383,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				598F22961BF935DE00182604 /* BoardState_IO.swift in Sources */,
+				598F22961BF935DE00182604 /* Board_IO.swift in Sources */,
 				598F22981BF935DE00182604 /* Game.swift in Sources */,
 				598F229A1BF935DE00182604 /* GameConfig.swift in Sources */,
 				598F229B1BF935DE00182604 /* GameLoop.swift in Sources */,
-				594A1D711C0A939E009D54DB /* Board.swift in Sources */,
-				594A1D6E1C097951009D54DB /* BoardState.swift in Sources */,
+				594A1D6E1C097951009D54DB /* Board.swift in Sources */,
 				598F229C1BF935DE00182604 /* History.swift in Sources */,
 				598F229D1BF935DE00182604 /* Location.swift in Sources */,
 				598F229E1BF935DE00182604 /* Move.swift in Sources */,
@@ -427,10 +422,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				594A1D721C0A956C009D54DB /* Board.swift in Sources */,
-				594A1D6F1C097C83009D54DB /* BoardState.swift in Sources */,
+				594A1D6F1C097C83009D54DB /* Board.swift in Sources */,
 				594A1D6C1C08E1E9009D54DB /* CastlingOptions.swift in Sources */,
-				598F228A1BF935BB00182604 /* BoardState_IO.swift in Sources */,
+				598F228A1BF935BB00182604 /* Board_IO.swift in Sources */,
 				598F228C1BF935BB00182604 /* Game.swift in Sources */,
 				598F228E1BF935BB00182604 /* GameConfig.swift in Sources */,
 				598F228F1BF935BB00182604 /* GameLoop.swift in Sources */,

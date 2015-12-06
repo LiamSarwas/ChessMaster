@@ -7,7 +7,7 @@
 //
 
 class Game {
-    private var _boardState: BoardState
+    private var _board: Board
     private var _history: History = []
     private var _currentStateIndex = 0 //The length of the array (one more than the stack)
     
@@ -16,20 +16,20 @@ class Game {
     private var _gameOver = false
     private var _winningColor: Color?
 
-    init (boardState: BoardState)
+    init (board: Board)
     {
-        _boardState = boardState
+        _board = board
         CheckForGameOver()
     }
 
     convenience init() {
-        self.init(boardState: Rules.defaultStartingBoardState)
+        self.init(board: Board())
     }
 
     //MARK: Getters
     
-    var boardState: BoardState {
-        return _currentStateIndex < _history.count ? _history[_currentStateIndex].board : _boardState
+    var board: Board {
+        return _currentStateIndex < _history.count ? _history[_currentStateIndex].board : _board
     }
 
     var history: History {
@@ -47,11 +47,11 @@ class Game {
     }
     
     var isCheckMate: Bool {
-        return boardState.isActiveColorInCheck && !boardState.activeColorHasMoves
+        return board.isActiveColorInCheck && !board.activeColorHasMoves
     }
     
     var isStaleMate: Bool {
-        return !boardState.isActiveColorInCheck && !boardState.activeColorHasMoves
+        return !board.isActiveColorInCheck && !board.activeColorHasMoves
     }
     
     var isGameOver: Bool {
@@ -63,11 +63,11 @@ class Game {
     }
 
     var isOptionalDraw: Bool {
-        return 50 <= boardState.halfMoveClock || 3 <= history.filter({$0.board == boardState}).count
+        return 50 <= board.halfMoveClock || 3 <= history.filter({$0.board == board}).count
     }
 
     var isMandatoryDraw: Bool {
-        return 75 <= boardState.halfMoveClock || 5 <= history.filter({$0.board == boardState}).count
+        return 75 <= board.halfMoveClock || 5 <= history.filter({$0.board == board}).count
     }
 
     //MARK:  Moves
@@ -75,7 +75,7 @@ class Game {
     func resign()
     {
         _gameOver = true
-        _winningColor = boardState.inActiveColor
+        _winningColor = board.inActiveColor
     }
     
     func offerDraw()
@@ -102,22 +102,22 @@ class Game {
     func makeMove(move:Move, promotionKind:Kind = .Queen) -> ()
     {
         if !isGameOver {
-            if let (newBoardState,lastCapturedPiece) = Rules.makeMove(boardState, move: move) {
+            if let (newBoard,lastCapturedPiece) = board.makeMove(move) {
                 // Making a valid move implicitly rejects an offer for a draw
                 _isOfferOfDrawAvailable = false
 
                 //If we make a valid move after 'undo's without matching 'redo's, we need to
                 //erase the abandoned state on the history stack
                 while _currentStateIndex < _history.count {
-                    (_boardState,_) = _history.removeLast()
+                    (_board,_) = _history.removeLast()
                 }
-                _history.append((board: boardState, move: move))
+                _history.append((board: board, move: move))
                 _currentStateIndex += 1
-                _boardState = newBoardState
+                _board = newBoard
                 _lastCapturedPiece = lastCapturedPiece
                 CheckForGameOver()
             } else {
-                print("Illegal Move from \(move.start) to \(move.end) for \(boardState)")
+                print("Illegal Move from \(move.start) to \(move.end) for \(board)")
             }
         }
     }
@@ -126,6 +126,7 @@ class Game {
         //Undoes the last move
         if 0 < _currentStateIndex {
             _currentStateIndex -= 1
+            //TODO: I think there is a bug here
             if isGameOver {
                 CheckForGameOver() // Will undo the game over state
             }
@@ -143,8 +144,8 @@ class Game {
     //MARK: Private methods
     
     func CheckForGameOver() {
-        _winningColor = isCheckMate ? boardState.inActiveColor : nil
-        _gameOver = !boardState.activeColorHasMoves || isMandatoryDraw
+        _winningColor = isCheckMate ? board.inActiveColor : nil
+        _gameOver = !board.activeColorHasMoves || isMandatoryDraw
     }
 }
 
@@ -152,7 +153,7 @@ class Game {
 
 extension Game: CustomDebugStringConvertible, CustomStringConvertible {
     var description: String {
-        return "\(boardState)"
+        return "\(board)"
     }
 
     var debugDescription: String {
@@ -164,8 +165,8 @@ extension Game: CustomDebugStringConvertible, CustomStringConvertible {
 
 extension String {
     var fenGame: Game? {
-        if let boardState = self.fenBoard {
-            return Game(boardState: boardState)
+        if let board = self.fenBoard {
+            return Game(board: board)
         }
         return nil
     }

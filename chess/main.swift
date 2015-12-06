@@ -6,7 +6,7 @@
 //  Copyright © 2015 Regan Sarwas. All rights reserved.
 //
 
-if let game = "rnbqkbnr/pppppppp/8/4k3/8/8/PPPPPPPP/RNBQKBNR b k f6 3 1".fenGame {
+if let game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame {
     print("game: \(game)")
     
     //print("Check pieces at location")
@@ -21,9 +21,9 @@ if let game = "rnbqkbnr/pppppppp/8/4k3/8/8/PPPPPPPP/RNBQKBNR b k f6 3 1".fenGame
     
     print("Check modifying board does not change game")
     //game.board[Location(rank:1, file:.A)] = nil  //compiler error: board is a get-only property
-    var myboard = game.boardState.board
-    myboard[Location(rank:8, file:.A)] = nil
-    print("myboard: \(fenDescription(myboard))")
+    var myboardstate = game.board
+    (myboardstate,_) = myboardstate.makeMove((Location(rank:2, file:.E),Location(rank:4, file:.E)))!
+    print("myboard: \(myboardstate)")
     print("game: \(game)")
 
 } else {

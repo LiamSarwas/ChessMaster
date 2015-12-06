@@ -6,7 +6,7 @@
 //  Copyright © 2015 Regan Sarwas. All rights reserved.
 //
 
-typealias History = [(board:BoardState,move:Move)]
+typealias History = [(board:Board,move:Move)]
 
 //TODO:  Make this global function an extension to History (if possible)
 func PGNstring(history:History) -> String

@@ -34,8 +34,8 @@ class ChessMasterTests: XCTestCase {
 
     func testCheck() {
         if let game = "7k/8/8/8/8/8/8/7R b - - 0 1".fenGame {
-            XCTAssertTrue(game.boardState.isActiveColorInCheck)
-            XCTAssertTrue(game.boardState.activeColor == .Black)
+            XCTAssertTrue(game.board.isActiveColorInCheck)
+            XCTAssertTrue(game.board.activeColor == .Black)
         } else {
             XCTFail()
         }
@@ -105,7 +105,7 @@ class ChessMasterTests: XCTestCase {
         if let game = "4k2r/R7/8/8/8/8/8/3R4 b k - 0 1".fenGame {
             let start = Location(rank: 8, file: .E)
             let end = Location(rank: 8, file: .G)
-            XCTAssertTrue(Rules.validMoves(game.boardState, start: start).contains(end))
+            XCTAssertTrue(Rules.validMoves(game.board, start: start).contains(end))
         } else {
             XCTFail()
         }
@@ -114,7 +114,7 @@ class ChessMasterTests: XCTestCase {
         if let game = "4k2r/R7/8/8/8/8/8/3R4 b q - 0 1".fenGame {
             let start = Location(rank: 8, file: .E)
             let end = Location(rank: 8, file: .G)
-            XCTAssertFalse(Rules.validMoves(game.boardState, start: start).contains(end))
+            XCTAssertFalse(Rules.validMoves(game.board, start: start).contains(end))
         } else {
             XCTFail()
         }
@@ -123,7 +123,7 @@ class ChessMasterTests: XCTestCase {
         if let game = "4k1br/R7/8/8/8/8/8/3R4 b k - 0 1".fenGame {
             let start = Location(rank: 8, file: .E)
             let end = Location(rank: 8, file: .G)
-            XCTAssertFalse(Rules.validMoves(game.boardState, start: start).contains(end))
+            XCTAssertFalse(Rules.validMoves(game.board, start: start).contains(end))
         } else {
             XCTFail()
         }
@@ -132,7 +132,7 @@ class ChessMasterTests: XCTestCase {
         if let game = "4k2r/R7/8/8/8/8/8/4R3 b k - 0 1".fenGame {
             let start = Location(rank: 8, file: .E)
             let end = Location(rank: 8, file: .G)
-            XCTAssertFalse(Rules.validMoves(game.boardState, start: start).contains(end))
+            XCTAssertFalse(Rules.validMoves(game.board, start: start).contains(end))
         } else {
             XCTFail()
         }
@@ -141,7 +141,7 @@ class ChessMasterTests: XCTestCase {
         if let game = "4k2r/R7/8/8/8/8/8/5R2 b k - 0 1".fenGame {
             let start = Location(rank: 8, file: .E)
             let end = Location(rank: 8, file: .G)
-            XCTAssertFalse(Rules.validMoves(game.boardState, start: start).contains(end))
+            XCTAssertFalse(Rules.validMoves(game.board, start: start).contains(end))
         } else {
             XCTFail()
         }
@@ -150,7 +150,7 @@ class ChessMasterTests: XCTestCase {
         if let game = "4k2r/R7/8/8/8/8/8/6R1 b k - 0 1".fenGame {
             let start = Location(rank: 8, file: .E)
             let end = Location(rank: 8, file: .G)
-            XCTAssertFalse(Rules.validMoves(game.boardState, start: start).contains(end))
+            XCTAssertFalse(Rules.validMoves(game.board, start: start).contains(end))
         } else {
             XCTFail()
         }
@@ -159,19 +159,19 @@ class ChessMasterTests: XCTestCase {
     func testPerformanceExample1() {
         let game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame!
         self.measureBlock {
-            game.boardState.inActiveColor
+            game.board.inActiveColor
         }
     }
     func testPerformanceExample2() {
         let game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame!
         self.measureBlock {
-            game.boardState.isActiveColorInCheck
+            game.board.isActiveColorInCheck
         }
     }
     func testPerformanceExample3() {
         let game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame!
         self.measureBlock {
-            game.boardState.activeColorHasMoves
+            game.board.activeColorHasMoves
         }
     }
     func testPerformanceExample4() {
