@@ -8,7 +8,7 @@
 
 if let game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame {
     print("game: \(game)")
-    
+
     //print("Check pieces at location")
     //for (location,piece) in game.board {
     //    print("\(piece) at \(location)")
@@ -22,7 +22,7 @@ if let game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame
     print("Check modifying board does not change game")
     //game.board[Location(rank:1, file:.A)] = nil  //compiler error: board is a get-only property
     var myboardstate = game.board
-    (myboardstate,_) = myboardstate.makeMove((Location(rank:2, file:.E),Location(rank:4, file:.E)))!
+    (myboardstate,_) = myboardstate.makeMove((Location("e2")!, Location("e4")!))!
     print("myboard: \(myboardstate)")
     print("game: \(game)")
 
@@ -33,11 +33,11 @@ if let game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame
 print("Check make move")
 if let game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame {
     print("  Start: \(game)")
-    var move = (Location(rank: 2, file: .E), Location(rank: 4, file: .E))
+    var move = (Location("e2")!, Location("e4")!)
     print("   Move: \(move)")
     game.makeMove(move)
     print("   End1: \(game)")
-    move = (Location(rank: 8, file: .B), Location(rank: 6, file: .C))
+    move = (Location("b8")!, Location("c6")!)
     print("   Move: \(move)")
     game.makeMove(move)
     print("   End2: \(game)")

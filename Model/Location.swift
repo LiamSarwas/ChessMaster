@@ -148,19 +148,32 @@ extension Location: CustomStringConvertible {
     }
 }
 
+//Failable string initializer
+extension Location {
+    init?(_ value: String) {
+        if value.characters.count != 2 { return nil }
+        let file = value[value.startIndex].fenFileValue
+        if file == nil { return nil }
+        let rank = value[value.startIndex.successor()].fenRankValue
+        if rank == nil { return nil }
+        self.rank = rank!
+        self.file = file!
+    }
+}
+
 //MARK: Extensions
 
 extension Character {
     public var fenFileValue: File? {
         switch self {
-        case "a": return .A
-        case "b": return .B
-        case "c": return .C
-        case "d": return .D
-        case "e": return .E
-        case "f": return .F
-        case "g": return .G
-        case "h": return .H
+        case "a", "A": return .A
+        case "b", "B": return .B
+        case "c", "C": return .C
+        case "d", "D": return .D
+        case "e", "E": return .E
+        case "f", "F": return .F
+        case "g", "G": return .G
+        case "h", "H": return .H
         default:
             print("FEN File '\(self)' is not in range 'a'..'h'")
             return nil

@@ -23,9 +23,9 @@ class ChessMasterTests: XCTestCase {
     
     func testGameMove() {
         if let game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame {
-            game.makeMove((Location(rank: 2, file: .E), Location(rank: 4, file: .E)))
+            game.makeMove((Location("e2")!, Location("e4")!))
             XCTAssertTrue("\(game)" == "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1")
-            game.makeMove((Location(rank: 8, file: .B), Location(rank: 6, file: .C)))
+            game.makeMove((Location("b8")!, Location("c6")!))
             XCTAssertTrue("\(game)" == "r1bqkbnr/pppppppp/2n5/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 1 2")
         } else {
             XCTFail()
@@ -63,7 +63,7 @@ class ChessMasterTests: XCTestCase {
 
     func testCastleBlackKingSide() {
         if let game = "r3k2r/8/8/8/8/8/8/R3K2R b KQk - 0 1".fenGame {
-            let move = (start:Location(rank: 8, file: .E), end:Location(rank: 8, file: .G))
+            let move = (start:Location("e8")!, end:Location("g8")!)
             game.makeMove(move)
             XCTAssertTrue("\(game)" == "r4rk1/8/8/8/8/8/8/R3K2R w KQ - 1 2")
         } else {
@@ -73,7 +73,7 @@ class ChessMasterTests: XCTestCase {
 
     func testCastleBlackQueenSide() {
         if let game = "r3k2r/8/8/8/8/8/8/R3K2R b KQkq - 0 1".fenGame {
-            let move = (start:Location(rank: 8, file: .E), end:Location(rank: 8, file: .C))
+            let move = (start:Location("e8")!, end:Location("c8")!)
             game.makeMove(move)
             XCTAssertTrue("\(game)" == "2kr3r/8/8/8/8/8/8/R3K2R w KQ - 1 2")
         } else {
@@ -83,7 +83,7 @@ class ChessMasterTests: XCTestCase {
     
     func testCastleWhiteKingSide() {
         if let game = "r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1".fenGame {
-            let move = (start:Location(rank: 1, file: .E), end:Location(rank: 1, file: .G))
+            let move = (start:Location("e1")!, end:Location("g1")!)
             game.makeMove(move)
             XCTAssertTrue("\(game)" == "r3k2r/8/8/8/8/8/8/R4RK1 b kq - 1 1")
         } else {
@@ -93,7 +93,7 @@ class ChessMasterTests: XCTestCase {
 
     func testCastleWhiteQueenSide() {
         if let game = "r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1".fenGame {
-            let move = (start:Location(rank: 1, file: .E), end:Location(rank: 1, file: .C))
+            let move = (start:Location("e1")!, end:Location("c1")!)
             game.makeMove(move)
             XCTAssertTrue("\(game)" == "r3k2r/8/8/8/8/8/8/2KR3R b kq - 1 1")
         } else {
@@ -103,8 +103,8 @@ class ChessMasterTests: XCTestCase {
     
     func testCastleOK() {
         if let game = "4k2r/R7/8/8/8/8/8/3R4 b k - 0 1".fenGame {
-            let start = Location(rank: 8, file: .E)
-            let end = Location(rank: 8, file: .G)
+            let start = Location("e8")!
+            let end = Location("g8")!
             XCTAssertTrue(Rules.validMoves(game.board, start: start).contains(end))
         } else {
             XCTFail()
@@ -112,8 +112,8 @@ class ChessMasterTests: XCTestCase {
     }
     func testCastleFailNotOption() {
         if let game = "4k2r/R7/8/8/8/8/8/3R4 b q - 0 1".fenGame {
-            let start = Location(rank: 8, file: .E)
-            let end = Location(rank: 8, file: .G)
+            let start = Location("e8")!
+            let end = Location("g8")!
             XCTAssertFalse(Rules.validMoves(game.board, start: start).contains(end))
         } else {
             XCTFail()
@@ -121,8 +121,8 @@ class ChessMasterTests: XCTestCase {
     }
     func testCastleFailPieceInWay() {
         if let game = "4k1br/R7/8/8/8/8/8/3R4 b k - 0 1".fenGame {
-            let start = Location(rank: 8, file: .E)
-            let end = Location(rank: 8, file: .G)
+            let start = Location("e8")!
+            let end = Location("g8")!
             XCTAssertFalse(Rules.validMoves(game.board, start: start).contains(end))
         } else {
             XCTFail()
@@ -130,8 +130,8 @@ class ChessMasterTests: XCTestCase {
     }
     func testCastleFailKingCheck() {
         if let game = "4k2r/R7/8/8/8/8/8/4R3 b k - 0 1".fenGame {
-            let start = Location(rank: 8, file: .E)
-            let end = Location(rank: 8, file: .G)
+            let start = Location("e8")!
+            let end = Location("g8")!
             XCTAssertFalse(Rules.validMoves(game.board, start: start).contains(end))
         } else {
             XCTFail()
@@ -139,8 +139,8 @@ class ChessMasterTests: XCTestCase {
     }
     func testCastleFailPassingCheck() {
         if let game = "4k2r/R7/8/8/8/8/8/5R2 b k - 0 1".fenGame {
-            let start = Location(rank: 8, file: .E)
-            let end = Location(rank: 8, file: .G)
+            let start = Location("e8")!
+            let end = Location("g8")!
             XCTAssertFalse(Rules.validMoves(game.board, start: start).contains(end))
         } else {
             XCTFail()
@@ -148,8 +148,8 @@ class ChessMasterTests: XCTestCase {
     }
     func testCastleFailDestibationCheck() {
         if let game = "4k2r/R7/8/8/8/8/8/6R1 b k - 0 1".fenGame {
-            let start = Location(rank: 8, file: .E)
-            let end = Location(rank: 8, file: .G)
+            let start = Location("e8")!
+            let end = Location("g8")!
             XCTAssertFalse(Rules.validMoves(game.board, start: start).contains(end))
         } else {
             XCTFail()
@@ -159,8 +159,8 @@ class ChessMasterTests: XCTestCase {
     func testMakeInvalidMoveWithoutValidation() {
         let game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame!
         let board = game.board
-        let start = Location(rank: 7, file: .E)
-        let end = Location(rank: 1, file: .F)
+        let start = Location("e7")!
+        let end = Location("f1")!
         let move = (start: start, end: end)
         if let (newboard,_) = game.board.makeMoveWithoutValidation(move) {
             XCTAssertTrue(newboard != game.board)
@@ -213,8 +213,8 @@ class ChessMasterTests: XCTestCase {
     // average: 0.000038, relative standard deviation: 47.129%
     func testPerformanceMakeMoveWithoutValidation() {
         let game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame!
-        let start = Location(rank: 2, file: .E)
-        let end = Location(rank: 4, file: .E)
+        let start = Location("e2")!
+        let end = Location("e4")!
         let move = (start: start, end: end)
         self.measureBlock {
             game.board.makeMoveWithoutValidation(move)
