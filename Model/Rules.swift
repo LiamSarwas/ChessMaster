@@ -27,6 +27,9 @@ struct Rules {
     static let g8 = Location(file: .G, rank: 8)
     static let h8 = Location(file: .H, rank: 8)
 
+    //Some commonly used pieces
+    static let whiteKing = Piece(color: .White, kind: .King)
+    static let blackKing = Piece(color: .Black, kind: .King)
 
     static func validMoves(board: Board, start:Location) -> [Location] {
         var moves: [Location] = []
@@ -132,7 +135,7 @@ struct Rules {
         if isPlayerInCheck(board, kingsColor: board.activeColor) {
             return moves
         }
-        if piece == Piece(color: .White, kind: .King) {
+        if piece == whiteKing {
             if board.castlingOptions.contains(.WhiteKingSide) {
                 if board.isEmptyAt(f1) &&
                     board.isEmptyAt(g1) {
@@ -153,7 +156,7 @@ struct Rules {
                 }
             }
         }
-        if piece == Piece(color: .Black, kind: .King) {
+        if piece == blackKing {
             if board.castlingOptions.contains(.BlackKingSide) {
                 if board.isEmptyAt(f8) &&
                     board.isEmptyAt(g8) {
@@ -211,23 +214,13 @@ struct Rules {
     // does not check if the castle is legal at this point in the board
     // will return nil if the move provided is not a King's castle move
     static func rookMoveWhileCastling(board:Board, move: Move) -> Move? {
-        if let piece = board.pieceAt(move.start) {
-            if piece.kind == .King {
-                let blackKing = e8
-                let whiteKing = e1
-                if move == (blackKing, g8) {
-                    return (h8, f8)
-                }
-                if move == (blackKing, c8) {
-                    return (a8, d8)
-                }
-                if move == (whiteKing, g1) {
-                    return (h1, f1)
-                }
-                if move == (whiteKing, c1) {
-                    return (a1, d1)
-                }
-            }
+        if board.pieceAt(move.start)?.kind == .King {
+            let blackKingHome = e8
+            let whiteKingHome = e1
+            if move == (blackKingHome, g8) { return (h8, f8) }
+            if move == (blackKingHome, c8) { return (a8, d8) }
+            if move == (whiteKingHome, g1) { return (h1, f1) }
+            if move == (whiteKingHome, c1) { return (a1, d1) }
         }
         return nil
     }
@@ -420,7 +413,7 @@ struct Rules {
         b1: Piece(color: .White, kind: .Knight),
         c1: Piece(color: .White, kind: .Bishop),
         d1: Piece(color: .White, kind: .Queen),
-        e1: Piece(color: .White, kind: .King),
+        e1: whiteKing,
         f1: Piece(color: .White, kind: .Bishop),
         g1: Piece(color: .White, kind: .Knight),
         h1: Piece(color: .White, kind: .Rook),
@@ -447,7 +440,7 @@ struct Rules {
         b8: Piece(color: .Black, kind: .Knight),
         c8: Piece(color: .Black, kind: .Bishop),
         d8: Piece(color: .Black, kind: .Queen),
-        e8: Piece(color: .Black, kind: .King),
+        e8: blackKing,
         f8: Piece(color: .Black, kind: .Bishop),
         g8: Piece(color: .Black, kind: .Knight),
         h8: Piece(color: .Black, kind: .Rook),
