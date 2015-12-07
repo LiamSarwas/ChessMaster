@@ -122,8 +122,8 @@ extension File: CustomStringConvertible {
 
 
 public struct Location: Equatable {
-    let rank: Rank
     let file: File
+    let rank: Rank
 }
 
 // MARK: Location - Hashable
@@ -204,7 +204,7 @@ extension String {
         if self.characters.count == 2 {
             if let file = self[self.startIndex].fenFileValue {
                 if let rank = self[self.startIndex.successor()].fenRankValue {
-                    return Location(rank: rank, file: file)
+                    return Location(file: file, rank: rank)
                 }
             }
         } else {

@@ -7,6 +7,27 @@
 //
 
 struct Rules {
+
+    // Some commonly used locations
+    static let a1 = Location(file: .A, rank: 1)
+    static let b1 = Location(file: .B, rank: 1)
+    static let c1 = Location(file: .C, rank: 1)
+    static let d1 = Location(file: .D, rank: 1)
+    static let e1 = Location(file: .E, rank: 1)
+    static let f1 = Location(file: .F, rank: 1)
+    static let g1 = Location(file: .G, rank: 1)
+    static let h1 = Location(file: .H, rank: 1)
+
+    static let a8 = Location(file: .A, rank: 8)
+    static let b8 = Location(file: .B, rank: 8)
+    static let c8 = Location(file: .C, rank: 8)
+    static let d8 = Location(file: .D, rank: 8)
+    static let e8 = Location(file: .E, rank: 8)
+    static let f8 = Location(file: .F, rank: 8)
+    static let g8 = Location(file: .G, rank: 8)
+    static let h8 = Location(file: .H, rank: 8)
+
+
     static func validMoves(board: Board, start:Location) -> [Location] {
         var moves: [Location] = []
         if let piece = board.pieceAt(start)
@@ -83,7 +104,7 @@ struct Rules {
             return offsets.map {
                 if let newRank = start.rank + $0 {
                     if let newFile = start.file + $1 {
-                        return [Location(rank: newRank, file: newFile)]
+                        return [Location(file: newFile, rank: newRank)]
                     }
                 }
                 return []
@@ -113,46 +134,42 @@ struct Rules {
         }
         if piece == Piece(color: .White, kind: .King) {
             if board.castlingOptions.contains(.WhiteKingSide) {
-                if board.isEmptyAt(Location(rank: 1, file: .F)) &&
-                    board.isEmptyAt(Location(rank: 1, file: .G)) {
-                        let intermediateMove = (start:Location(rank: 1, file: .E),
-                                                  end:Location(rank: 1, file: .F))
+                if board.isEmptyAt(f1) &&
+                    board.isEmptyAt(g1) {
+                        let intermediateMove = (e1, f1)
                         if !isPlayerInCheckAfterMove(board, activeColor: board.activeColor, move:intermediateMove) {
-                            moves.append(Location(rank: 1, file: .G))
+                            moves.append(g1)
                         }
                 }
             }
             if board.castlingOptions.contains(.WhiteQueenSide) {
-                if board.isEmptyAt(Location(rank: 1, file: .B)) &&
-                    board.isEmptyAt(Location(rank: 1, file: .C)) &&
-                    board.isEmptyAt(Location(rank: 1, file: .D)) {
-                        let intermediateMove = (start:Location(rank: 1, file: .E),
-                            end:Location(rank: 1, file: .D))
+                if board.isEmptyAt(b1) &&
+                    board.isEmptyAt(c1) &&
+                    board.isEmptyAt(d1) {
+                        let intermediateMove = (start:e1, end:d1)
                         if !isPlayerInCheckAfterMove(board, activeColor: board.activeColor, move:intermediateMove) {
-                            moves.append(Location(rank: 1, file: .C))
+                            moves.append(c1)
                         }
                 }
             }
         }
         if piece == Piece(color: .Black, kind: .King) {
             if board.castlingOptions.contains(.BlackKingSide) {
-                if board.isEmptyAt(Location(rank: 8, file: .F)) &&
-                    board.isEmptyAt(Location(rank: 8, file: .G)) {
-                        let intermediateMove = (start:Location(rank: 8, file: .E),
-                            end:Location(rank: 8, file: .F))
+                if board.isEmptyAt(f8) &&
+                    board.isEmptyAt(g8) {
+                        let intermediateMove = (start:e8,end:f8)
                         if !isPlayerInCheckAfterMove(board, activeColor: board.activeColor, move:intermediateMove) {
-                            moves.append(Location(rank: 8, file: .G))
+                            moves.append(g8)
                         }
                 }
             }
             if board.castlingOptions.contains(.BlackQueenSide) {
-                if board.isEmptyAt(Location(rank: 8, file: .B)) &&
-                    board.isEmptyAt(Location(rank: 8, file: .C)) &&
-                    board.isEmptyAt(Location(rank: 8, file: .D)) {
-                        let intermediateMove = (start:Location(rank: 8, file: .E),
-                            end:Location(rank: 8, file: .D))
+                if board.isEmptyAt(b8) &&
+                    board.isEmptyAt(c8) &&
+                    board.isEmptyAt(d8) {
+                        let intermediateMove = (start:e8, end:d8)
                         if !isPlayerInCheckAfterMove(board, activeColor: board.activeColor, move:intermediateMove) {
-                            moves.append(Location(rank: 8, file: .C))
+                            moves.append(c8)
                         }
                 }
             }
@@ -171,7 +188,7 @@ struct Rules {
                 case .White:
                     if move.start.rank == 2 && move.end.rank == 4 &&
                         move.start.file == move.end.file {
-                            let targetSquare = Location(rank:3, file:move.start.file)
+                            let targetSquare = Location(file: move.start.file, rank: 3)
                             if board.isEmptyAt(targetSquare) && board.isEmptyAt(move.end) {
                                 return targetSquare
                             }
@@ -179,7 +196,7 @@ struct Rules {
                 case .Black:
                     if move.start.rank == 7 && move.end.rank == 5 &&
                         move.start.file == move.end.file {
-                            let targetSquare = Location(rank:6, file:move.start.file)
+                            let targetSquare = Location(file: move.start.file, rank: 6)
                             if board.isEmptyAt(targetSquare) && board.isEmptyAt(move.end) {
                                 return targetSquare
                             }
@@ -196,19 +213,19 @@ struct Rules {
     static func rookMoveWhileCastling(board:Board, move: Move) -> Move? {
         if let piece = board.pieceAt(move.start) {
             if piece.kind == .King {
-                let blackKing = Location(rank:8, file:.E)
-                let whiteKing = Location(rank:1, file:.E)
-                if move == (blackKing, Location(rank:8, file:.G)) {
-                    return(Location(rank:8, file:.H), Location(rank:8, file:.F))
+                let blackKing = e8
+                let whiteKing = e1
+                if move == (blackKing, g8) {
+                    return (h8, f8)
                 }
-                if move == (blackKing, Location(rank:8, file:.C)) {
-                    return(Location(rank:8, file:.A), Location(rank:8, file:.D))
+                if move == (blackKing, c8) {
+                    return (a8, d8)
                 }
-                if move == (whiteKing, Location(rank:1, file:.G)) {
-                    return(Location(rank:1, file:.H), Location(rank:1, file:.F))
+                if move == (whiteKing, g1) {
+                    return (h1, f1)
                 }
-                if move == (whiteKing, Location(rank:1, file:.C)) {
-                    return(Location(rank:1, file:.A), Location(rank:1, file:.D))
+                if move == (whiteKing, c1) {
+                    return (a1, d1)
                 }
             }
         }
@@ -283,7 +300,7 @@ struct Rules {
             let directions: [[Location]] = offsets.map {
                 if let newRank = kingsSquare.rank + $0 {
                     if let newFile = kingsSquare.file + $1 {
-                        return [Location(rank: newRank, file: newFile)]
+                        return [Location(file: newFile, rank: newRank)]
                     }
                 }
                 return []
@@ -366,22 +383,22 @@ struct Rules {
     static func newCastlingOptions(castlingOptions: CastlingOptions,location:Location) -> CastlingOptions {
         var newCastlingOptions = castlingOptions
         //Options decrease if king or rook moves
-        if location == Location(rank:1, file:.E) {
+        if location == e1 {
             newCastlingOptions.subtractInPlace(.BothWhite)
         }
-        if location == Location(rank:1, file:.A) {
+        if location == a1 {
             newCastlingOptions.subtractInPlace(.WhiteQueenSide)
         }
-        if location == Location(rank:1, file:.H) {
+        if location == h1 {
             newCastlingOptions.subtractInPlace(.WhiteKingSide)
         }
-        if location == Location(rank:8, file:.E) {
+        if location == e8 {
             newCastlingOptions.subtractInPlace(.BothBlack)
         }
-        if location == Location(rank:8, file:.A) {
+        if location == a8 {
             newCastlingOptions.subtractInPlace(.BlackQueenSide)
         }
-        if location == Location(rank:8, file:.H) {
+        if location == h8 {
             newCastlingOptions.subtractInPlace(.BlackKingSide)
         }
         return newCastlingOptions
@@ -390,7 +407,7 @@ struct Rules {
     static func enPassantCaptureSquare(board: Board, move: Move) -> Location? {
         if let piece = board.pieceAt(move.start) {
             if piece.kind == .Pawn && move.end == board.enPassantTargetSquare {
-                return Location(rank:move.start.rank, file:move.end.file)
+                return Location(file: move.end.file, rank: move.start.rank)
             }
         }
         return nil
@@ -399,41 +416,41 @@ struct Rules {
     //MARK: Default Starting Board
     
     static let defaultStartingBoard = [
-        Location(rank:1, file:.A): Piece(color:.White, kind:.Rook),
-        Location(rank:1, file:.B): Piece(color:.White, kind:.Knight),
-        Location(rank:1, file:.C): Piece(color:.White, kind:.Bishop),
-        Location(rank:1, file:.D): Piece(color:.White, kind:.Queen),
-        Location(rank:1, file:.E): Piece(color:.White, kind:.King),
-        Location(rank:1, file:.F): Piece(color:.White, kind:.Bishop),
-        Location(rank:1, file:.G): Piece(color:.White, kind:.Knight),
-        Location(rank:1, file:.H): Piece(color:.White, kind:.Rook),
+        a1: Piece(color: .White, kind: .Rook),
+        b1: Piece(color: .White, kind: .Knight),
+        c1: Piece(color: .White, kind: .Bishop),
+        d1: Piece(color: .White, kind: .Queen),
+        e1: Piece(color: .White, kind: .King),
+        f1: Piece(color: .White, kind: .Bishop),
+        g1: Piece(color: .White, kind: .Knight),
+        h1: Piece(color: .White, kind: .Rook),
         
-        Location(rank:2, file:.A): Piece(color:.White, kind:.Pawn),
-        Location(rank:2, file:.B): Piece(color:.White, kind:.Pawn),
-        Location(rank:2, file:.C): Piece(color:.White, kind:.Pawn),
-        Location(rank:2, file:.D): Piece(color:.White, kind:.Pawn),
-        Location(rank:2, file:.E): Piece(color:.White, kind:.Pawn),
-        Location(rank:2, file:.F): Piece(color:.White, kind:.Pawn),
-        Location(rank:2, file:.G): Piece(color:.White, kind:.Pawn),
-        Location(rank:2, file:.H): Piece(color:.White, kind:.Pawn),
+        Location(file: .A, rank: 2): Piece(color: .White, kind: .Pawn),
+        Location(file: .B, rank: 2): Piece(color: .White, kind: .Pawn),
+        Location(file: .C, rank: 2): Piece(color: .White, kind: .Pawn),
+        Location(file: .D, rank: 2): Piece(color: .White, kind: .Pawn),
+        Location(file: .E, rank: 2): Piece(color: .White, kind: .Pawn),
+        Location(file: .F, rank: 2): Piece(color: .White, kind: .Pawn),
+        Location(file: .G, rank: 2): Piece(color: .White, kind: .Pawn),
+        Location(file: .H, rank: 2): Piece(color: .White, kind: .Pawn),
         
-        Location(rank:7, file:.A): Piece(color:.Black, kind:.Pawn),
-        Location(rank:7, file:.B): Piece(color:.Black, kind:.Pawn),
-        Location(rank:7, file:.C): Piece(color:.Black, kind:.Pawn),
-        Location(rank:7, file:.D): Piece(color:.Black, kind:.Pawn),
-        Location(rank:7, file:.E): Piece(color:.Black, kind:.Pawn),
-        Location(rank:7, file:.F): Piece(color:.Black, kind:.Pawn),
-        Location(rank:7, file:.G): Piece(color:.Black, kind:.Pawn),
-        Location(rank:7, file:.H): Piece(color:.Black, kind:.Pawn),
+        Location(file: .A, rank: 7): Piece(color: .Black, kind: .Pawn),
+        Location(file: .B, rank: 7): Piece(color: .Black, kind: .Pawn),
+        Location(file: .C, rank: 7): Piece(color: .Black, kind: .Pawn),
+        Location(file: .D, rank: 7): Piece(color: .Black, kind: .Pawn),
+        Location(file: .E, rank: 7): Piece(color: .Black, kind: .Pawn),
+        Location(file: .F, rank: 7): Piece(color: .Black, kind: .Pawn),
+        Location(file: .G, rank: 7): Piece(color: .Black, kind: .Pawn),
+        Location(file: .H, rank: 7): Piece(color: .Black, kind: .Pawn),
         
-        Location(rank:8, file:.A): Piece(color:.Black, kind:.Rook),
-        Location(rank:8, file:.B): Piece(color:.Black, kind:.Knight),
-        Location(rank:8, file:.C): Piece(color:.Black, kind:.Bishop),
-        Location(rank:8, file:.D): Piece(color:.Black, kind:.Queen),
-        Location(rank:8, file:.E): Piece(color:.Black, kind:.King),
-        Location(rank:8, file:.F): Piece(color:.Black, kind:.Bishop),
-        Location(rank:8, file:.G): Piece(color:.Black, kind:.Knight),
-        Location(rank:8, file:.H): Piece(color:.Black, kind:.Rook),
+        a8: Piece(color: .Black, kind: .Rook),
+        b8: Piece(color: .Black, kind: .Knight),
+        c8: Piece(color: .Black, kind: .Bishop),
+        d8: Piece(color: .Black, kind: .Queen),
+        e8: Piece(color: .Black, kind: .King),
+        f8: Piece(color: .Black, kind: .Bishop),
+        g8: Piece(color: .Black, kind: .Knight),
+        h8: Piece(color: .Black, kind: .Rook),
     ]
 
 }
