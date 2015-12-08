@@ -10,81 +10,64 @@ import Foundation
 
 struct Engine
 {
-    static let depth = 2
-    static var score = 0
-    static var bestMove : (Location, Location) = ("a1".fenLocation!, "a1".fenLocation!)
-    
    
-    static func getMove(game: Game) -> Move
+    static func getMove(board: Board) -> Move?
     {
-        var max = 500000;
-        for (locStart, locEnd) in getAllMoves(game)
+//        print("Board Score = \(evaluateBoard(board)) at Start")
+        var bestMove:Move?
+        var bestScore: Int = Int.min
+        for move in getAllMoves(board)
         {
-            game.makeMove((locStart, locEnd))
-            score = -1*search(depth - 1, game: game)
-            if score > max
-            {
-                bestMove = (locStart, locEnd)
-                max = score;
+            if let (newboard, _) = board.makeMoveWithoutValidation(move) {
+                let baseScore = evaluateBoard(newboard)
+//                print("Board Score = \(baseScore) after move \(move)")
+                let score = baseScore - search(2, board: newboard)
+                if bestScore < score {
+                    bestScore = score
+                    bestMove = move
+                }
             }
-           // game.undoLastMove()
         }
         return bestMove
     }
 
     
-    static func search(depth: Int, game: Game) -> Int
+    static func search(depth: Int, board: Board) -> Int
     {
-        if depth == 0
+        if depth == 0 { return 0 }
+//        print("\(depth)Board Score = \(evaluateBoard(board)) at Start")
+        var bestScore: Int = Int.min
+        for move in getAllMoves(board)
         {
-            return evaluateBoard(game)
-        }
-        var max = 500000;
-        for (locStart, locEnd) in getAllMoves(game)
-        {
-            game.makeMove((locStart, locEnd))
-            score = -1*search(depth - 1, game: game)
-            if score > max
-            {
-                bestMove = (locStart, locEnd)
-                max = score;
+            if let (newboard, _) = board.makeMoveWithoutValidation(move) {
+                let baseScore = evaluateBoard(newboard)
+//                print("\(depth)Board Score = \(baseScore) after move \(move)")
+                let score = baseScore - search(depth-1, board: newboard)
+                if bestScore < score {
+                    bestScore = score
+                }
             }
-            //game.undoLastmove
         }
-            return max
+        return bestScore
     }
     
-    static func getAllMoves(game: Game) -> [(Location, Location)]
+    static func getAllMoves(board: Board) -> [Move]
     {
-        var moves : [(Location, Location)] = []
-        for (location, _) in game.board
+        var moves : [Move] = []
+        for location in board.locationsOfPiecesOfColor(board.activeColor)
         {
-            moves += mapLocToMove(location, game: game)
+            moves += Rules.validMoves(board, start: location).map{(location,$0)}
         }
         return moves
     }
     
     
-    //I still think that validMoves might want to return a [Move], rather than a [Location]
-    //No reason for it not to (except needing to refactor code)
-    static func mapLocToMove(location: Location, game: Game) -> [(Location, Location)]
+    static func evaluateBoard(board: Board) -> Int
     {
-        let moveEnds = Rules.validMoves(game.board, start: location)
-        var allMoves : [(Location, Location)] = []
-        for loc in moveEnds
-        {
-            allMoves += [(location, loc)]
-        }
-        return allMoves
-    }
-    
-    static func evaluateBoard(game: Game) -> Int
-    {
-        var boardValue = 0
         var whiteBoardValue = 0
         var blackBoardValue = 0
         
-        for (location, piece) in game.board
+        for (location, piece) in board
         {
             if piece.color == .White
             {
@@ -155,130 +138,20 @@ struct Engine
             }
         }
         
-        boardValue = whiteBoardValue - blackBoardValue
-        
-        if game.board.activeColor == .Black
-        {
-            boardValue *= -1
-        }
-        return boardValue
+        //We are evaluating the board after the active player made a move, so the player is now inActive
+        return board.inActiveColor == .Black ? blackBoardValue - whiteBoardValue : whiteBoardValue - blackBoardValue
     }
     
     static func convertToWhiteArrayIndex(loc: Location) -> Int
     {
-        var y = 0
-        var x = 0
-        
-        if loc.rank.value == 1
-        {
-            y += 56
-        }
-        if loc.rank.value == 2
-        {
-            y += 48
-        }
-        if loc.rank.value == 3
-        {
-            y += 40
-        }
-        if loc.rank.value == 4
-        {
-            y += 32
-        }
-        if loc.rank.value == 5
-        {
-            y += 24
-        }
-        if loc.rank.value == 6
-        {
-            y += 16
-        }
-        if loc.rank.value == 7
-        {
-            y += 8
-        }
-        if loc.rank.value == 8
-        {
-            y += 0
-        }
-        
-        
-        if loc.file == .A
-        {
-            x += 0
-        }
-        if loc.file == .B
-        {
-            x += 1
-        }
-        if loc.file == .C
-        {
-            x += 2
-        }
-        if loc.file == .D
-        {
-            x += 3
-        }
-        if loc.file == .E
-        {
-            x += 4
-        }
-        if loc.file == .F
-        {
-            x += 5
-        }
-        if loc.file == .G
-        {
-            x += 6
-        }
-        if loc.file == .H
-        {
-            x += 7
-        }
-        
-        return y + x
+        //a8 -> 0; h8 -> 7; a1 -> 56; h1 -> 63
+        return 64 - (8 * loc.rank.value) + (loc.file.rawValue - 1)
     }
     
     static func convertToBlackArrayIndex(loc: Location) -> Int
     {
-        let y = (loc.rank.value - 1)*8
-        var x = 0
-    
-        
-        if loc.file == .A
-        {
-            x += 0
-        }
-        if loc.file == .B
-        {
-            x += 1
-        }
-        if loc.file == .C
-        {
-            x += 2
-        }
-        if loc.file == .D
-        {
-            x += 3
-        }
-        if loc.file == .E
-        {
-            x += 4
-        }
-        if loc.file == .F
-        {
-            x += 5
-        }
-        if loc.file == .G
-        {
-            x += 6
-        }
-        if loc.file == .H
-        {
-            x += 7
-        }
-        
-        return y + x
+        //a8 -> 56; h8 -> 63; a1 -> 0; h1 -> 7
+        return (8 * (loc.rank.value - 1)) + (loc.file.rawValue - 1)
     }
     
     static let KnightTable =

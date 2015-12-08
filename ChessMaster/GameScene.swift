@@ -577,11 +577,11 @@ class GameScene: SKScene {
         //Update the UI via the delegate
         setMessage()
 
-        let boardValue = Engine.evaluateBoard(game)
-      //  let bestMove = Engine.getMove(game)
+        let boardValue = Engine.evaluateBoard(game.board)
+        let bestMove = Engine.getMove(game.board)
         
         print("The net board value is: \(boardValue)")
-     //   print("The best move is: \(bestMove)")
+        print("The best move is: \(bestMove)")
     }
 
     func setMessage() {
