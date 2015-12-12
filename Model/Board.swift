@@ -14,6 +14,8 @@ struct Board {
     let halfMoveClock: Int
     let fullMoveNumber: Int
 
+    //MARK: - Initializers
+    
     init(pieces: [Location: Piece],
         activeColor: Color,
         castlingOptions: CastlingOptions,
@@ -38,7 +40,7 @@ struct Board {
             fullMoveNumber: 1
         )
     }
-    
+
     var inActiveColor : Color {
         return activeColor == .White ? .Black : .White
     }

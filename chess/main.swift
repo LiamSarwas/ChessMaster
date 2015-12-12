@@ -6,7 +6,18 @@
 //  Copyright © 2015 Regan Sarwas. All rights reserved.
 //
 
-if let game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame {
+//let tests = ["a b c - d", "4k2r/R7/8/8/8/8/8/4R3 b k - 0 1", "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"]
+//for test in tests {
+//    print("\(test)")
+//    for part in test.split(" ") {
+//        print("\(part)")
+//    }
+//}
+
+print("Check modifying board does not change game")
+//let fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+let fen = "4k2r/R7/8/8/8/8/8/4R3 b - k 0 1"
+if let game = Game(fromFEN: fen) {
     print("game: \(game)")
 
     //print("Check pieces at location")
@@ -19,30 +30,29 @@ if let game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame
     //    print("\(possibleMove)")
     //}
     
-    print("Check modifying board does not change game")
     //game.board[a1] = nil  //compiler error: board is a get-only property
     var myboardstate = game.board
     (myboardstate,_) = myboardstate.makeMove((e2,e4))!
-    print("myboard: \(myboardstate)")
-    print("game: \(game)")
+    print("my board: \(myboardstate)")
+    print("game board: \(game.board)")
 
 } else {
-    print("Not a valid FEN line")
+    print("   Board setup '\(fen)' is not a valid FEN line")
 }
 
-print("Check make move")
-if let game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame {
-    print("  Start: \(game)")
+print("Check making moves")
+if let game = Game(fromFEN: fen) {
+    print("  Start: \(game.board)")
     var move = (e2,e4)
     print("   Move: \(move)")
     game.makeMove(move)
-    print("   End1: \(game)")
+    print("   End1: \(game.board)")
     move = (b8,c6)
     print("   Move: \(move)")
     game.makeMove(move)
-    print("   End2: \(game)")
+    print("   End2: \(game.board)")
 } else {
-    print("  Fail - initial board is invalid")
+    print("   Board setup '\(fen)' is not a valid FEN line")
 }
 
 /*
