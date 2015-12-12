@@ -16,7 +16,7 @@
 
 print("Check modifying board does not change game")
 //let fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
-let fen = "4k2r/R7/8/8/8/8/8/4R3 b - k 0 1"
+let fen = "4k2r/R7/8/8/8/8/8/4R3 b k - 0 1"
 if let game = Game(fromFEN: fen) {
     print("game: \(game)")
 
