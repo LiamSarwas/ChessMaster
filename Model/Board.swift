@@ -14,6 +14,8 @@ struct Board {
     let halfMoveClock: Int
     let fullMoveNumber: Int
 
+    //MARK: - Initializers
+    
     init(pieces: [Location: Piece],
         activeColor: Color,
         castlingOptions: CastlingOptions,
@@ -38,7 +40,9 @@ struct Board {
             fullMoveNumber: 1
         )
     }
-    
+
+    //MARK: - Board Status Properties
+
     var inActiveColor : Color {
         return activeColor == .White ? .Black : .White
     }
@@ -50,6 +54,8 @@ struct Board {
     var activeColorHasMoves: Bool {
         return Rules.doesActivePlayerHaveMoves(self)
     }
+
+    //MARK: - Board Status Methods
 
     func pieceAt(location:Location) -> Piece? {
         return pieces[location]
@@ -75,6 +81,8 @@ struct Board {
         // but that would be an invalid chess board
         return nil // by laws of chess this should never happen; required for type safety
     }
+
+    //MARK: - Move Methods
 
     func makeMove(move:Move, promotionKind:Kind = .Queen) -> (Board, Piece?)? {
         if Rules.validMoves(self, start:move.start).contains(move.end) {
@@ -124,6 +132,8 @@ struct Board {
         return nil
     }
 }
+
+//MARK: - Extensions: Equatable, SequenceType
 
 extension Board : Equatable {}
 

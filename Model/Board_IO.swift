@@ -16,17 +16,17 @@
 extension Board: CustomStringConvertible, CustomDebugStringConvertible {
     var description: String {
         get {
-            return description_FEN
+            return fen
         }
     }
     
     var debugDescription: String {
         get {
-            return description_FEN
+            return fen
         }
     }
 
-    var fenBoardDescription: String {
+    var fenBoard: String {
         var lines :[String] = []
         for rank in Rank.allValues.reverse() {
             var line = ""
@@ -50,9 +50,8 @@ extension Board: CustomStringConvertible, CustomDebugStringConvertible {
         return lines.joinWithSeparator("/")
     }
 
-    var description_FEN: String {
+    var fen: String {
         get {            
-            let fenBoard = fenBoardDescription
             let enPassant = enPassantTargetSquare == nil ? "-" : "\(enPassantTargetSquare!)"
             let color = activeColor == .White ? "w" : "b"
             let castle =
