@@ -35,7 +35,7 @@ struct Board {
             castlingOptions: CastlingOptions.All,
             enPassantTargetSquare: nil,
             halfMoveClock: 0,
-            fullMoveNumber: 0
+            fullMoveNumber: 1
         )
     }
     
