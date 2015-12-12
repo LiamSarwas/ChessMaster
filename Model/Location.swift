@@ -120,6 +120,81 @@ extension File: CustomStringConvertible {
 
 // MARK: Location
 
+// Global locations to make code easier to read
+
+//static locations for easy reference
+let a1 = Location(file: .A, rank: 1)
+let b1 = Location(file: .B, rank: 1)
+let c1 = Location(file: .C, rank: 1)
+let d1 = Location(file: .D, rank: 1)
+let e1 = Location(file: .E, rank: 1)
+let f1 = Location(file: .F, rank: 1)
+let g1 = Location(file: .G, rank: 1)
+let h1 = Location(file: .H, rank: 1)
+
+let a2 = Location(file: .A, rank: 2)
+let b2 = Location(file: .B, rank: 2)
+let c2 = Location(file: .C, rank: 2)
+let d2 = Location(file: .D, rank: 2)
+let e2 = Location(file: .E, rank: 2)
+let f2 = Location(file: .F, rank: 2)
+let g2 = Location(file: .G, rank: 2)
+let h2 = Location(file: .H, rank: 2)
+
+let a3 = Location(file: .A, rank: 3)
+let b3 = Location(file: .B, rank: 3)
+let c3 = Location(file: .C, rank: 3)
+let d3 = Location(file: .D, rank: 3)
+let e3 = Location(file: .E, rank: 3)
+let f3 = Location(file: .F, rank: 3)
+let g3 = Location(file: .G, rank: 3)
+let h3 = Location(file: .H, rank: 3)
+
+let a4 = Location(file: .A, rank: 4)
+let b4 = Location(file: .B, rank: 4)
+let c4 = Location(file: .C, rank: 4)
+let d4 = Location(file: .D, rank: 4)
+let e4 = Location(file: .E, rank: 4)
+let f4 = Location(file: .F, rank: 4)
+let g4 = Location(file: .G, rank: 4)
+let h4 = Location(file: .H, rank: 4)
+
+let a5 = Location(file: .A, rank: 5)
+let b5 = Location(file: .B, rank: 5)
+let c5 = Location(file: .C, rank: 5)
+let d5 = Location(file: .D, rank: 5)
+let e5 = Location(file: .E, rank: 5)
+let f5 = Location(file: .F, rank: 5)
+let g5 = Location(file: .G, rank: 5)
+let h5 = Location(file: .H, rank: 5)
+
+let a6 = Location(file: .A, rank: 6)
+let b6 = Location(file: .B, rank: 6)
+let c6 = Location(file: .C, rank: 6)
+let d6 = Location(file: .D, rank: 6)
+let e6 = Location(file: .E, rank: 6)
+let f6 = Location(file: .F, rank: 6)
+let g6 = Location(file: .G, rank: 6)
+let h6 = Location(file: .H, rank: 6)
+
+let a7 = Location(file: .A, rank: 7)
+let b7 = Location(file: .B, rank: 7)
+let c7 = Location(file: .C, rank: 7)
+let d7 = Location(file: .D, rank: 7)
+let e7 = Location(file: .E, rank: 7)
+let f7 = Location(file: .F, rank: 7)
+let g7 = Location(file: .G, rank: 7)
+let h7 = Location(file: .H, rank: 7)
+
+let a8 = Location(file: .A, rank: 8)
+let b8 = Location(file: .B, rank: 8)
+let c8 = Location(file: .C, rank: 8)
+let d8 = Location(file: .D, rank: 8)
+let e8 = Location(file: .E, rank: 8)
+let f8 = Location(file: .F, rank: 8)
+let g8 = Location(file: .G, rank: 8)
+let h8 = Location(file: .H, rank: 8)
+
 
 public struct Location: Equatable {
     let file: File

@@ -17,6 +17,20 @@ enum Color {
 struct Piece: Equatable {
     let color: Color
     let kind: Kind
+
+    //static pieces for easy reference
+    static let whiteKing   = Piece(color: .White, kind: .King)
+    static let whiteQueen  = Piece(color: .White, kind: .Queen)
+    static let whiteRook   = Piece(color: .White, kind: .Rook)
+    static let whiteBishop = Piece(color: .White, kind: .Bishop)
+    static let whiteKnight = Piece(color: .White, kind: .Knight)
+    static let whitePawn   = Piece(color: .White, kind: .Pawn)
+    static let blackKing   = Piece(color: .Black, kind: .King)
+    static let blackQueen  = Piece(color: .Black, kind: .Queen)
+    static let blackRook   = Piece(color: .Black, kind: .Rook)
+    static let blackBishop = Piece(color: .Black, kind: .Bishop)
+    static let blackKnight = Piece(color: .Black, kind: .Knight)
+    static let blackPawn   = Piece(color: .Black, kind: .Pawn)
 }
 
 // MARK: Hashable

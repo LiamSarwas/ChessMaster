@@ -15,14 +15,14 @@ if let game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame
     //}
     
     //print("Possible moves for e5")
-    //for possibleMove in game.validMoves(Location(rank: 5, file:.E)) {
+    //for possibleMove in game.validMoves(e5) {
     //    print("\(possibleMove)")
     //}
     
     print("Check modifying board does not change game")
-    //game.board[Location(rank:1, file:.A)] = nil  //compiler error: board is a get-only property
+    //game.board[a1] = nil  //compiler error: board is a get-only property
     var myboardstate = game.board
-    (myboardstate,_) = myboardstate.makeMove((Location("e2")!, Location("e4")!))!
+    (myboardstate,_) = myboardstate.makeMove((e2,e4))!
     print("myboard: \(myboardstate)")
     print("game: \(game)")
 
@@ -33,11 +33,11 @@ if let game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame
 print("Check make move")
 if let game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame {
     print("  Start: \(game)")
-    var move = (Location("e2")!, Location("e4")!)
+    var move = (e2,e4)
     print("   Move: \(move)")
     game.makeMove(move)
     print("   End1: \(game)")
-    move = (Location("b8")!, Location("c6")!)
+    move = (b8,c6)
     print("   Move: \(move)")
     game.makeMove(move)
     print("   End2: \(game)")
@@ -46,7 +46,7 @@ if let game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame
 }
 
 /*
-let l = Location(rank:5, file:.E)
+let l = c5
 print("North from \(l)")
 for ll in l.toNorth {
     print("   \(ll)")

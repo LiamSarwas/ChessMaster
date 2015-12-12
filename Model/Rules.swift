@@ -8,29 +8,6 @@
 
 struct Rules {
 
-    // Some commonly used locations
-    static let a1 = Location(file: .A, rank: 1)
-    static let b1 = Location(file: .B, rank: 1)
-    static let c1 = Location(file: .C, rank: 1)
-    static let d1 = Location(file: .D, rank: 1)
-    static let e1 = Location(file: .E, rank: 1)
-    static let f1 = Location(file: .F, rank: 1)
-    static let g1 = Location(file: .G, rank: 1)
-    static let h1 = Location(file: .H, rank: 1)
-
-    static let a8 = Location(file: .A, rank: 8)
-    static let b8 = Location(file: .B, rank: 8)
-    static let c8 = Location(file: .C, rank: 8)
-    static let d8 = Location(file: .D, rank: 8)
-    static let e8 = Location(file: .E, rank: 8)
-    static let f8 = Location(file: .F, rank: 8)
-    static let g8 = Location(file: .G, rank: 8)
-    static let h8 = Location(file: .H, rank: 8)
-
-    //Some commonly used pieces
-    static let whiteKing = Piece(color: .White, kind: .King)
-    static let blackKing = Piece(color: .Black, kind: .King)
-
     static func validMoves(board: Board, start:Location) -> [Location] {
         var moves: [Location] = []
         if let piece = board.pieceAt(start)
@@ -135,7 +112,7 @@ struct Rules {
         if isPlayerInCheck(board, kingsColor: board.activeColor) {
             return moves
         }
-        if piece == whiteKing {
+        if piece == Piece.whiteKing {
             if board.castlingOptions.contains(.WhiteKingSide) {
                 if board.isEmptyAt(f1) &&
                     board.isEmptyAt(g1) {
@@ -156,7 +133,7 @@ struct Rules {
                 }
             }
         }
-        if piece == blackKing {
+        if piece == Piece.blackKing {
             if board.castlingOptions.contains(.BlackKingSide) {
                 if board.isEmptyAt(f8) &&
                     board.isEmptyAt(g8) {
@@ -409,41 +386,41 @@ struct Rules {
     //MARK: Default Starting Board
     
     static let defaultStartingBoard = [
-        a1: Piece(color: .White, kind: .Rook),
-        b1: Piece(color: .White, kind: .Knight),
-        c1: Piece(color: .White, kind: .Bishop),
-        d1: Piece(color: .White, kind: .Queen),
-        e1: whiteKing,
-        f1: Piece(color: .White, kind: .Bishop),
-        g1: Piece(color: .White, kind: .Knight),
-        h1: Piece(color: .White, kind: .Rook),
+        a1: Piece.whiteRook,
+        b1: Piece.whiteKnight,
+        c1: Piece.whiteBishop,
+        d1: Piece.whiteQueen,
+        e1: Piece.whiteKing,
+        f1: Piece.whiteBishop,
+        g1: Piece.whiteKnight,
+        h1: Piece.whiteRook,
         
-        Location(file: .A, rank: 2): Piece(color: .White, kind: .Pawn),
-        Location(file: .B, rank: 2): Piece(color: .White, kind: .Pawn),
-        Location(file: .C, rank: 2): Piece(color: .White, kind: .Pawn),
-        Location(file: .D, rank: 2): Piece(color: .White, kind: .Pawn),
-        Location(file: .E, rank: 2): Piece(color: .White, kind: .Pawn),
-        Location(file: .F, rank: 2): Piece(color: .White, kind: .Pawn),
-        Location(file: .G, rank: 2): Piece(color: .White, kind: .Pawn),
-        Location(file: .H, rank: 2): Piece(color: .White, kind: .Pawn),
+        a2: Piece.whitePawn,
+        b2: Piece.whitePawn,
+        c2: Piece.whitePawn,
+        d2: Piece.whitePawn,
+        e2: Piece.whitePawn,
+        f2: Piece.whitePawn,
+        g2: Piece.whitePawn,
+        h2: Piece.whitePawn,
         
-        Location(file: .A, rank: 7): Piece(color: .Black, kind: .Pawn),
-        Location(file: .B, rank: 7): Piece(color: .Black, kind: .Pawn),
-        Location(file: .C, rank: 7): Piece(color: .Black, kind: .Pawn),
-        Location(file: .D, rank: 7): Piece(color: .Black, kind: .Pawn),
-        Location(file: .E, rank: 7): Piece(color: .Black, kind: .Pawn),
-        Location(file: .F, rank: 7): Piece(color: .Black, kind: .Pawn),
-        Location(file: .G, rank: 7): Piece(color: .Black, kind: .Pawn),
-        Location(file: .H, rank: 7): Piece(color: .Black, kind: .Pawn),
+        a7: Piece.blackPawn,
+        b7: Piece.blackPawn,
+        c7: Piece.blackPawn,
+        d7: Piece.blackPawn,
+        e7: Piece.blackPawn,
+        f7: Piece.blackPawn,
+        g7: Piece.blackPawn,
+        h7: Piece.blackPawn,
         
-        a8: Piece(color: .Black, kind: .Rook),
-        b8: Piece(color: .Black, kind: .Knight),
-        c8: Piece(color: .Black, kind: .Bishop),
-        d8: Piece(color: .Black, kind: .Queen),
-        e8: blackKing,
-        f8: Piece(color: .Black, kind: .Bishop),
-        g8: Piece(color: .Black, kind: .Knight),
-        h8: Piece(color: .Black, kind: .Rook),
+        a8: Piece.blackRook,
+        b8: Piece.blackKnight,
+        c8: Piece.blackBishop,
+        d8: Piece.blackQueen,
+        e8: Piece.blackKing,
+        f8: Piece.blackBishop,
+        g8: Piece.blackKnight,
+        h8: Piece.blackRook
     ]
 
 }
