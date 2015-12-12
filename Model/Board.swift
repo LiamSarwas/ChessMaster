@@ -59,6 +59,10 @@ struct Board {
         return pieces[location] == nil
     }
 
+    func locationsOfPiecesOfColor(color: Color) -> [Location] {
+        return (pieces.filter{$0.1.color == color}).map{$0.0}
+    }
+
     //returns true if the player with color is in check
     func locationOfKing(color: Color) -> Location? {
         let king = Piece(color:color, kind: .King)
