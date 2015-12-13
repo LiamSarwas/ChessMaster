@@ -56,7 +56,7 @@ struct Engine
         var moves : [Move] = []
         for location in board.locationsOfPiecesOfColor(board.activeColor)
         {
-            moves += Rules.validMoves(board, start: location).map{(location,$0)}
+            moves += Rules.validMoves(board, start: location).map{(location, $0)}
         }
         return moves
     }
@@ -138,19 +138,19 @@ struct Engine
             }
         }
         
-        //We are evaluating the board after the active player made a move, so the player is now inActive
+        // We are evaluating the board after the active player made a move, so the player is now inActive
         return board.inActiveColor == .Black ? blackBoardValue - whiteBoardValue : whiteBoardValue - blackBoardValue
     }
     
     static func convertToWhiteArrayIndex(location: Location) -> Int
     {
-        //a8 -> 0; h8 -> 7; a1 -> 56; h1 -> 63
+        // a8 -> 0; h8 -> 7; a1 -> 56; h1 -> 63
         return 64 - (8 * Int(location.rank)) + (Int(location.file) - 1)
     }
     
     static func convertToBlackArrayIndex(location: Location) -> Int
     {
-        //a8 -> 56; h8 -> 63; a1 -> 0; h1 -> 7
+        // a8 -> 56; h8 -> 63; a1 -> 0; h1 -> 7
         return (8 * (Int(location.rank) - 1)) + (Int(location.file) - 1)
     }
     

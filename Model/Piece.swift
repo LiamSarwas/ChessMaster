@@ -18,7 +18,7 @@ struct Piece: Equatable {
     let color: Color
     let kind: Kind
 
-    //static pieces for easy reference
+    // static pieces for easy reference
     static let whiteKing   = Piece(color: .White, kind: .King)
     static let whiteQueen  = Piece(color: .White, kind: .Queen)
     static let whiteRook   = Piece(color: .White, kind: .Rook)
@@ -33,7 +33,7 @@ struct Piece: Equatable {
     static let blackPawn   = Piece(color: .Black, kind: .Pawn)
 }
 
-// MARK: Hashable
+// MARK: - Hashable
 
 extension Piece: Hashable {
     var hashValue: Int {
@@ -41,13 +41,13 @@ extension Piece: Hashable {
     }
 }
 
-// MARK: Equatable
+// MARK: - Equatable
 
-func == (left:Piece, right:Piece) -> Bool {
+func == (left: Piece, right: Piece) -> Bool {
     return (left.kind == right.kind)  && (left.color == right.color)
 }
 
-// MARK: CustomStringConvertible
+// MARK: - CustomStringConvertible
 
 extension Piece: CustomStringConvertible {
     var pgn: String {

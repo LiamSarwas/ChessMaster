@@ -8,7 +8,7 @@
 
 // MARK: - Global locations to make code easier to read
 
-//static locations for easy reference
+// static locations for easy reference
 let a1 = Location(file: .A, rank: .R1)
 let b1 = Location(file: .B, rank: .R1)
 let c1 = Location(file: .C, rank: .R1)
@@ -92,7 +92,7 @@ public struct Location {
 
 extension Location: Equatable {}
 
-public func == (left:Location, right:Location) -> Bool {
+public func == (left: Location, right: Location) -> Bool {
     return (left.rank == right.rank)  && (left.file == right.file)
 }
 

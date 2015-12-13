@@ -13,7 +13,7 @@
 
 final class History {
     private var _history: [(move: Move, board: Board)] = []
-    private var _historyIndex : Int?
+    private var _historyIndex: Int?
     // If the history index is non-nil, then the _history index must be a
     // valid index into the _histroy collection, and current board is the
     // board at that location in the history collection.
@@ -26,7 +26,7 @@ final class History {
         return nil
     }
 
-    func occurrencesOfBoard(board:Board) -> Int {
+    func occurrencesOfBoard(board: Board) -> Int {
         return _history.filter({$0.board == board}).count
     }
 
@@ -48,9 +48,9 @@ final class History {
     }
 
     func appendMove(move: Move, board: Board) {
-        //If we append a move after backing up, then move and board are already on the history
-        //at _historyIndex, so we delete everything after that, so that move and board are the last items
-        //and clear the _historyIndex
+        // If we append a move after backing up, then move and board are already on the history
+        // at _historyIndex, so we delete everything after that, so that move and board are the last items
+        // and clear the _historyIndex
         if let index = _historyIndex {
             assert(board == _history[index].board && move == _history[index].move)
             while index < _history.count {
@@ -75,7 +75,7 @@ extension History: CustomStringConvertible, CustomDebugStringConvertible {
     {
         var response: String = ""
         for index in 0..<_history.count {
-            //TODO: Implement the PGN Protocol
+            // TODO: Implement the PGN Protocol
             if (index % 2 == 0) {
                 response += "\(1 + index / 2). \(_history[index].move.start)\(_history[index].move.end) "
             } else {
