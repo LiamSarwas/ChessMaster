@@ -36,21 +36,7 @@ func - (file: File, n: Int) -> File? {
     return File(Int(file) - n)
 }
 
-// MARK: - Equatable
-
-extension File: Equatable {}
-
-public func == (lhs: File, rhs: File) -> Bool {
-    return (lhs.rawValue == rhs.rawValue)
-}
-
-// MARK: - Hashable
-
-extension File: Hashable {
-    public var hashValue: Int {
-        return rawValue.hashValue
-    }
-}
+// Note: Equatable and Hashable come for free with rawValue Enums
 
 // MARK: - Comparable
 

@@ -36,21 +36,7 @@ func - (rank: Rank, n: Int) -> Rank? {
     return Rank(Int(rank) - n)
 }
 
-// MARK: - Equatable
-
-extension Rank: Equatable {}
-
-public func == (lhs: Rank, rhs: Rank) -> Bool {
-    return (lhs.rawValue == rhs.rawValue)
-}
-
-// MARK: - Hashable
-
-extension Rank: Hashable {
-    public var hashValue: Int {
-        return rawValue.hashValue
-    }
-}
+// Note: Equatable and Hashable come for free with rawValue Enums
 
 // MARK: - Comparable
 
