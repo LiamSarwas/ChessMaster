@@ -41,6 +41,20 @@ struct Board {
         )
     }
 
+    init?(fromFEN fen: String) {
+        if let board = fen.fenBoard {
+            self.pieces = board.pieces
+            self.activeColor = board.activeColor
+            self.castlingOptions = board.castlingOptions
+            self.enPassantTargetSquare = board.enPassantTargetSquare
+            self.halfMoveClock = board.halfMoveClock
+            self.fullMoveNumber = board.fullMoveNumber
+        } else {
+            return nil
+        }
+    }
+
+
     //MARK: - Board Status Properties
 
     var inActiveColor : Color {

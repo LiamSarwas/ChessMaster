@@ -27,9 +27,7 @@ class Game {
     }
 
     convenience init?(fromFEN fen: String) {
-        if let board = fen.fenBoard {
-            //return Game(board: board)
-            //if let board = Board(fromFEN: fen) {
+        if let board = Board(fromFEN: fen) {
             self.init(board: board)
         } else {
             return nil
