@@ -28,10 +28,10 @@ extension Board: CustomStringConvertible, CustomDebugStringConvertible {
 
     var fenBoard: String {
         var lines :[String] = []
-        for rank in Rank.allValues.reverse() {
+        for rank in Rank.allReverseValues {
             var line = ""
             var emptyCount = 0
-            for file in File.allValues {
+            for file in File.allForwardValues {
                 if let piece = pieceAt(Location(file:file, rank:rank)) {
                     if 0 < emptyCount {
                         line += "\(emptyCount)"
@@ -105,9 +105,9 @@ extension String {
         var board = Dictionary<Location,Piece>()
         for index in 0...7 {
             if let rank_list = parseFenRank(ranks[index]) {
-                let rank = 8 - index
-                for (i,file) in [File.A, .B, .C, .D, .E, .F, .G, .H].enumerate() {
-                    board[Location(file: file, rank:Rank(integerLiteral:rank))] = rank_list[i]
+                let rank = Rank(8 - index)!
+                for (i,file) in File.allForwardValues.enumerate() {
+                    board[Location(file: file, rank: rank)] = rank_list[i]
                 }
             } else {
                 return nil
@@ -152,8 +152,8 @@ extension String {
     
     func parseFenEnPassantTargetSquare(s:String) -> (Bool, Location?) {
         if s == "-" { return (true, nil) }
-        if let location = s.fenLocation {
-            if location.rank == 3 || location.rank == 6 {
+        if let location = Location(s) {
+            if location.rank == Rank.R3 || location.rank == Rank.R6 {
                 return (true, location)
             } else {
                 print("FEN enPassant target square '\(s)' is not on rank 3 or 6")

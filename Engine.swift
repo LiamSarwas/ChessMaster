@@ -142,16 +142,16 @@ struct Engine
         return board.inActiveColor == .Black ? blackBoardValue - whiteBoardValue : whiteBoardValue - blackBoardValue
     }
     
-    static func convertToWhiteArrayIndex(loc: Location) -> Int
+    static func convertToWhiteArrayIndex(location: Location) -> Int
     {
         //a8 -> 0; h8 -> 7; a1 -> 56; h1 -> 63
-        return 64 - (8 * loc.rank.value) + (loc.file.rawValue - 1)
+        return 64 - (8 * Int(location.rank)) + (Int(location.file) - 1)
     }
     
-    static func convertToBlackArrayIndex(loc: Location) -> Int
+    static func convertToBlackArrayIndex(location: Location) -> Int
     {
         //a8 -> 56; h8 -> 63; a1 -> 0; h1 -> 7
-        return (8 * (loc.rank.value - 1)) + (loc.file.rawValue - 1)
+        return (8 * (Int(location.rank) - 1)) + (Int(location.file) - 1)
     }
     
     static let KnightTable =

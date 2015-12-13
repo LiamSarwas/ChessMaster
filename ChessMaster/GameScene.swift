@@ -233,97 +233,21 @@ class GameScene: SKScene {
     
     func convertToLocation(point: CGPoint) -> Location?
     {
-        var loc = ""
-        let valX = Int (point.x)
-        let valY = Int (point.y)
-        if (valY >= 0 && valY < 640) && (valX >= 0 && valX < 640)
-        {
-            if (valX >= 0) && (valX < 80)
-            {
-                loc += "a"
+        let rankIndex = 1 + Int(point.y/80)
+        let fileIndex = 1 + Int(point.x/80)
+        if let rank = Rank(rankIndex) {
+            if let file = File(fileIndex) {
+                return Location(file: file, rank: rank)
             }
-            if (valX >= 80) && (valX < 160)
-            {
-                loc += "b"
-            }
-            if (valX >= 160) && (valX < 240)
-            {
-                loc += "c"
-            }
-            if (valX >= 240) && (valX < 320)
-            {
-                loc += "d"
-            }
-            if (valX >= 320) && (valX < 400)
-            {
-                loc += "e"
-            }
-            if (valX >= 400) && (valX < 480)
-            {
-                loc += "f"
-            }
-            if (valX >= 480) && (valX < 560)
-            {
-                loc += "g"
-            }
-            if (valX >= 560) && (valX < 640)
-            {
-                loc += "h"
-            }
-            
-            let rank = Int (valY/80) + 1
-            loc += String(rank)
         }
-        else
-        {
-            loc = ""
-        }
-        
-        
-        let location = loc.fenLocation
-        return location
+        return nil
     }
     
-    func convertToPoint(loc: Location) -> CGPoint
+    func convertToPoint(location: Location) -> CGPoint
     {
-        let y = CGFloat (loc.rank.value*80 - 40)
-        var x = CGFloat(0)
-        
-        if loc.file == .A
-        {
-            x = CGFloat(40)
-        }
-        if loc.file == .B
-        {
-            x = CGFloat(120)
-        }
-        if loc.file == .C
-        {
-            x = CGFloat(200)
-        }
-        if loc.file == .D
-        {
-            x = CGFloat(280)
-        }
-        if loc.file == .E
-        {
-            x = CGFloat(360)
-        }
-        if loc.file == .F
-        {
-            x = CGFloat(440)
-        }
-        if loc.file == .G
-        {
-            x = CGFloat(520)
-        }
-        if loc.file == .H
-        {
-            x = CGFloat(600)
-        }
-        
-        let point = CGPointMake(x, y)
-        return point
+        let y = CGFloat(Int(location.rank) * 80 - 40)
+        let x = CGFloat(Int(location.file) * 80 - 40)
+        return CGPointMake(x, y)
     }
     
     func setUpBoard()

@@ -92,12 +92,12 @@ struct Rules {
         case .Pawn:
             switch piece.color {
             case .White:
-                let homeRank = start.rank == 2
+                let homeRank = start.rank == Rank.R2
                 let forwardCount = homeRank ? 2 : 1
                 return [start.toNorth.take(forwardCount),
                     start.toNortheast.take(1), start.toNorthwest.take(1)]
             case .Black:
-                let homeRank = start.rank == 7
+                let homeRank = start.rank == Rank.R7
                 let forwardCount = homeRank ? 2 : 1
                 return [start.toSouth.take(forwardCount),
                     start.toSoutheast.take(1), start.toSouthwest.take(1)]
@@ -166,17 +166,17 @@ struct Rules {
             if piece.kind == .Pawn {
                 switch piece.color {
                 case .White:
-                    if move.start.rank == 2 && move.end.rank == 4 &&
+                    if move.start.rank == Rank.R2 && move.end.rank == Rank.R4 &&
                         move.start.file == move.end.file {
-                            let targetSquare = Location(file: move.start.file, rank: 3)
+                            let targetSquare = Location(file: move.start.file, rank: Rank.R3)
                             if board.isEmptyAt(targetSquare) && board.isEmptyAt(move.end) {
                                 return targetSquare
                             }
                     }
                 case .Black:
-                    if move.start.rank == 7 && move.end.rank == 5 &&
+                    if move.start.rank == Rank.R7 && move.end.rank == Rank.R5 &&
                         move.start.file == move.end.file {
-                            let targetSquare = Location(file: move.start.file, rank: 6)
+                            let targetSquare = Location(file: move.start.file, rank: Rank.R6)
                             if board.isEmptyAt(targetSquare) && board.isEmptyAt(move.end) {
                                 return targetSquare
                             }
@@ -321,7 +321,7 @@ struct Rules {
     static func isPawnPromotion(board: Board, move:Move) -> Bool {
         if let piece = board.pieceAt(move.start) {
             if piece.kind == .Pawn {
-                if move.end.rank == Rank.maxValue  || move.end.rank == Rank.minValue {
+                if move.end.rank == Rank.max  || move.end.rank == Rank.min {
                     return true
                 }
             }
