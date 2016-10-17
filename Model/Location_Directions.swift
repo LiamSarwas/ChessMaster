@@ -6,45 +6,44 @@
 //  Copyright © 2015 Regan Sarwas. All rights reserved.
 //
 
-
 extension Location {
     var toNorth: [Location]
     {
-        return self.rank.toNorth().map { Location(file: self.file, rank: $0) }
+        return rank.toNorth().map { Location(file: file, rank: $0) }
     }
     
     var toSouth: [Location]
     {
-        return self.rank.toSouth().map { Location(file: self.file, rank: $0) }
+        return rank.toSouth().map { Location(file: file, rank: $0) }
     }
     
     var toEast: [Location]
     {
-        return self.file.toEast().map { Location(file: $0, rank: self.rank) }
+        return file.toEast().map { Location(file: $0, rank: rank) }
     }
     
     var toWest: [Location]
     {
-        return self.file.toWest().map { Location(file: $0, rank: self.rank) }
+        return file.toWest().map { Location(file: $0, rank: rank) }
     }
     
     var toNortheast: [Location]
     {
-        return zip(self.file.toEast(), self.rank.toNorth()).map { Location(file: $0, rank: $1) }
+        return zip(file.toEast(), rank.toNorth()).map { Location(file: $0, rank: $1) }
     }
     
     var toNorthwest: [Location]
     {
-        return zip(self.file.toWest(), self.rank.toNorth()).map { Location(file: $0, rank: $1) }
+        return zip(file.toWest(), rank.toNorth()).map { Location(file: $0, rank: $1) }
     }
     
     var toSoutheast: [Location]
     {
-        return zip(self.file.toEast(), self.rank.toSouth()).map { Location(file: $0, rank: $1) }
+        return zip(file.toEast(), rank.toSouth()).map { Location(file: $0, rank: $1) }
     }
     
     var toSouthwest: [Location]
     {
-        return zip(self.file.toWest(), self.rank.toSouth()).map { Location(file: $0, rank: $1) }
+        return zip(file.toWest(), rank.toSouth()).map { Location(file: $0, rank: $1) }
     }
 }

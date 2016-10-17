@@ -14,6 +14,8 @@ struct Board {
     let halfMoveClock: Int
     let fullMoveNumber: Int
 
+    // MARK: - Initializers
+    
     init(pieces: [Location: Piece],
         activeColor: Color,
         castlingOptions: CastlingOptions,
@@ -35,11 +37,27 @@ struct Board {
             castlingOptions: CastlingOptions.All,
             enPassantTargetSquare: nil,
             halfMoveClock: 0,
-            fullMoveNumber: 0
+            fullMoveNumber: 1
         )
     }
-    
-    var inActiveColor : Color {
+
+    init?(fromFEN fen: String) {
+        if let board = fen.fenBoard {
+            self.pieces = board.pieces
+            self.activeColor = board.activeColor
+            self.castlingOptions = board.castlingOptions
+            self.enPassantTargetSquare = board.enPassantTargetSquare
+            self.halfMoveClock = board.halfMoveClock
+            self.fullMoveNumber = board.fullMoveNumber
+        } else {
+            return nil
+        }
+    }
+
+
+    // MARK: - Board Status Properties
+
+    var inActiveColor: Color {
         return activeColor == .White ? .Black : .White
     }
 
@@ -51,11 +69,13 @@ struct Board {
         return Rules.doesActivePlayerHaveMoves(self)
     }
 
-    func pieceAt(location:Location) -> Piece? {
+    // MARK: - Board Status Methods
+
+    func pieceAt(location: Location) -> Piece? {
         return pieces[location]
     }
 
-    func isEmptyAt(location:Location) -> Bool {
+    func isEmptyAt(location: Location) -> Bool {
         return pieces[location] == nil
     }
 
@@ -63,10 +83,10 @@ struct Board {
         return (pieces.filter{$0.1.color == color}).map{$0.0}
     }
 
-    //returns true if the player with color is in check
+    // returns true if the player with color is in check
     func locationOfKing(color: Color) -> Location? {
-        let king = Piece(color:color, kind: .King)
-        for (location,piece) in pieces {
+        let king = Piece(color: color, kind: .King)
+        for (location, piece) in pieces {
             if piece == king {
                 return location
             }
@@ -76,9 +96,11 @@ struct Board {
         return nil // by laws of chess this should never happen; required for type safety
     }
 
-    func makeMove(move:Move, promotionKind:Kind = .Queen) -> (Board, Piece?)? {
-        if Rules.validMoves(self, start:move.start).contains(move.end) {
-            return makeMoveWithoutValidation(move, promotionKind:promotionKind)
+    // MARK: - Move Methods
+
+    func makeMove(move: Move, promotionKind: Kind = .Queen) -> (Board, Piece?)? {
+        if Rules.validMoves(self, start: move.start).contains(move.end) {
+            return makeMoveWithoutValidation(move, promotionKind: promotionKind)
         } else {
             return nil
         }
@@ -86,10 +108,10 @@ struct Board {
 
     // We need this public method to avoid an infinite loop when checking valid moves
     // It is also faster if we know that a move is valid
-    func makeMoveWithoutValidation(move:Move, promotionKind:Kind = .Queen) -> (Board, Piece?)? {
+    func makeMoveWithoutValidation(move: Move, promotionKind: Kind = .Queen) -> (Board, Piece?)? {
         // Save some state at beginning of move
         if let movingPiece = self.pieceAt(move.start) {
-            let newEnPassantTargetSquare = Rules.enPassantTargetSquare(self, move:move)
+            let newEnPassantTargetSquare = Rules.enPassantTargetSquare(self, move: move)
             let castelingRookMove = Rules.rookMoveWhileCastling(self, move: move)
             let promotionPiece = Rules.promotionPiece(self, move: move, promotionKind: promotionKind)
             let resetHalfMoveClock = Rules.resetHalfMoveClock(self, move: move)
@@ -97,14 +119,14 @@ struct Board {
             // Update State of pieces
             var newPieces = pieces
             var lastCapturedPiece: Piece? = nil
-            if let enPassantCaptureSquare = Rules.enPassantCaptureSquare(self, move:move) {
+            if let enPassantCaptureSquare = Rules.enPassantCaptureSquare(self, move: move) {
                 lastCapturedPiece = pieces[enPassantCaptureSquare]
                 newPieces[enPassantCaptureSquare] = nil
             }
             if lastCapturedPiece == nil {
                 lastCapturedPiece = pieces[move.end]
             }
-            newPieces[move.end] = promotionPiece == nil ? movingPiece : promotionPiece
+            newPieces[move.end] = promotionPiece == nil ? movingPiece: promotionPiece
             newPieces[move.start] = nil
             if castelingRookMove != nil {
                 newPieces[castelingRookMove!.end] = pieces[castelingRookMove!.start]!
@@ -125,17 +147,19 @@ struct Board {
     }
 }
 
-extension Board : Equatable {}
+// MARK: - Extensions: Equatable, SequenceType
 
-func == (lhs:Board, rhs:Board) -> Bool {
+extension Board: Equatable {}
+
+func == (lhs: Board, rhs: Board) -> Bool {
     return lhs.pieces == rhs.pieces &&
         lhs.activeColor == rhs.activeColor &&
         lhs.castlingOptions == rhs.castlingOptions &&
         lhs.enPassantTargetSquare == rhs.enPassantTargetSquare
-    //Move counts are not used in equality; because we only care Rules 9.2 and 9.3
+    // Move counts are not used in equality; because we only care Rules 9.2 and 9.3
 }
 
-extension Board : SequenceType {
+extension Board: SequenceType {
     typealias Generator = DictionaryGenerator<Location,Piece>
     
     func generate() -> Generator {

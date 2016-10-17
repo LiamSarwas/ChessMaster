@@ -6,7 +6,7 @@
 //  Copyright © 2015 Regan Sarwas. All rights reserved.
 //
 
-// MARK: CustomStringConvertible
+// MARK: - CustomStringConvertible
 
 // Forsyth–Edwards Notation (FEN) is a standard notation for describing a board position in Chess
 // https://en.wikipedia.org/wiki/Forsyth–Edwards_Notation
@@ -15,24 +15,20 @@
 
 extension Board: CustomStringConvertible, CustomDebugStringConvertible {
     var description: String {
-        get {
-            return description_FEN
-        }
+        return fen
     }
     
     var debugDescription: String {
-        get {
-            return description_FEN
-        }
+        return fen
     }
 
-    var fenBoardDescription: String {
-        var lines :[String] = []
-        for rank in Rank.allValues.reverse() {
+    var fenBoard: String {
+        var lines: [String] = []
+        for rank in Rank.allReverseValues {
             var line = ""
             var emptyCount = 0
-            for file in File.allValues {
-                if let piece = pieceAt(Location(file:file, rank:rank)) {
+            for file in File.allForwardValues {
+                if let piece = pieceAt(Location(file: file, rank: rank)) {
                     if 0 < emptyCount {
                         line += "\(emptyCount)"
                         emptyCount = 0
@@ -50,9 +46,8 @@ extension Board: CustomStringConvertible, CustomDebugStringConvertible {
         return lines.joinWithSeparator("/")
     }
 
-    var description_FEN: String {
+    var fen: String {
         get {            
-            let fenBoard = fenBoardDescription
             let enPassant = enPassantTargetSquare == nil ? "-" : "\(enPassantTargetSquare!)"
             let color = activeColor == .White ? "w" : "b"
             let castle =
@@ -66,7 +61,7 @@ extension Board: CustomStringConvertible, CustomDebugStringConvertible {
     }
 }
 
-//MARK: Input
+// MARK: - Input
 
 extension String {
     var fenBoard: Board? {
@@ -97,7 +92,7 @@ extension String {
         return nil
     }
     
-    func parseFenPiecePlacement(s:String) -> [Location:Piece]? {
+    func parseFenPiecePlacement(s: String) -> [Location: Piece]? {
         let ranks = s.split("/")
         if ranks.count != 8 {
             print("FEN line '\(s)' does not have 8 ranks")
@@ -106,9 +101,9 @@ extension String {
         var board = Dictionary<Location,Piece>()
         for index in 0...7 {
             if let rank_list = parseFenRank(ranks[index]) {
-                let rank = 8 - index
-                for (i,file) in [File.A, .B, .C, .D, .E, .F, .G, .H].enumerate() {
-                    board[Location(file: file, rank:Rank(integerLiteral:rank))] = rank_list[i]
+                let rank = Rank(8 - index)!
+                for (i,file) in File.allForwardValues.enumerate() {
+                    board[Location(file: file, rank: rank)] = rank_list[i]
                 }
             } else {
                 return nil
@@ -116,14 +111,14 @@ extension String {
         }
         return board
     }
-    func parseFenActiveColor(s:String) -> Color? {
+    func parseFenActiveColor(s: String) -> Color? {
         if s == "w" { return .White }
         if s == "b" { return .Black }
         print("FEN Active Color '\(s)' is not 'w' or 'b'")
         return nil
     }
     
-    func parseFenCastlingOptions(str:String) -> CastlingOptions? {
+    func parseFenCastlingOptions(str: String) -> CastlingOptions? {
         var s = str
         var castlingOptions = CastlingOptions.None
         if s == "-" { return castlingOptions }
@@ -151,10 +146,10 @@ extension String {
         return nil
     }
     
-    func parseFenEnPassantTargetSquare(s:String) -> (Bool, Location?) {
+    func parseFenEnPassantTargetSquare(s: String) -> (Bool, Location?) {
         if s == "-" { return (true, nil) }
-        if let location = s.fenLocation {
-            if location.rank == 3 || location.rank == 6 {
+        if let location = Location(s) {
+            if location.rank == Rank.R3 || location.rank == Rank.R6 {
                 return (true, location)
             } else {
                 print("FEN enPassant target square '\(s)' is not on rank 3 or 6")
@@ -165,7 +160,7 @@ extension String {
         return (false, nil)
     }
     
-    func parseFenHalfMoveClock(s:String) -> Int? {
+    func parseFenHalfMoveClock(s: String) -> Int? {
         if let count = Int(s) {
             if 0 <= count {
                 return count
@@ -178,7 +173,7 @@ extension String {
         return nil
     }
     
-    func parseFenFullMoveNumber(s:String) -> Int? {
+    func parseFenFullMoveNumber(s: String) -> Int? {
         if let count = Int(s) {
             if 0 < count {
                 return count
@@ -190,17 +185,17 @@ extension String {
         }
         return nil
     }
-    func parseFenRank(str:String) -> [Piece?]? {
+    func parseFenRank(str: String) -> [Piece?]? {
         let s = expandBlanks(str)
         if s.characters.count == 8 {
-            //FIXME: Check for unrecognized pieces
+            // FIXME: Check for unrecognized pieces
             return s.characters.map { $0 == "-" ? nil : $0.fenPiece }
         } else {
             print("FEN FenRank '\(str)' does not have 8 squares")
         }
         return nil
     }
-    func expandBlanks(str:String) -> String {
+    func expandBlanks(str: String) -> String {
         var s = ""
         for c in str.characters {
             switch c {

@@ -17,6 +17,6 @@
 
 typealias Move = (start:Location, end:Location)
 
-func == (left:Move, right:Move) -> Bool {
-    return (left.start == right.start) && (left.end == right.end)
+func == (lhs: Move, rhs: Move) -> Bool {
+    return (lhs.start == rhs.start) && (lhs.end == rhs.end)
 }

@@ -3,11 +3,13 @@
 //  chess
 //
 //  Created by Regan Sarwas on 11/15/15.
-//  Copyright © 2015 Regan Sarwas. All rights reserved.
+//  Copyright © 2015 Regan Sarwas. Alocation rights reserved.
 //
 
-if let game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame {
-    print("game: \(game)")
+print("Check modifying board does not change game")
+let fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+if let game = Game(fromFEN: fen) {
+    print("  game: \(game)")
 
     //print("Check pieces at location")
     //for (location,piece) in game.board {
@@ -15,72 +17,67 @@ if let game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame
     //}
     
     //print("Possible moves for e5")
-    //for possibleMove in game.validMoves(Location(rank: 5, file:.E)) {
+    //for possibleMove in game.validMoves(e5) {
     //    print("\(possibleMove)")
     //}
     
-    print("Check modifying board does not change game")
-    //game.board[Location(rank:1, file:.A)] = nil  //compiler error: board is a get-only property
+    //game.board[a1] = nil  //compiler error: board is a get-only property
     var myboardstate = game.board
-    (myboardstate,_) = myboardstate.makeMove((Location("e2")!, Location("e4")!))!
-    print("myboard: \(myboardstate)")
-    print("game: \(game)")
+    (myboardstate,_) = myboardstate.makeMove((e2,e4))!
+    print("  my board: \(myboardstate)")
+    print("  game board: \(game.board)")
 
 } else {
-    print("Not a valid FEN line")
+    print("  Board setup '\(fen)' is not a valid FEN line")
 }
 
-print("Check make move")
-if let game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame {
-    print("  Start: \(game)")
-    var move = (Location("e2")!, Location("e4")!)
-    print("   Move: \(move)")
+print("Check making moves")
+if let game = Game(fromFEN: fen) {
+    print("  Start: \(game.board)")
+    var move = (e2,e4)
+    print("  Move: \(move)")
     game.makeMove(move)
-    print("   End1: \(game)")
-    move = (Location("b8")!, Location("c6")!)
-    print("   Move: \(move)")
+    print("  End1: \(game.board)")
+    move = (b8,c6)
+    print("  Move: \(move)")
     game.makeMove(move)
-    print("   End2: \(game)")
+    print("  End2: \(game.board)")
 } else {
-    print("  Fail - initial board is invalid")
+    print("  Board setup '\(fen)' is not a valid FEN line")
 }
 
-/*
-let l = Location(rank:5, file:.E)
-print("North from \(l)")
-for ll in l.toNorth {
-    print("   \(ll)")
-}
-print("South from \(l)")
-for ll in l.toSouth {
-    print("   \(ll)")
-}
-print("East from \(l)")
-for ll in l.toEast {
-    print("   \(ll)")
-}
-print("West from \(l)")
-for ll in l.toWest {
-    print("   \(ll)")
-}
-print("Northeast from \(l)")
-for ll in l.toNortheast {
-    print("   \(ll)")
-}
-print("Northwest from \(l)")
-for ll in l.toNorthwest {
-    print("   \(ll)")
-}
-print("Southeast from \(l)")
-for ll in l.toSoutheast {
-    print("   \(ll)")
-}
-print("Southwest from \(l)")
-for ll in l.toSouthwest {
-    print("   \(ll)")
-}
-*/
 
-
-
-
+print("Check locations in directions")
+let startLocation = c5
+print("  North from \(startLocation)")
+for location in startLocation.toNorth {
+    print("    \(location)")
+}
+print("  South from \(startLocation)")
+for location in startLocation.toSouth {
+    print("    \(location)")
+}
+print("  East from \(startLocation)")
+for location in startLocation.toEast {
+    print("    \(location)")
+}
+print("  West from \(startLocation)")
+for location in startLocation.toWest {
+    print("    \(location)")
+}
+print("  Northeast from \(startLocation)")
+for location in startLocation.toNortheast {
+    print("    \(location)")
+}
+print("  Northwest from \(startLocation)")
+for location in startLocation.toNorthwest {
+    print("    \(location)")
+}
+print("  Southeast from \(startLocation)")
+for location in startLocation.toSoutheast {
+    print("    \(location)")
+}
+print("  Southwest from \(startLocation)")
+for location in startLocation.toSouthwest {
+    print("    \(location)")
+}

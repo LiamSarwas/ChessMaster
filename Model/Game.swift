@@ -15,10 +15,7 @@ class Game {
     private var _playerResigned = false
     private var _isDraw = false
 
-    //TODO: Create game with History
-    //We need to copy the history because it is a class, and we do not want the
-    //provider to change it on us.
-    //We will need to set _board and _lastCapturedPiece by applying the last move to the last board
+    // MARK: - Initializers
 
     init (board: Board)
     {
@@ -29,8 +26,21 @@ class Game {
         self.init(board: Board())
     }
 
-    //MARK: Getters
-    
+    convenience init?(fromFEN fen: String) {
+        if let board = Board(fromFEN: fen) {
+            self.init(board: board)
+        } else {
+            return nil
+        }
+    }
+
+    // TODO: Create game from History or PGN
+    // We need to copy the history because it is a class, and we do not want the
+    // provider to change it on us.
+    // We will need to set _board and _lastCapturedPiece by applying the last move to the last board
+
+    // MARK: - Game Status Properties
+
     var board: Board {
         if let historicalBoard = _history.board {
             return historicalBoard
@@ -42,8 +52,6 @@ class Game {
     // we do not want anyone else to have a pointer to it
     // providing a copy may be fine.
 
-    //MARK: Get Game Status
-    
     var lastCapturedPiece: Piece? {
         return _lastCapturedPiece
     }
@@ -84,7 +92,7 @@ class Game {
         return 75 <= board.halfMoveClock || 5 <= _history.occurrencesOfBoard(board)
     }
 
-    //MARK:  Moves
+    // MARK: - Move Methods
     
     func resign()
     {
@@ -114,10 +122,10 @@ class Game {
         }
     }
     
-    func makeMove(move:Move, promotionKind:Kind = .Queen) -> ()
+    func makeMove(move: Move, promotionKind: Kind = .Queen) -> ()
     {
         if isGameOver { return }
-        if let (newBoard,lastCapturedPiece) = board.makeMove(move) {
+        if let (newBoard, lastCapturedPiece) = board.makeMove(move) {
             // Making a valid move implicitly rejects an offer for a draw
             _isOfferOfDrawAvailable = false
             _history.appendMove(move, board: board)
@@ -137,7 +145,9 @@ class Game {
     }
 }
 
-//MARK: CustomDebugStringConvertible, CustomStringConvertible
+// MARK: - CustomDebugStringConvertible, CustomStringConvertible
+
+// TODO: Add some game state to this output
 
 extension Game: CustomDebugStringConvertible, CustomStringConvertible {
     var description: String {
@@ -146,16 +156,5 @@ extension Game: CustomDebugStringConvertible, CustomStringConvertible {
 
     var debugDescription: String {
         return description
-    }
-}
-
-//MARK: String Extension
-
-extension String {
-    var fenGame: Game? {
-        if let board = self.fenBoard {
-            return Game(board: board)
-        }
-        return nil
     }
 }
