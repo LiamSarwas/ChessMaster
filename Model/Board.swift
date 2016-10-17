@@ -160,8 +160,8 @@ func == (lhs: Board, rhs: Board) -> Bool {
 }
 
 extension Board: Sequence {
-    typealias Iterator = DictionaryGenerator<Location,Piece>
-    
+    typealias Iterator = DictionaryIterator<Location,Piece>
+
     func makeIterator() -> Iterator {
         return pieces.makeIterator()
     }
