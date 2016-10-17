@@ -20,51 +20,51 @@ class AppDelegate: NSObject, NSApplicationDelegate, ChessSceneDelegate {
     @IBOutlet weak var skView: SKView!
     @IBOutlet weak var messageTextField: NSTextField!
 
-    @IBAction func reset(sender: NSButton) {
+    @IBAction func reset(_ sender: NSButton) {
         //TODO only show when game is over
         print("reset")
         game = Game()
         scene.game = game
         scene.setUpBoard()
     }
-    @IBAction func resign(sender: NSButton) {
+    @IBAction func resign(_ sender: NSButton) {
         print("resign")
         game.resign()
         scene.setUpBoard()
     }
-    @IBAction func offerDraw(sender: NSButton) {
+    @IBAction func offerDraw(_ sender: NSButton) {
         print("offer draw")
         game.offerDraw()
         scene.setUpBoard()
     }
-    @IBAction func acceptDraw(sender: NSButton) {
+    @IBAction func acceptDraw(_ sender: NSButton) {
         //TODO: Hide button when no draw offered"
         print("accept draw")
         game.acceptDraw()
         scene.setUpBoard()
     }
-    @IBAction func claimDraw(sender: NSButton) {
+    @IBAction func claimDraw(_ sender: NSButton) {
         print("request draw")
         game.claimDraw()
         scene.setUpBoard()
     }
-    @IBAction func undo(sender: NSButton) {
+    @IBAction func undo(_ sender: NSButton) {
         print("undo")
         game.undoMove()
         scene.setUpBoard()
     }
-    @IBAction func redo(sender: NSButton) {
+    @IBAction func redo(_ sender: NSButton) {
         //TODO: only show when appropriate
         print("redo")
         game.redoMove()
         scene.setUpBoard()
     }
 
-    func updateMessage(text:String) {
+    func updateMessage(_ text:String) {
         messageTextField.cell!.title = text
     }
 
-    func applicationDidFinishLaunching(aNotification: NSNotification) {
+    func applicationDidFinishLaunching(_ aNotification: Notification) {
 
         if let tryScene = GameScene(fileNamed:"GameScene") {
             scene = tryScene
@@ -74,7 +74,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ChessSceneDelegate {
             window.contentMinSize = dim
             window.contentMaxSize = dim
             window.setContentSize(dim)
-            scene.scaleMode = .AspectFit
+            scene.scaleMode = .aspectFit
             
             scene.game = game
             updateMessage("The Game is on! - \(game.board.activeColor)'s move.")
@@ -91,13 +91,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, ChessSceneDelegate {
         }
     }
     
-    func applicationShouldTerminateAfterLastWindowClosed(sender: NSApplication) -> Bool {
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         return true
     }
 }
 
 protocol ChessSceneDelegate {
-    func updateMessage(text:String)
+    func updateMessage(_ text:String)
     //func showAcceptDraw()
     //func gameOver()
     //func showRedo()

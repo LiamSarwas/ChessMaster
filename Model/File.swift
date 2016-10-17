@@ -7,11 +7,11 @@
 //
 
 public enum File: Int {
-    case A = 1, B, C, D, E, F, G, H
-    static let allForwardValues = [File.A, B, C, D, E, F, G, H]
-    static let allReverseValues = [File.H, G, F, E, D, C, B, A]
-    static let min = File.A
-    static let max = File.H
+    case a = 1, b, c, d, e, f, g, h
+    static let allForwardValues = [File.a, b, c, d, e, f, g, h]
+    static let allReverseValues = [File.h, g, f, e, d, c, b, a]
+    static let min = File.a
+    static let max = File.h
 
     func toEast() -> ArraySlice<File> {
         if self == File.max {
@@ -51,14 +51,14 @@ extension File: CustomStringConvertible {
     public var description: String {
         get {
             switch self {
-            case .A: return "a"
-            case .B: return "b"
-            case .C: return "c"
-            case .D: return "d"
-            case .E: return "e"
-            case .F: return "f"
-            case .G: return "g"
-            case .H: return "h"
+            case .a: return "a"
+            case .b: return "b"
+            case .c: return "c"
+            case .d: return "d"
+            case .e: return "e"
+            case .f: return "f"
+            case .g: return "g"
+            case .h: return "h"
             }
         }
     }
