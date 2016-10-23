@@ -17,7 +17,7 @@
 //    Object([String:JSONValue])
 //}
 
-struct ParseError: ErrorType {}
+struct ParseError: Error {}
 
 enum Token {
     case
@@ -27,11 +27,11 @@ enum Token {
 //    EndBlackWin,
 //    EndWhiteWin,
 //    EndPause,
-    KingSideCastle,
-    QueenSideCastle
+    kingSideCastle,
+    queenSideCastle
 }
 
-func HistoryWithMoveText(string: String) -> History? {
+func HistoryWithMoveText(_ string: String) -> History? {
     return try! PGNDeserializer.parseMoveText(string)
 }
 
@@ -48,24 +48,24 @@ struct PGNDeserializer {
 
         init(viewSkippingBOM view: String.UnicodeScalarView) {
             if view.startIndex < view.endIndex && view[view.startIndex] == UnicodeScalar(0xFEFF) {
-                self.init(view: view, index: view.startIndex.successor())
+                self.init(view: view, index: view.index(after: view.startIndex))
                 return
             }
             self.init(view: view, index: view.startIndex)
         }
 
         func successor() -> UnicodeParser {
-            return UnicodeParser(view: view, index: index.successor())
+            return UnicodeParser(view: view, index: <#T##String.UnicodeScalarView corresponding to your index##String.UnicodeScalarView#>.index(after: index))
         }
     }
 
     static let whitespaceScalars = "\u{20}\u{09}\u{0A}\u{0D}".unicodeScalars
-    static func consumeWhitespace(parser: UnicodeParser) -> UnicodeParser {
+    static func consumeWhitespace(_ parser: UnicodeParser) -> UnicodeParser {
         var index = parser.index
         let view = parser.view
         let endIndex = view.endIndex
         while index < endIndex && whitespaceScalars.contains(view[index]) {
-            index = index.successor()
+            index = <#T##Collection corresponding to `index`##Collection#>.index(after: index)
         }
         return UnicodeParser(view: view, index: index)
     }
@@ -85,21 +85,21 @@ struct PGNDeserializer {
 //        static let ValueSeparator = UnicodeScalar(0x2C) // , comma
     }
 
-    static func consumeStructure(scalar: UnicodeScalar, input: UnicodeParser) throws -> UnicodeParser? {
+    static func consumeStructure(_ scalar: UnicodeScalar, input: UnicodeParser) throws -> UnicodeParser? {
         if let parser = try consumeScalar(scalar, input: consumeWhitespace(input)) {
             return consumeWhitespace(parser)
         }
         return nil
     }
 
-    static func takeScalar(input: UnicodeParser) -> (UnicodeScalar, UnicodeParser)? {
+    static func takeScalar(_ input: UnicodeParser) -> (UnicodeScalar, UnicodeParser)? {
         guard input.index < input.view.endIndex else {
             return nil
         }
         return (input.view[input.index], input.successor())
     }
 
-    static func consumeScalar(scalar: UnicodeScalar, input: UnicodeParser) throws -> UnicodeParser? {
+    static func consumeScalar(_ scalar: UnicodeScalar, input: UnicodeParser) throws -> UnicodeParser? {
         switch takeScalar(input) {
         case nil:
             throw ParseError()
@@ -110,7 +110,7 @@ struct PGNDeserializer {
         }
     }
 
-    static func consumeSequence(sequence: String, input: UnicodeParser) throws -> UnicodeParser? {
+    static func consumeSequence(_ sequence: String, input: UnicodeParser) throws -> UnicodeParser? {
         var parser = input
         for scalar in sequence.unicodeScalars {
             guard let newParser = try consumeScalar(scalar, input: parser) else {
@@ -137,26 +137,26 @@ struct PGNDeserializer {
 //    }
 
     //MARK: - Integer parsing
-    static func parseDots(input: UnicodeParser) throws -> (Int, UnicodeParser) {
+    static func parseDots(_ input: UnicodeParser) throws -> (Int, UnicodeParser) {
         let view = input.view
         var index = input.index
         var count = 0
         while index < view.endIndex && "." == view[index] {
-            index = index.successor()
+            index = <#T##Collection corresponding to `index`##Collection#>.index(after: index)
             count += 1
         }
         return (count, UnicodeParser(view: view, index: index))
     }
 
     static let numberScalars = "0123456789".unicodeScalars
-    static func parseNumber(input: UnicodeParser) throws -> (Int, UnicodeParser)? {
+    static func parseNumber(_ input: UnicodeParser) throws -> (Int, UnicodeParser)? {
         let view = input.view
         let endIndex = view.endIndex
         var index = input.index
         var value = String.UnicodeScalarView()
         while index < endIndex && numberScalars.contains(view[index]) {
             value.append(view[index])
-            index = index.successor()
+            index = <#T##Collection corresponding to `index`##Collection#>.index(after: index)
         }
         guard value.count > 0, let result = Int(String(value)) else {
             return nil
@@ -164,14 +164,14 @@ struct PGNDeserializer {
         return (result, UnicodeParser(view: view, index: index))
     }
 
-    static func parseNAG(input: UnicodeParser) throws -> (Int, UnicodeParser)? {
-        guard let beginParser = try consumeStructure(StructureScalar.DollarSign, input: input) else {
+    static func parseNAG(_ input: UnicodeParser) throws -> (Int, UnicodeParser)? {
+        guard let beginParser = try consumeStructure(StructureScalar.DollarSign!, input: input) else {
             return nil
         }
         return try parseNumber(beginParser)
     }
 
-    static func parseMoveNumber(input: UnicodeParser) throws -> UnicodeParser {
+    static func parseMoveNumber(_ input: UnicodeParser) throws -> UnicodeParser {
         let beginParser = consumeWhitespace(input)
         guard let (move, newParser) = try parseNumber(consumeWhitespace(beginParser)) else {
             //print("No integer at move number location")
@@ -183,7 +183,7 @@ struct PGNDeserializer {
         return consumeWhitespace(newParser2)
     }
 
-    static func parseEnd(input: UnicodeParser) throws -> (Bool, UnicodeParser) {
+    static func parseEnd(_ input: UnicodeParser) throws -> (Bool, UnicodeParser) {
         let beginParser = consumeWhitespace(input)
         if let parser = try consumeSequence("1-0", input: beginParser) {
             return (true, parser)
@@ -200,12 +200,12 @@ struct PGNDeserializer {
         return (false, beginParser)
     }
 
-    static func parseMove(input: UnicodeParser, board: Board) throws -> (Move, UnicodeParser)? {
+    static func parseMove(_ input: UnicodeParser, board: Board) throws -> (Move, UnicodeParser)? {
         if let parser = try consumeSequence("O-O", input: input) {
-            return (castleOn(.KingSideCastle, with: board), parser)
+            return (castleOn(.kingSideCastle, with: board), parser)
         }
         else if let parser = try consumeSequence("O-O-O", input: input) {
-            return (castleOn(.QueenSideCastle, with: board), parser)
+            return (castleOn(.queenSideCastle, with: board), parser)
         }
 
         let view = input.view
@@ -214,7 +214,7 @@ struct PGNDeserializer {
         var value = String.UnicodeScalarView()
         while index < endIndex && moveScalars.contains(view[index]) {
             value.append(view[index])
-            index = index.successor()
+            index = <#T##Collection corresponding to `index`##Collection#>.index(after: index)
         }
         print("move string:\(value):")
         guard value.count > 0, let move = makeMove(String(value), board:board) else {
@@ -223,16 +223,16 @@ struct PGNDeserializer {
         return (move, UnicodeParser(view: view, index: index))
     }
 
-    static func parseAnnotation(input: UnicodeParser) throws -> UnicodeParser {
+    static func parseAnnotation(_ input: UnicodeParser) throws -> UnicodeParser {
         if let (_,parser) = try parseNAG(input) {
             return parser
         }
         return input
     }
 
-    static func parseMoveText(input: String) throws -> History? {
+    static func parseMoveText(_ input: String) throws -> History? {
         let history = History()
-        var board = Board()
+        let board = Board()
         var parser = PGNDeserializer.UnicodeParser(viewSkippingBOM: input.unicodeScalars)
         while true {
             let (end, newParser) = try parseEnd(parser)
@@ -255,24 +255,24 @@ struct PGNDeserializer {
         }
     }
 
-    static func makeMove(input: String, board: Board) -> Move? {
+    static func makeMove(_ input: String, board: Board) -> Move? {
         return (e2,e4)
     }
     
-    static func castleOn(side: Token, with board: Board) -> Move {
+    static func castleOn(_ side: Token, with board: Board) -> Move {
         switch board.activeColor {
         case .Black:
             switch side {
-            case .KingSideCastle:
+            case .kingSideCastle:
                 return (e8, g8)
-            case .QueenSideCastle:
+            case .queenSideCastle:
                 return (e8, b8)
             }
         case .White:
             switch side {
-            case .KingSideCastle:
+            case .kingSideCastle:
                 return (e1, g1)
-            case .QueenSideCastle:
+            case .queenSideCastle:
                 return (e1, b1)
             }
         }
