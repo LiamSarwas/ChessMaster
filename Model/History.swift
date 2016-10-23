@@ -11,9 +11,9 @@
 // because it is impossible to reason about a move without
 // knowing the state of the board at the time of the move.
 
-final class History {
-    private var _history: [(move: Move, board: Board)] = []
-    private var _historyIndex: Int?
+class History {
+    fileprivate var _history: [(move: Move, board: Board)] = []
+    fileprivate var _historyIndex: Int?
     // If the history index is non-nil, then the _history index must be a
     // valid index into the _histroy collection, and current board is the
     // board at that location in the history collection.
@@ -26,7 +26,7 @@ final class History {
         return nil
     }
 
-    func occurrencesOfBoard(board: Board) -> Int {
+    func occurrencesOfBoard(_ board: Board) -> Int {
         return _history.filter({$0.board == board}).count
     }
 
@@ -47,7 +47,7 @@ final class History {
         }
     }
 
-    func appendMove(move: Move, board: Board) {
+    func appendMove(_ move: Move, board: Board) {
         // If we append a move after backing up, then move and board are already on the history
         // at _historyIndex, so we delete everything after that, so that move and board are the last items
         // and clear the _historyIndex

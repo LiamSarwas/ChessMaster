@@ -11,7 +11,7 @@ import Foundation
 struct Engine
 {
    
-    static func getMove(board: Board) -> Move?
+    static func getMove(_ board: Board) -> Move?
     {
 //        print("Board Score = \(evaluateBoard(board)) at Start")
         var bestMove:Move?
@@ -32,7 +32,7 @@ struct Engine
     }
 
     
-    static func search(depth: Int, board: Board) -> Int
+    static func search(_ depth: Int, board: Board) -> Int
     {
         if depth == 0 { return 0 }
 //        print("\(depth)Board Score = \(evaluateBoard(board)) at Start")
@@ -51,86 +51,86 @@ struct Engine
         return bestScore
     }
     
-    static func getAllMoves(board: Board) -> [Move]
+    static func getAllMoves(_ board: Board) -> [Move]
     {
         var moves : [Move] = []
         for location in board.locationsOfPiecesOfColor(board.activeColor)
         {
-            moves += Rules.validMoves(board, start: location).map{(location, $0)}
+            moves.append(contentsOf: Rules.validMoves(board, start: location).map{(location, $0)})
         }
         return moves
     }
     
     
-    static func evaluateBoard(board: Board) -> Int
+    static func evaluateBoard(_ board: Board) -> Int
     {
         var whiteBoardValue = 0
         var blackBoardValue = 0
         
         for (location, piece) in board
         {
-            if piece.color == .White
+            if piece.color == .white
             {
-                if piece.kind == .King
+                if piece.kind == .king
                 {
                    whiteBoardValue += 20000
                    whiteBoardValue += KingTable[convertToWhiteArrayIndex(location)]
                     
                 }
-                if piece.kind == .Queen
+                if piece.kind == .queen
                 {
                     whiteBoardValue += 900
                     whiteBoardValue += QueenTable[convertToWhiteArrayIndex(location)]
                 }
-                if piece.kind == .Bishop
+                if piece.kind == .bishop
                 {
                     whiteBoardValue += 300
                     whiteBoardValue += BishopTable[convertToWhiteArrayIndex(location)]
                 }
-                if piece.kind == .Knight
+                if piece.kind == .knight
                 {
                     whiteBoardValue += 300
                     whiteBoardValue += KnightTable[convertToWhiteArrayIndex(location)]
                 }
-                if piece.kind == .Rook
+                if piece.kind == .rook
                 {
                     whiteBoardValue += 500
                     whiteBoardValue += RookTable[convertToWhiteArrayIndex(location)]
                 }
-                if piece.kind == .Pawn
+                if piece.kind == .pawn
                 {
                     whiteBoardValue += 100
                     whiteBoardValue += PawnTable[convertToWhiteArrayIndex(location)]
                 }
             }
-            if piece.color == .Black
+            if piece.color == .black
             {
-                if piece.kind == .King
+                if piece.kind == .king
                 {
                     blackBoardValue += 20000
                     blackBoardValue += KingTable[convertToBlackArrayIndex(location)]
                 }
-                if piece.kind == .Queen
+                if piece.kind == .queen
                 {
                     blackBoardValue += 900
                     blackBoardValue += QueenTable[convertToBlackArrayIndex(location)]
                 }
-                if piece.kind == .Bishop
+                if piece.kind == .bishop
                 {
                     blackBoardValue += 300
                     blackBoardValue += BishopTable[convertToBlackArrayIndex(location)]
                 }
-                if piece.kind == .Knight
+                if piece.kind == .knight
                 {
                     blackBoardValue += 300
                     blackBoardValue += KnightTable[convertToBlackArrayIndex(location)]
                 }
-                if piece.kind == .Rook
+                if piece.kind == .rook
                 {
                     blackBoardValue += 500
                     blackBoardValue += RookTable[convertToBlackArrayIndex(location)]
                 }
-                if piece.kind == .Pawn
+                if piece.kind == .pawn
                 {
                     blackBoardValue += 100
                     blackBoardValue += PawnTable[convertToBlackArrayIndex(location)]
@@ -139,16 +139,16 @@ struct Engine
         }
         
         // We are evaluating the board after the active player made a move, so the player is now inActive
-        return board.inActiveColor == .Black ? blackBoardValue - whiteBoardValue : whiteBoardValue - blackBoardValue
+        return board.inActiveColor == .black ? blackBoardValue - whiteBoardValue : whiteBoardValue - blackBoardValue
     }
     
-    static func convertToWhiteArrayIndex(location: Location) -> Int
+    static func convertToWhiteArrayIndex(_ location: Location) -> Int
     {
         // a8 -> 0; h8 -> 7; a1 -> 56; h1 -> 63
         return 64 - (8 * Int(location.rank)) + (Int(location.file) - 1)
     }
     
-    static func convertToBlackArrayIndex(location: Location) -> Int
+    static func convertToBlackArrayIndex(_ location: Location) -> Int
     {
         // a8 -> 56; h8 -> 63; a1 -> 0; h1 -> 7
         return (8 * (Int(location.rank) - 1)) + (Int(location.file) - 1)

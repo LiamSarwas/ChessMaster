@@ -7,13 +7,13 @@
 //
 
 class Game {
-    private var _board: Board
-    private var _history = History()
+    fileprivate var _board: Board
+    fileprivate var _history = History()
     
-    private var _lastCapturedPiece: Piece?
-    private var _isOfferOfDrawAvailable = false
-    private var _playerResigned = false
-    private var _isDraw = false
+    fileprivate var _lastCapturedPiece: Piece?
+    fileprivate var _isOfferOfDrawAvailable = false
+    fileprivate var _playerResigned = false
+    fileprivate var _isDraw = false
 
     // MARK: - Initializers
 
@@ -122,7 +122,7 @@ class Game {
         }
     }
     
-    func makeMove(move: Move, promotionKind: Kind = .Queen) -> ()
+    func makeMove(_ move: Move, promotionKind: Kind = .queen) -> ()
     {
         if isGameOver { return }
         if let (newBoard, lastCapturedPiece) = board.makeMove(move) {

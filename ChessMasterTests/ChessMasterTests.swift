@@ -37,7 +37,7 @@ class ChessMasterTests: XCTestCase {
     func testCheck() {
         if let game = Game(fromFEN: "7k/8/8/8/8/8/8/7R b - - 0 1") {
             XCTAssertTrue(game.board.isActiveColorInCheck)
-            XCTAssertTrue(game.board.activeColor == .Black)
+            XCTAssertTrue(game.board.activeColor == .black)
         } else {
             XCTFail()
         }
@@ -47,7 +47,7 @@ class ChessMasterTests: XCTestCase {
         if let game = Game(fromFEN: "7k/8/8/8/8/8/8/6RR b - - 0 1") {
             XCTAssertTrue(game.isGameOver)
             XCTAssertTrue(game.isCheckMate)
-            XCTAssertTrue(game.winningColor! == .White)
+            XCTAssertTrue(game.winningColor! == .white)
         } else {
             XCTFail()
         }
@@ -159,42 +159,42 @@ class ChessMasterTests: XCTestCase {
     // average: 0.0000005, relative standard deviation: 212.378%
     func testPerformanceActiveColorPropertyAccess() {
         let game = Game(fromFEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")!
-        self.measureBlock {
+        self.measure {
             game.board.inActiveColor
         }
     }
     // average: 0.0001, relative standard deviation: 16.009%
     func testPerformanceActiveColorInCheckCheck() {
         let game = Game(fromFEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")!
-        self.measureBlock {
+        self.measure {
             game.board.isActiveColorInCheck
         }
     }
     // average: 0.001, relative standard deviation: 56.229%
     func testPerformanceActiveColorHasMovesCheck() {
         let game = Game(fromFEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")!
-        self.measureBlock {
+        self.measure {
             game.board.activeColorHasMoves
         }
     }
     // average: 0.001, relative standard deviation: 19.922%
     func testPerformanceGameOverCheck() {
         let game = Game(fromFEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")!
-        self.measureBlock {
+        self.measure {
             game.isGameOver
         }
     }
     // average: 0.001, relative standard deviation: 24.707%
     func testPerformanceStaleMateCheck() {
         let game = Game(fromFEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")!
-        self.measureBlock {
+        self.measure {
             game.isStaleMate
         }
     }
     // average: 0.0001, relative standard deviation: 86.550%
     func testPerformanceCheckMateCheck() {
         let game = Game(fromFEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")!
-        self.measureBlock {
+        self.measure {
             game.isCheckMate
         }
     }
@@ -202,7 +202,7 @@ class ChessMasterTests: XCTestCase {
     func testPerformanceMakeMoveWithoutValidation() {
         let game = Game(fromFEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")!
         let move = (e2, e4)
-        self.measureBlock {
+        self.measure {
             game.board.makeMoveWithoutValidation(move)
         }
     }

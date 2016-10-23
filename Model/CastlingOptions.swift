@@ -6,7 +6,7 @@
 //  Copyright © 2015 Regan Sarwas. All rights reserved.
 //
 
-public struct CastlingOptions: OptionSetType {
+public struct CastlingOptions: OptionSet {
     public let rawValue: Int
     public init(rawValue: Int) {
         self.rawValue = rawValue

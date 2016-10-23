@@ -7,11 +7,11 @@
 //
 
 enum Kind {
-    case King, Queen, Rook, Bishop, Knight, Pawn
+    case king, queen, rook, bishop, knight, pawn
 }
 
 enum Color {
-    case White, Black
+    case white, black
 }
 
 struct Piece: Equatable {
@@ -19,18 +19,18 @@ struct Piece: Equatable {
     let kind: Kind
 
     // static pieces for easy reference
-    static let whiteKing   = Piece(color: .White, kind: .King)
-    static let whiteQueen  = Piece(color: .White, kind: .Queen)
-    static let whiteRook   = Piece(color: .White, kind: .Rook)
-    static let whiteBishop = Piece(color: .White, kind: .Bishop)
-    static let whiteKnight = Piece(color: .White, kind: .Knight)
-    static let whitePawn   = Piece(color: .White, kind: .Pawn)
-    static let blackKing   = Piece(color: .Black, kind: .King)
-    static let blackQueen  = Piece(color: .Black, kind: .Queen)
-    static let blackRook   = Piece(color: .Black, kind: .Rook)
-    static let blackBishop = Piece(color: .Black, kind: .Bishop)
-    static let blackKnight = Piece(color: .Black, kind: .Knight)
-    static let blackPawn   = Piece(color: .Black, kind: .Pawn)
+    static let whiteKing   = Piece(color: .white, kind: .king)
+    static let whiteQueen  = Piece(color: .white, kind: .queen)
+    static let whiteRook   = Piece(color: .white, kind: .rook)
+    static let whiteBishop = Piece(color: .white, kind: .bishop)
+    static let whiteKnight = Piece(color: .white, kind: .knight)
+    static let whitePawn   = Piece(color: .white, kind: .pawn)
+    static let blackKing   = Piece(color: .black, kind: .king)
+    static let blackQueen  = Piece(color: .black, kind: .queen)
+    static let blackRook   = Piece(color: .black, kind: .rook)
+    static let blackBishop = Piece(color: .black, kind: .bishop)
+    static let blackKnight = Piece(color: .black, kind: .knight)
+    static let blackPawn   = Piece(color: .black, kind: .pawn)
 }
 
 // MARK: - Hashable
@@ -53,35 +53,35 @@ extension Piece: CustomStringConvertible {
     var pgn: String {
         get {
             switch kind {
-            case .King: return "K";
-            case .Queen: return "Q";
-            case .Rook: return "R";
-            case .Bishop: return "B";
-            case .Knight: return "N";
-            case .Pawn: return "";
+            case .king: return "K";
+            case .queen: return "Q";
+            case .rook: return "R";
+            case .bishop: return "B";
+            case .knight: return "N";
+            case .pawn: return "";
             }
         }
     }
     var fen: String {
         get {
             switch color {
-            case .White:
+            case .white:
                 switch kind {
-                case .King: return "K";
-                case .Queen: return "Q";
-                case .Rook: return "R";
-                case .Bishop: return "B";
-                case .Knight: return "N";
-                case .Pawn: return "P";
+                case .king: return "K";
+                case .queen: return "Q";
+                case .rook: return "R";
+                case .bishop: return "B";
+                case .knight: return "N";
+                case .pawn: return "P";
                 }
-            case .Black:
+            case .black:
                 switch kind {
-                case .King: return "k";
-                case .Queen: return "q";
-                case .Rook: return "r";
-                case .Bishop: return "b";
-                case .Knight: return "n";
-                case .Pawn: return "p";
+                case .king: return "k";
+                case .queen: return "q";
+                case .rook: return "r";
+                case .bishop: return "b";
+                case .knight: return "n";
+                case .pawn: return "p";
                 }
             }
         }
@@ -89,23 +89,23 @@ extension Piece: CustomStringConvertible {
     var description: String {
         get {
             switch color {
-            case .White:
+            case .white:
                 switch kind {
-                case .King: return "♔";
-                case .Queen: return "♕";
-                case .Rook: return "♖";
-                case .Bishop: return "♗";
-                case .Knight: return "♘";
-                case .Pawn: return "♙";
+                case .king: return "♔";
+                case .queen: return "♕";
+                case .rook: return "♖";
+                case .bishop: return "♗";
+                case .knight: return "♘";
+                case .pawn: return "♙";
                 }
-            case .Black:
+            case .black:
                 switch kind {
-                case .King: return "♚";
-                case .Queen: return "♛";
-                case .Rook: return "♜";
-                case .Bishop: return "♝";
-                case .Knight: return "♞";
-                case .Pawn: return "♟";
+                case .king: return "♚";
+                case .queen: return "♛";
+                case .rook: return "♜";
+                case .bishop: return "♝";
+                case .knight: return "♞";
+                case .pawn: return "♟";
                 }
             }
         }
@@ -115,18 +115,18 @@ extension Piece: CustomStringConvertible {
 extension Character {
     var fenPiece: Piece? {
         switch self {
-        case "K": return Piece(color: .White, kind: .King)
-        case "Q": return Piece(color: .White, kind: .Queen)
-        case "R": return Piece(color: .White, kind: .Rook)
-        case "B": return Piece(color: .White, kind: .Bishop)
-        case "N": return Piece(color: .White, kind: .Knight)
-        case "P": return Piece(color: .White, kind: .Pawn)
-        case "k": return Piece(color: .Black, kind: .King)
-        case "q": return Piece(color: .Black, kind: .Queen)
-        case "r": return Piece(color: .Black, kind: .Rook)
-        case "b": return Piece(color: .Black, kind: .Bishop)
-        case "n": return Piece(color: .Black, kind: .Knight)
-        case "p": return Piece(color: .Black, kind: .Pawn)
+        case "K": return Piece(color: .white, kind: .king)
+        case "Q": return Piece(color: .white, kind: .queen)
+        case "R": return Piece(color: .white, kind: .rook)
+        case "B": return Piece(color: .white, kind: .bishop)
+        case "N": return Piece(color: .white, kind: .knight)
+        case "P": return Piece(color: .white, kind: .pawn)
+        case "k": return Piece(color: .black, kind: .king)
+        case "q": return Piece(color: .black, kind: .queen)
+        case "r": return Piece(color: .black, kind: .rook)
+        case "b": return Piece(color: .black, kind: .bishop)
+        case "n": return Piece(color: .black, kind: .knight)
+        case "p": return Piece(color: .black, kind: .pawn)
         default:
             print("FEN Piece '\(self)' is not recognized.")
             return nil

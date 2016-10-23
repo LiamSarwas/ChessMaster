@@ -43,13 +43,13 @@ extension Board: CustomStringConvertible, CustomDebugStringConvertible {
             }
             lines.append(line)
         }
-        return lines.joinWithSeparator("/")
+        return lines.joined(separator: "/")
     }
 
     var fen: String {
         get {            
             let enPassant = enPassantTargetSquare == nil ? "-" : "\(enPassantTargetSquare!)"
-            let color = activeColor == .White ? "w" : "b"
+            let color = activeColor == .white ? "w" : "b"
             let castle =
                 (castlingOptions.contains(.WhiteKingSide) ? "K" : "") +
                 (castlingOptions.contains(.WhiteQueenSide) ? "Q" : "") +
@@ -92,7 +92,7 @@ extension String {
         return nil
     }
     
-    func parseFenPiecePlacement(s: String) -> [Location: Piece]? {
+    func parseFenPiecePlacement(_ s: String) -> [Location: Piece]? {
         let ranks = s.split("/")
         if ranks.count != 8 {
             print("FEN line '\(s)' does not have 8 ranks")
@@ -102,7 +102,7 @@ extension String {
         for index in 0...7 {
             if let rank_list = parseFenRank(ranks[index]) {
                 let rank = Rank(8 - index)!
-                for (i,file) in File.allForwardValues.enumerate() {
+                for (i,file) in File.allForwardValues.enumerated() {
                     board[Location(file: file, rank: rank)] = rank_list[i]
                 }
             } else {
@@ -111,32 +111,32 @@ extension String {
         }
         return board
     }
-    func parseFenActiveColor(s: String) -> Color? {
-        if s == "w" { return .White }
-        if s == "b" { return .Black }
+    func parseFenActiveColor(_ s: String) -> Color? {
+        if s == "w" { return .white }
+        if s == "b" { return .black }
         print("FEN Active Color '\(s)' is not 'w' or 'b'")
         return nil
     }
     
-    func parseFenCastlingOptions(str: String) -> CastlingOptions? {
+    func parseFenCastlingOptions(_ str: String) -> CastlingOptions? {
         var s = str
         var castlingOptions = CastlingOptions.None
         if s == "-" { return castlingOptions }
         if s.hasPrefix("K") {
             castlingOptions.insert(.WhiteKingSide)
-            s.removeAtIndex(s.startIndex)
+            s.remove(at: s.startIndex)
         }
         if s.hasPrefix("Q") {
             castlingOptions.insert(.WhiteQueenSide)
-            s.removeAtIndex(s.startIndex)
+            s.remove(at: s.startIndex)
         }
         if s.hasPrefix("k") {
             castlingOptions.insert(.BlackKingSide)
-            s.removeAtIndex(s.startIndex)
+            s.remove(at: s.startIndex)
         }
         if s.hasPrefix("q") {
             castlingOptions.insert(.BlackQueenSide)
-            s.removeAtIndex(s.startIndex)
+            s.remove(at: s.startIndex)
         }
         if s.characters.count == 0 {
             return castlingOptions
@@ -146,10 +146,10 @@ extension String {
         return nil
     }
     
-    func parseFenEnPassantTargetSquare(s: String) -> (Bool, Location?) {
+    func parseFenEnPassantTargetSquare(_ s: String) -> (Bool, Location?) {
         if s == "-" { return (true, nil) }
         if let location = Location(s) {
-            if location.rank == Rank.R3 || location.rank == Rank.R6 {
+            if location.rank == Rank.r3 || location.rank == Rank.r6 {
                 return (true, location)
             } else {
                 print("FEN enPassant target square '\(s)' is not on rank 3 or 6")
@@ -160,7 +160,7 @@ extension String {
         return (false, nil)
     }
     
-    func parseFenHalfMoveClock(s: String) -> Int? {
+    func parseFenHalfMoveClock(_ s: String) -> Int? {
         if let count = Int(s) {
             if 0 <= count {
                 return count
@@ -173,7 +173,7 @@ extension String {
         return nil
     }
     
-    func parseFenFullMoveNumber(s: String) -> Int? {
+    func parseFenFullMoveNumber(_ s: String) -> Int? {
         if let count = Int(s) {
             if 0 < count {
                 return count
@@ -185,7 +185,7 @@ extension String {
         }
         return nil
     }
-    func parseFenRank(str: String) -> [Piece?]? {
+    func parseFenRank(_ str: String) -> [Piece?]? {
         let s = expandBlanks(str)
         if s.characters.count == 8 {
             // FIXME: Check for unrecognized pieces
@@ -195,7 +195,7 @@ extension String {
         }
         return nil
     }
-    func expandBlanks(str: String) -> String {
+    func expandBlanks(_ str: String) -> String {
         var s = ""
         for c in str.characters {
             switch c {

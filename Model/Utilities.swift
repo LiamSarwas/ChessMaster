@@ -7,13 +7,13 @@
 //
 
 extension String {
-    func split(separator: Character = " ") -> [String] {
+    func split(_ separator: Character = " ") -> [String] {
         return self.characters.split{$0 == separator}.map(String.init)
     }
 }
 
 extension Array {
-    func take(n: Int) -> Array {
+    func take(_ n: Int) -> Array {
         return Array(self.prefix(n))
     }
 }

@@ -7,11 +7,11 @@
 //
 
 public enum Rank: Int {
-    case R1 = 1, R2, R3, R4, R5, R6, R7, R8
-    static let allForwardValues = [Rank.R1, R2, R3, R4, R5, R6, R7, R8]
-    static let allReverseValues = [Rank.R8, R7, R6, R5, R4, R3, R2, R1]
-    static let min = Rank.R1
-    static let max = Rank.R8
+    case r1 = 1, r2, r3, r4, r5, r6, r7, r8
+    static let allForwardValues = [Rank.r1, r2, r3, r4, r5, r6, r7, r8]
+    static let allReverseValues = [Rank.r8, r7, r6, r5, r4, r3, r2, r1]
+    static let min = Rank.r1
+    static let max = Rank.r8
 
     func toNorth() -> ArraySlice<Rank> {
         if self == Rank.max {

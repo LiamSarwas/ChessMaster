@@ -7,7 +7,7 @@
 //
 
 struct Board {
-    private let pieces: [Location: Piece]
+    fileprivate let pieces: [Location: Piece]
     let activeColor: Color
     let castlingOptions: CastlingOptions
     let enPassantTargetSquare: Location?
@@ -33,7 +33,7 @@ struct Board {
 
     init() {
         self.init(pieces: Rules.defaultStartingBoard,
-            activeColor: Color.White,
+            activeColor: Color.white,
             castlingOptions: CastlingOptions.All,
             enPassantTargetSquare: nil,
             halfMoveClock: 0,
@@ -58,7 +58,7 @@ struct Board {
     // MARK: - Board Status Properties
 
     var inActiveColor: Color {
-        return activeColor == .White ? .Black : .White
+        return activeColor == .white ? .black : .white
     }
 
     var isActiveColorInCheck: Bool {
@@ -71,21 +71,21 @@ struct Board {
 
     // MARK: - Board Status Methods
 
-    func pieceAt(location: Location) -> Piece? {
+    func pieceAt(_ location: Location) -> Piece? {
         return pieces[location]
     }
 
-    func isEmptyAt(location: Location) -> Bool {
+    func isEmptyAt(_ location: Location) -> Bool {
         return pieces[location] == nil
     }
 
-    func locationsOfPiecesOfColor(color: Color) -> [Location] {
+    func locationsOfPiecesOfColor(_ color: Color) -> [Location] {
         return (pieces.filter{$0.1.color == color}).map{$0.0}
     }
 
     // returns true if the player with color is in check
-    func locationOfKing(color: Color) -> Location? {
-        let king = Piece(color: color, kind: .King)
+    func locationOfKing(_ color: Color) -> Location? {
+        let king = Piece(color: color, kind: .king)
         for (location, piece) in pieces {
             if piece == king {
                 return location
@@ -98,7 +98,7 @@ struct Board {
 
     // MARK: - Move Methods
 
-    func makeMove(move: Move, promotionKind: Kind = .Queen) -> (Board, Piece?)? {
+    func makeMove(_ move: Move, promotionKind: Kind = .queen) -> (Board, Piece?)? {
         if Rules.validMoves(self, start: move.start).contains(move.end) {
             return makeMoveWithoutValidation(move, promotionKind: promotionKind)
         } else {
@@ -108,7 +108,7 @@ struct Board {
 
     // We need this public method to avoid an infinite loop when checking valid moves
     // It is also faster if we know that a move is valid
-    func makeMoveWithoutValidation(move: Move, promotionKind: Kind = .Queen) -> (Board, Piece?)? {
+    func makeMoveWithoutValidation(_ move: Move, promotionKind: Kind = .queen) -> (Board, Piece?)? {
         // Save some state at beginning of move
         if let movingPiece = self.pieceAt(move.start) {
             let newEnPassantTargetSquare = Rules.enPassantTargetSquare(self, move: move)
@@ -139,7 +139,7 @@ struct Board {
                 castlingOptions: Rules.newCastlingOptions(self.castlingOptions, location: move.start),
                 enPassantTargetSquare: newEnPassantTargetSquare,
                 halfMoveClock: resetHalfMoveClock ? 0 : self.halfMoveClock + 1,
-                fullMoveNumber: self.fullMoveNumber + (self.activeColor == .Black ? 1 : 0)
+                fullMoveNumber: self.fullMoveNumber + (self.activeColor == .black ? 1 : 0)
             )
             return (newBoard, lastCapturedPiece)
         }
@@ -159,10 +159,10 @@ func == (lhs: Board, rhs: Board) -> Bool {
     // Move counts are not used in equality; because we only care Rules 9.2 and 9.3
 }
 
-extension Board: SequenceType {
-    typealias Generator = DictionaryGenerator<Location,Piece>
-    
-    func generate() -> Generator {
-        return pieces.generate()
+extension Board: Sequence {
+    typealias Iterator = DictionaryIterator<Location,Piece>
+
+    func makeIterator() -> Iterator {
+        return pieces.makeIterator()
     }
 }
