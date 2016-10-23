@@ -11,7 +11,7 @@
 // because it is impossible to reason about a move without
 // knowing the state of the board at the time of the move.
 
-final class History {
+class History {
     fileprivate var _history: [(move: Move, board: Board)] = []
     fileprivate var _historyIndex: Int?
     // If the history index is non-nil, then the _history index must be a
