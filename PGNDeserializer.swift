@@ -55,7 +55,7 @@ struct PGNDeserializer {
         }
 
         func successor() -> UnicodeParser {
-            return UnicodeParser(view: view, index: <#T##String.UnicodeScalarView corresponding to your index##String.UnicodeScalarView#>.index(after: index))
+            return UnicodeParser(view: view, index: view.index(after: index))
         }
     }
 
@@ -65,7 +65,7 @@ struct PGNDeserializer {
         let view = parser.view
         let endIndex = view.endIndex
         while index < endIndex && whitespaceScalars.contains(view[index]) {
-            index = <#T##Collection corresponding to `index`##Collection#>.index(after: index)
+            index = view.index(after: index)
         }
         return UnicodeParser(view: view, index: index)
     }
@@ -142,7 +142,7 @@ struct PGNDeserializer {
         var index = input.index
         var count = 0
         while index < view.endIndex && "." == view[index] {
-            index = <#T##Collection corresponding to `index`##Collection#>.index(after: index)
+            index = view.index(after: index)
             count += 1
         }
         return (count, UnicodeParser(view: view, index: index))
@@ -156,7 +156,7 @@ struct PGNDeserializer {
         var value = String.UnicodeScalarView()
         while index < endIndex && numberScalars.contains(view[index]) {
             value.append(view[index])
-            index = <#T##Collection corresponding to `index`##Collection#>.index(after: index)
+            index = view.index(after: index)
         }
         guard value.count > 0, let result = Int(String(value)) else {
             return nil
@@ -214,7 +214,7 @@ struct PGNDeserializer {
         var value = String.UnicodeScalarView()
         while index < endIndex && moveScalars.contains(view[index]) {
             value.append(view[index])
-            index = <#T##Collection corresponding to `index`##Collection#>.index(after: index)
+            index = view.index(after: index)
         }
         print("move string:\(value):")
         guard value.count > 0, let move = makeMove(String(value), board:board) else {
@@ -261,14 +261,14 @@ struct PGNDeserializer {
     
     static func castleOn(_ side: Token, with board: Board) -> Move {
         switch board.activeColor {
-        case .Black:
+        case .black:
             switch side {
             case .kingSideCastle:
                 return (e8, g8)
             case .queenSideCastle:
                 return (e8, b8)
             }
-        case .White:
+        case .white:
             switch side {
             case .kingSideCastle:
                 return (e1, g1)
