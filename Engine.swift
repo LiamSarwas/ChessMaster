@@ -56,7 +56,7 @@ struct Engine
         var moves : [Move] = []
         for location in board.locationsOfPiecesOfColor(board.activeColor)
         {
-            moves += Rules.validMoves(board, start: location).map{(location, $0)}
+            moves.append(contentsOf: Rules.validMoves(board, start: location).map{(location, $0)})
         }
         return moves
     }
