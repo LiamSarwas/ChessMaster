@@ -8,6 +8,19 @@
 
 struct Rules {
 
+    static func startingLocation(_ board: Board, piece movingPiece: Piece, end: Location) -> [Location] {
+        // Given a board state before a move and the final location for a piece after a potential move
+        // find the list of possible starting locations for that piece
+        // This is used with PGN which does not always specify the stating location.
+        var startingLocations : [Location] = []
+        for (start,_) in board.filter({$1 == movingPiece}) {
+            if validMoves(board, start: start).contains(end) {
+                startingLocations.append(start)
+            }
+        }
+        return startingLocations
+    }
+
     static func validMoves(_ board: Board, start: Location) -> [Location] {
         var moves: [Location] = []
         if let piece = board.pieceAt(start)
