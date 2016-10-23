@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0CEB1C191BFC1297005376EB /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEB1C181BFC1297005376EB /* Engine.swift */; };
+		5904C4AD1C278DF600843064 /* PGNDeserializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5904C4AC1C278DF600843064 /* PGNDeserializer.swift */; };
+		5904C4AE1C278DF600843064 /* PGNDeserializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5904C4AC1C278DF600843064 /* PGNDeserializer.swift */; };
 		594A1D6B1C07B4E7009D54DB /* CastlingOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 594A1D6A1C07B4E7009D54DB /* CastlingOptions.swift */; };
 		594A1D6C1C08E1E9009D54DB /* CastlingOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 594A1D6A1C07B4E7009D54DB /* CastlingOptions.swift */; };
 		594A1D6E1C097951009D54DB /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 594A1D6D1C097951009D54DB /* Board.swift */; };
@@ -85,6 +87,7 @@
 
 /* Begin PBXFileReference section */
 		0CEB1C181BFC1297005376EB /* Engine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Engine.swift; sourceTree = "<group>"; };
+		5904C4AC1C278DF600843064 /* PGNDeserializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PGNDeserializer.swift; sourceTree = "<group>"; };
 		594A1D6A1C07B4E7009D54DB /* CastlingOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CastlingOptions.swift; path = Model/CastlingOptions.swift; sourceTree = "<group>"; };
 		594A1D6D1C097951009D54DB /* Board.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = Board.swift; path = Model/Board.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		598F21A01BF9245D00182604 /* ChessMaster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChessMaster.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -226,6 +229,7 @@
 				594A1D6A1C07B4E7009D54DB /* CastlingOptions.swift */,
 				598F227D1BF9355D00182604 /* Utilities.swift */,
 				0CEB1C181BFC1297005376EB /* Engine.swift */,
+				5904C4AC1C278DF600843064 /* PGNDeserializer.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -394,6 +398,7 @@
 				598F229D1BF935DE00182604 /* Location.swift in Sources */,
 				598F229E1BF935DE00182604 /* Move.swift in Sources */,
 				598F22A31BF9773600182604 /* Location_Directions.swift in Sources */,
+				5904C4AD1C278DF600843064 /* PGNDeserializer.swift in Sources */,
 				598F229F1BF935DE00182604 /* Piece.swift in Sources */,
 				598F22A01BF935DE00182604 /* Rules.swift in Sources */,
 				598F22A11BF935DE00182604 /* Utilities.swift in Sources */,
@@ -434,6 +439,7 @@
 				598F22911BF935BB00182604 /* Location.swift in Sources */,
 				598F22921BF935BB00182604 /* Move.swift in Sources */,
 				598F22931BF935BB00182604 /* Piece.swift in Sources */,
+				5904C4AE1C278DF600843064 /* PGNDeserializer.swift in Sources */,
 				598F22941BF935BB00182604 /* Rules.swift in Sources */,
 				598F22A41BF9773600182604 /* Location_Directions.swift in Sources */,
 				59C858F31C1CFE3100452025 /* File.swift in Sources */,
