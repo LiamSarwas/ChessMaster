@@ -6,6 +6,64 @@
 //  Copyright © 2015 Regan Sarwas. All rights reserved.
 //
 
+
+//CHECK FOR EDGE CASES IN MOVE GENERATION
+//PARTICULARLY WHEN YOU START ON THE EDGE!!!
+let bitBoard = BitBoard()
+
+BitBoard.buildRookMoveDatabase()
+
+let testBoard: UInt64 = 0b00000000000000000000000000000000000000000000000000000000000000000
+
+print("\(testBoard.asBoard)")
+
+//BitBoard.readRookMoves()
+//BitBoard.makeMasks()
+
+print("\(BitBoard.retrieveRookMove(testBoard, loc: 54).asBoard)")
+
+
+
+/*
+let perm = BitBoard.generateRookOccupancyPermutations(35)
+
+print("\(perm[250].asBoard)")
+print("\(BitBoard.generateRookMoves(perm[250], loc: 35).asBoard)")
+*/
+
+/*
+for i in 0..<perm.count
+{
+    print("\(perm[i].asBoard)")
+}
+*/
+
+
+/*
+BitBoard.makeMasks()
+for mask in BitBoard.rookMoveMasks
+{
+    print("\(mask.asBoard)")
+}
+*/
+
+
+
+/*
+print("\(BitBoard.LeftEdgeMask.asBoard)")
+print("\(BitBoard.RightEdgeMask.asBoard)")
+print("\(BitBoard.TopEdgeMask.asBoard)")
+print("\(BitBoard.BottomEdgeMask.asBoard)")
+
+print("\(bitBoard)")
+*/
+
+
+
+
+
+
+/*
 if let game = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".fenGame {
     print("game: \(game)")
 
@@ -80,7 +138,7 @@ for ll in l.toSouthwest {
     print("   \(ll)")
 }
 */
-
+*/
 
 
 

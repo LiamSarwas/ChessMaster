@@ -10,6 +10,7 @@ import Foundation
 
 struct Engine
 {
+    /*
    
     static func getMove(board: Board) -> Move?
     {
@@ -49,6 +50,81 @@ struct Engine
             }
         }
         return bestScore
+    }
+    
+*/
+    
+    static func getMove(var alpha: Int, beta: Int, depthleft: Int, board: Board) -> Move?
+    {
+        var bestMove:Move?
+        var bestScore: Int = 0
+        for move in getAllMoves(board)
+        {
+            if let (newboard, _) = board.makeMoveWithoutValidation(move)
+            {
+                let score = alphaBetaMin(depthleft - 1, alpha: alpha, beta: beta, board: newboard)
+                if score > bestScore
+                {
+                    bestScore = score
+                    bestMove = move
+                }
+            }
+        }
+        return bestMove;
+    }
+    
+    static func alphaBetaMax(depthleft: Int, var alpha: Int, beta: Int, board: Board) -> Int
+    {
+        if depthleft == 0
+        {
+            return quiesce(alpha, beta: beta, board: board)
+        }
+        for move in getAllMoves(board)
+        {
+            if let (newboard, _) = board.makeMoveWithoutValidation(move)
+            {
+                let score = alphaBetaMin(depthleft - 1, alpha: alpha, beta: beta, board: newboard)
+                if( score >= beta )
+                {
+                    return beta;   //  fail hard beta-cutoff
+                }
+                if( score > alpha )
+                {
+                    alpha = score; // alpha acts like max in MiniMax
+                }
+            }
+        }
+        return alpha;
+    }
+    
+    static func alphaBetaMin(depthleft: Int, var alpha: Int, var beta: Int, board: Board) -> Int
+    {
+        if depthleft == 0
+        {
+            return -quiesce(alpha, beta: beta, board: board)
+        }
+        for move in getAllMoves(board)
+        {
+            if let (newboard, _) = board.makeMoveWithoutValidation(move)
+            {
+                let score = alphaBetaMax(depthleft - 1, alpha: -beta, beta: -alpha, board: newboard)
+                if( score <= alpha)
+                {
+                    return alpha   //  fail hard alpha-cutoff
+                }
+                if( score < beta )
+                {
+                    beta = score // beta acts like min in MiniMax
+                }
+            }
+        }
+        return beta;
+    }
+    
+    
+    static func quiesce(alpha: Int, beta: Int, board: Board) -> Int
+    {
+        return evaluateBoard(board)
     }
     
     static func getAllMoves(board: Board) -> [Move]
@@ -139,7 +215,8 @@ struct Engine
         }
         
         //We are evaluating the board after the active player made a move, so the player is now inActive
-        return board.inActiveColor == .Black ? blackBoardValue - whiteBoardValue : whiteBoardValue - blackBoardValue
+        //return board.inActiveColor == .Black ? blackBoardValue - whiteBoardValue : whiteBoardValue - blackBoardValue
+        return whiteBoardValue - blackBoardValue
     }
     
     static func convertToWhiteArrayIndex(loc: Location) -> Int

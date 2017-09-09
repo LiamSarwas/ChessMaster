@@ -578,7 +578,7 @@ class GameScene: SKScene {
         setMessage()
 
         let boardValue = Engine.evaluateBoard(game.board)
-        let bestMove = Engine.getMove(game.board)
+        let bestMove = Engine.getMove(-1000000, beta: 1000000, depthleft:  3, board:  game.board)
         
         print("The net board value is: \(boardValue)")
         print("The best move is: \(bestMove)")

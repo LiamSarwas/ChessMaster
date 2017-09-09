@@ -109,7 +109,7 @@
             <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
             <view key="contentView" id="372">
                 <rect key="frame" x="0.0" y="0.0" width="800" height="600"/>
-                <autoresizingMask key="autoresizingMask"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="efi-QJ-Pbq">
                         <rect key="frame" x="18" y="563" width="764" height="17"/>
@@ -128,7 +128,7 @@
                         <rect key="frame" x="20" y="360" width="106" height="195"/>
                         <subviews>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wXw-l7-47f">
-                                <rect key="frame" x="15.5" y="167" width="75" height="32"/>
+                                <rect key="frame" x="15" y="167" width="75" height="32"/>
                                 <animations/>
                                 <buttonCell key="cell" type="push" title="Reset" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="bee-Iu-HLt">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -139,7 +139,7 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KuC-zJ-5RQ">
-                                <rect key="frame" x="12.5" y="138" width="81" height="32"/>
+                                <rect key="frame" x="12" y="138" width="81" height="32"/>
                                 <animations/>
                                 <buttonCell key="cell" type="push" title="Resign" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="xKc-ci-LCI">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -172,7 +172,7 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="m1j-7X-Mfa">
-                                <rect key="frame" x="-1.5" y="51" width="109" height="32"/>
+                                <rect key="frame" x="-2" y="51" width="109" height="32"/>
                                 <animations/>
                                 <buttonCell key="cell" type="push" title="Claim Draw" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ZLq-pG-QJi">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -183,7 +183,7 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="rFd-b0-rPw">
-                                <rect key="frame" x="16.5" y="22" width="73" height="32"/>
+                                <rect key="frame" x="16" y="22" width="73" height="32"/>
                                 <animations/>
                                 <buttonCell key="cell" type="push" title="Undo" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="QtG-0K-g67">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
