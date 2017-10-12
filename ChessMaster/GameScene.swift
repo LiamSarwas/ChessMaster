@@ -505,7 +505,7 @@ class GameScene: SKScene {
         let bestMove = Engine.getMove(game.board)
         
         print("The net board value is: \(boardValue)")
-        print("The best move is: \(bestMove)")
+        print("The best move is: \(String(describing: bestMove))")
     }
 
     func setMessage() {
