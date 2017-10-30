@@ -160,42 +160,42 @@ class ChessMasterTests: XCTestCase {
     func testPerformanceActiveColorPropertyAccess() {
         let game = Game(fromFEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")!
         self.measure {
-            game.board.inActiveColor
+            _ = game.board.inActiveColor
         }
     }
     // average: 0.0001, relative standard deviation: 16.009%
     func testPerformanceActiveColorInCheckCheck() {
         let game = Game(fromFEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")!
         self.measure {
-            game.board.isActiveColorInCheck
+            _ = game.board.isActiveColorInCheck
         }
     }
     // average: 0.001, relative standard deviation: 56.229%
     func testPerformanceActiveColorHasMovesCheck() {
         let game = Game(fromFEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")!
         self.measure {
-            game.board.activeColorHasMoves
+            _ = game.board.activeColorHasMoves
         }
     }
     // average: 0.001, relative standard deviation: 19.922%
     func testPerformanceGameOverCheck() {
         let game = Game(fromFEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")!
         self.measure {
-            game.isGameOver
+            _ = game.isGameOver
         }
     }
     // average: 0.001, relative standard deviation: 24.707%
     func testPerformanceStaleMateCheck() {
         let game = Game(fromFEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")!
         self.measure {
-            game.isStaleMate
+            _ = game.isStaleMate
         }
     }
     // average: 0.0001, relative standard deviation: 86.550%
     func testPerformanceCheckMateCheck() {
         let game = Game(fromFEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")!
         self.measure {
-            game.isCheckMate
+            _ = game.isCheckMate
         }
     }
     // average: 0.000038, relative standard deviation: 47.129%
@@ -203,7 +203,7 @@ class ChessMasterTests: XCTestCase {
         let game = Game(fromFEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")!
         let move = (e2, e4)
         self.measure {
-            game.board.makeMoveWithoutValidation(move)
+            _ = game.board.makeMoveWithoutValidation(move)
         }
     }
 }
