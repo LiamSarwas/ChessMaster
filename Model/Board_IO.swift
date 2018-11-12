@@ -65,18 +65,18 @@ extension Board: CustomStringConvertible, CustomDebugStringConvertible {
 
 extension String {
     var fenBoard: Board? {
-        let parts = self.split(" ")
+        let parts = self.split(separator: " ")
         if parts.count != 6 {
             print("FEN line '\(self)' does not have 6 parts")
             return nil
         }
-        if let piecePlacement = parseFenPiecePlacement(parts[0]) {
-            if let activeColor = parseFenActiveColor(parts[1]) {
-                if let castlingOptions = parseFenCastlingOptions(parts[2]) {
-                    let (ok, enPassant) = parseFenEnPassantTargetSquare(parts[3])
+        if let piecePlacement = parseFenPiecePlacement(String(parts[0])) {
+            if let activeColor = parseFenActiveColor(String(parts[1])) {
+                if let castlingOptions = parseFenCastlingOptions(String(parts[2])) {
+                    let (ok, enPassant) = parseFenEnPassantTargetSquare(String(parts[3]))
                     if ok {
-                        if let halfMoveClock = parseFenHalfMoveClock(parts[4]) {
-                            if let fullMoveNumber = parseFenFullMoveNumber(parts[5]) {
+                        if let halfMoveClock = parseFenHalfMoveClock(String(parts[4])) {
+                            if let fullMoveNumber = parseFenFullMoveNumber(String(parts[5])) {
                                 return Board(pieces: piecePlacement,
                                     activeColor: activeColor,
                                     castlingOptions: castlingOptions,
@@ -93,14 +93,14 @@ extension String {
     }
     
     func parseFenPiecePlacement(_ s: String) -> [Location: Piece]? {
-        let ranks = s.split("/")
+        let ranks = s.split(separator: "/")
         if ranks.count != 8 {
             print("FEN line '\(s)' does not have 8 ranks")
             return nil
         }
         var board = Dictionary<Location,Piece>()
         for index in 0...7 {
-            if let rank_list = parseFenRank(ranks[index]) {
+            if let rank_list = parseFenRank(String(ranks[index])) {
                 let rank = Rank(8 - index)!
                 for (i,file) in File.allForwardValues.enumerated() {
                     board[Location(file: file, rank: rank)] = rank_list[i]
@@ -138,7 +138,7 @@ extension String {
             castlingOptions.insert(.BlackQueenSide)
             s.remove(at: s.startIndex)
         }
-        if s.characters.count == 0 {
+        if s.count == 0 {
             return castlingOptions
         } else {
             print("FEN Castle Availability '\(str)' has unexpected characters or order")
@@ -187,9 +187,9 @@ extension String {
     }
     func parseFenRank(_ str: String) -> [Piece?]? {
         let s = expandBlanks(str)
-        if s.characters.count == 8 {
+        if s.count == 8 {
             // FIXME: Check for unrecognized pieces
-            return s.characters.map { $0 == "-" ? nil : $0.fenPiece }
+            return s.map { $0 == "-" ? nil : $0.fenPiece }
         } else {
             print("FEN FenRank '\(str)' does not have 8 squares")
         }
@@ -197,7 +197,7 @@ extension String {
     }
     func expandBlanks(_ str: String) -> String {
         var s = ""
-        for c in str.characters {
+        for c in str {
             switch c {
             case "8": s += "--------"
             case "7": s += "-------"

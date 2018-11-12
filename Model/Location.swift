@@ -116,10 +116,10 @@ extension Location: CustomStringConvertible {
 
 extension Location {
     init?(_ value: String) {
-        if value.characters.count != 2 { return nil }
+        if value.count != 2 { return nil }
         let file = File(value[value.startIndex])
         if file == nil { return nil }
-        let rank = Rank(value[value.characters.index(after: value.startIndex)])
+        let rank = Rank(value[value.index(after: value.startIndex)])
         if rank == nil { return nil }
         self.file = file!
         self.rank = rank!
