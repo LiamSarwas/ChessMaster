@@ -99,8 +99,9 @@ public func == (left: Location, right: Location) -> Bool {
 // MARK: - Hashable
 
 extension Location: Hashable {
-    public var hashValue: Int {
-        return rank.hashValue ^ file.hashValue
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(rank)
+        hasher.combine(file)
     }
 }
 

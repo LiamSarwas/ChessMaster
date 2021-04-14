@@ -12,7 +12,7 @@ public struct CastlingOptions: OptionSet {
         self.rawValue = rawValue
     }
 
-    static let None  = CastlingOptions(rawValue:0)
+    static let None  = CastlingOptions([])
     static let WhiteKingSide  = CastlingOptions(rawValue:1)
     static let WhiteQueenSide  = CastlingOptions(rawValue:2)
     static let BlackKingSide = CastlingOptions(rawValue:4)

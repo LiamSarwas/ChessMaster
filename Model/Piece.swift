@@ -36,8 +36,9 @@ struct Piece: Equatable {
 // MARK: - Hashable
 
 extension Piece: Hashable {
-    var hashValue: Int {
-        return kind.hashValue ^ color.hashValue
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(kind)
+        hasher.combine(color)
     }
 }
 
