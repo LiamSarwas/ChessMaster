@@ -126,7 +126,7 @@ struct Rules {
             return moves
         }
         if piece == Piece.whiteKing {
-            if board.castlingOptions.contains(.WhiteKingSide) {
+            if board.castlingOptions.contains(.whiteKingSide) {
                 if board.isEmptyAt(f1) &&
                     board.isEmptyAt(g1) {
                         let intermediateMove = (e1, f1)
@@ -135,7 +135,7 @@ struct Rules {
                         }
                 }
             }
-            if board.castlingOptions.contains(.WhiteQueenSide) {
+            if board.castlingOptions.contains(.whiteQueenSide) {
                 if board.isEmptyAt(b1) &&
                     board.isEmptyAt(c1) &&
                     board.isEmptyAt(d1) {
@@ -147,7 +147,7 @@ struct Rules {
             }
         }
         if piece == Piece.blackKing {
-            if board.castlingOptions.contains(.BlackKingSide) {
+            if board.castlingOptions.contains(.blackKingSide) {
                 if board.isEmptyAt(f8) &&
                     board.isEmptyAt(g8) {
                         let intermediateMove = (e8, f8)
@@ -156,7 +156,7 @@ struct Rules {
                         }
                 }
             }
-            if board.castlingOptions.contains(.BlackQueenSide) {
+            if board.castlingOptions.contains(.blackQueenSide) {
                 if board.isEmptyAt(b8) &&
                     board.isEmptyAt(c8) &&
                     board.isEmptyAt(d8) {
@@ -367,22 +367,22 @@ struct Rules {
         var newCastlingOptions = castlingOptions
         // Options decrease if king or rook moves
         if location == e1 {
-            newCastlingOptions.subtract(.BothWhite)
+            newCastlingOptions.subtract(.bothWhite)
         }
         if location == a1 {
-            newCastlingOptions.subtract(.WhiteQueenSide)
+            newCastlingOptions.subtract(.whiteQueenSide)
         }
         if location == h1 {
-            newCastlingOptions.subtract(.WhiteKingSide)
+            newCastlingOptions.subtract(.whiteKingSide)
         }
         if location == e8 {
-            newCastlingOptions.subtract(.BothBlack)
+            newCastlingOptions.subtract(.bothBlack)
         }
         if location == a8 {
-            newCastlingOptions.subtract(.BlackQueenSide)
+            newCastlingOptions.subtract(.blackQueenSide)
         }
         if location == h8 {
-            newCastlingOptions.subtract(.BlackKingSide)
+            newCastlingOptions.subtract(.blackKingSide)
         }
         return newCastlingOptions
     }

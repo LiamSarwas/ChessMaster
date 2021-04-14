@@ -51,11 +51,11 @@ extension Board: CustomStringConvertible, CustomDebugStringConvertible {
             let enPassant = enPassantTargetSquare == nil ? "-" : "\(enPassantTargetSquare!)"
             let color = activeColor == .white ? "w" : "b"
             let castle =
-                (castlingOptions.contains(.WhiteKingSide) ? "K" : "") +
-                (castlingOptions.contains(.WhiteQueenSide) ? "Q" : "") +
-                (castlingOptions.contains(.BlackQueenSide) ? "k" : "") +
-                (castlingOptions.contains(.BlackQueenSide) ? "q" : "") +
-                (castlingOptions == .None ? "-" : "")
+                (castlingOptions.contains(.whiteKingSide) ? "K" : "") +
+                (castlingOptions.contains(.whiteQueenSide) ? "Q" : "") +
+                (castlingOptions.contains(.blackQueenSide) ? "k" : "") +
+                (castlingOptions.contains(.blackQueenSide) ? "q" : "") +
+                (castlingOptions == .none ? "-" : "")
             return "\(fenBoard) \(color) \(castle) \(enPassant) \(halfMoveClock) \(fullMoveNumber)"
         }
     }
@@ -120,22 +120,22 @@ extension String {
     
     func parseFenCastlingOptions(_ str: String) -> CastlingOptions? {
         var s = str
-        var castlingOptions = CastlingOptions.None
+        var castlingOptions = CastlingOptions.none
         if s == "-" { return castlingOptions }
         if s.hasPrefix("K") {
-            castlingOptions.insert(.WhiteKingSide)
+            castlingOptions.insert(.whiteKingSide)
             s.remove(at: s.startIndex)
         }
         if s.hasPrefix("Q") {
-            castlingOptions.insert(.WhiteQueenSide)
+            castlingOptions.insert(.whiteQueenSide)
             s.remove(at: s.startIndex)
         }
         if s.hasPrefix("k") {
-            castlingOptions.insert(.BlackKingSide)
+            castlingOptions.insert(.blackKingSide)
             s.remove(at: s.startIndex)
         }
         if s.hasPrefix("q") {
-            castlingOptions.insert(.BlackQueenSide)
+            castlingOptions.insert(.blackQueenSide)
             s.remove(at: s.startIndex)
         }
         if s.count == 0 {

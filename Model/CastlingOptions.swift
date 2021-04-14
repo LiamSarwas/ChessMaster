@@ -6,18 +6,15 @@
 //  Copyright © 2015 Regan Sarwas. All rights reserved.
 //
 
-public struct CastlingOptions: OptionSet {
-    public let rawValue: Int
-    public init(rawValue: Int) {
-        self.rawValue = rawValue
-    }
+struct CastlingOptions: OptionSet {
+    let rawValue: Int
 
-    static let None  = CastlingOptions([])
-    static let WhiteKingSide  = CastlingOptions(rawValue:1)
-    static let WhiteQueenSide  = CastlingOptions(rawValue:2)
-    static let BlackKingSide = CastlingOptions(rawValue:4)
-    static let BlackQueenSide = CastlingOptions(rawValue:8)
-    static let BothWhite: CastlingOptions = [.WhiteKingSide, .WhiteQueenSide]
-    static let BothBlack: CastlingOptions = [.BlackKingSide, .BlackQueenSide]
-    static let All: CastlingOptions = [.BothWhite, .BothBlack]
+    static let none  = CastlingOptions([])
+    static let whiteKingSide  = CastlingOptions(rawValue:1)
+    static let whiteQueenSide  = CastlingOptions(rawValue:2)
+    static let blackKingSide = CastlingOptions(rawValue:4)
+    static let blackQueenSide = CastlingOptions(rawValue:8)
+    static let bothWhite: CastlingOptions = [.whiteKingSide, .whiteQueenSide]
+    static let bothBlack: CastlingOptions = [.blackKingSide, .blackQueenSide]
+    static let all: CastlingOptions = [.bothWhite, .bothBlack]
 }

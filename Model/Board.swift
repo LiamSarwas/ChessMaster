@@ -34,7 +34,7 @@ struct Board {
     init() {
         self.init(pieces: Rules.defaultStartingBoard,
             activeColor: Color.white,
-            castlingOptions: CastlingOptions.All,
+            castlingOptions: CastlingOptions.all,
             enPassantTargetSquare: nil,
             halfMoveClock: 0,
             fullMoveNumber: 1
